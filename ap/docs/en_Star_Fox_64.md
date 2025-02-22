@@ -1,0 +1,34 @@
+# Star Fox 64
+
+## Where is the options page?
+
+The [player options page for this game](../player-options) contains all the options you need to configure and export a
+config file.
+
+## What does randomization do to this game?
+
+To help Star Fox 64 fit into the environment of Archipelago, the map has been changed significantly. When completing a level, you are no longer forced to the next level based on what you did in the previous level. You can also no longer use the `Change Course` or `Retry Course` options on the map. Instead, the map has controls for selecting which level you can go to. The levels available for selection depend on what path items you have received. The map also functions as a sort of in game tracker.
+
+**Controls**
+
+* `D-Pad Right` brings you closer to Venom
+* `D-Pad Left` brings you closer to Corneria.
+* `D-Pad Up` and `D-Pad Down` change the path from the previous level.
+
+For example, let's assume you have Corneria selected, and have all paths. `D-Pad Right` will select Meteo. From here, `D-Pad Up` will select Sector Y. `D-Pad Left` will select Corneria again.
+
+**Map Legend**
+
+* A colored path means that you have that path as an item. You will be able to take that path when selecting a level.
+* An animating Arwing means that you have access to the level, but haven't yet completed the level in a way that would normally take that path.
+* A stationary Arwing means that you have completed the level in a way that would normally take that path.
+
+## What items and locations get shuffled?
+
+* Getting Mission Complete, Mission Accomplished or a level warp is now a location. The path you would normally be able to take afterwards is now an item.
+* Getting a Medal is now a location. Medals are now an item.
+
+## Which items can be in another player's world?
+
+Any of the items which can be shuffled may also be placed into another player's world. It is possible to choose to limit
+certain items to your own world.

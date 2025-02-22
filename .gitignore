@@ -1,0 +1,14 @@
+__pycache__/
+.vscode
+release/
+tools/enum_gen.last
+n64/rom/
+n64/tools/mips64/
+n64/tools/armips
+n64/tools/armips.exe
+n64/tools/ed64romconfig
+n64/tools/ed64romconfig.exe
+pc/EverDrive64/EverDrive64
+pc/EverDrive64/EverDrive64.exe
+*.o
+*.d

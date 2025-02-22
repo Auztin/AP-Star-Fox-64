@@ -1,0 +1,18 @@
+#pragma once
+
+// Automatically generated using enum_gen.py
+
+typedef enum {
+  AP_OPTION_VICTORY_CONDITION = 0,
+  AP_OPTION_REQUIRED_MEDALS = 1,
+  AP_OPTION_SHUFFLE_MEDALS = 2,
+  AP_OPTION_SHUFFLE_PATHS = 3,
+  AP_OPTION_MAX = 4,
+} ap_option_t;
+
+typedef enum {
+  AP_OPTION_VICTORY_CONDITION_ANDROSS_OR_ROBOT_ANDROSS = 0,
+  AP_OPTION_VICTORY_CONDITION_ANDROSS_AND_ROBOT_ANDROSS = 1,
+  AP_OPTION_VICTORY_CONDITION_ANDROSS = 2,
+  AP_OPTION_VICTORY_CONDITION_MAX = 3,
+} ap_option_victory_condition_t;

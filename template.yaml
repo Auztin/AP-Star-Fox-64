@@ -1,0 +1,23 @@
+# Player{NUMBER} becomes Player1 if you are the first slot.
+name: Player{NUMBER}
+game: Star Fox 64
+Star Fox 64:
+
+  # Require a certain number of medals before you can enter Venom 2.
+  # The same requirment will apply for Venom 1 if your victory condition is 'andross_or_robot_andross'
+  required_medals: 0
+
+  # Shuffle the medals awarded by reaching a certain number of Hits in each level.
+  # Earning a medal will give a random item, and you will visually see the medal on the map to indicate that you've completed the check.
+  shuffle_medals: false
+
+  # Shuffle the paths between levels.
+  # Completing a level a certain way will give a random item. You cannot take the path that normally unlocks until you receive that path item.
+  # For example: Getting 'Mission Complete' on Corneria will give a random item. However, you cannot go to Meteo until you receive 'Corneria - Blue Path'
+  shuffle_paths: true
+
+  # Choose your victory condition.
+  # andross_or_robot_andross - Defeat either Andross or Robot Andross
+  # andross_and_robot_andross - Defeat both Andross and Robot Andross
+  # andross - Defeat Andross in Venom 2
+  victory_condition: andross_or_robot_andross
