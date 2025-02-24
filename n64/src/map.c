@@ -205,7 +205,8 @@ void map_paths() {
       if (location != AP_LOCATION_NONE) has_location = get_bit(ap_save.locations, location);
     }
     bool has_path = map_has_path(path->start, path->end);
-    if (has_path || planet_access[path->start]) path->alpha = 0x0F;
+    if (has_path) path->alpha = 0x0F;
+    else if (planet_access[path->start]) path->alpha = 0xFF;
     else path->alpha = 0;
     if (has_path) *path_type = 3;
     else *path_type = 4;
