@@ -3,7 +3,7 @@ GAME_LOWER:=star_fox_64
 GAME_SHORT:=sf64
 
 .PHONY: all
-all: tools n64 pc
+all: tools .WAIT n64 pc
 
 .PHONY: tools
 tools:
