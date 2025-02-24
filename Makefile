@@ -7,15 +7,15 @@ all: tools n64 pc
 
 .PHONY: tools
 tools:
-	$(MAKE) -C tools
+	@$(MAKE) --no-print-directory -C tools
 
 .PHONY: n64
 n64:
-	$(MAKE) -C n64 patch
+	@$(MAKE) --no-print-directory -C n64 patch
 
 .PHONY: pc
 pc:
-	$(MAKE) -C pc/EverDrive64
+	@$(MAKE) --no-print-directory -C pc/EverDrive64
 
 .PHONY: release
 release:
@@ -34,6 +34,6 @@ release:
 	cp pc/EverDrive64/EverDrive64.exe release/connector_$(GAME_SHORT)_ed64.exe
 
 clean:
-	$(MAKE) -C tools clean
-	$(MAKE) -C n64 clean
-	$(MAKE) -C pc/EverDrive64 clean
+	@$(MAKE) --no-print-directory -C tools clean
+	@$(MAKE) --no-print-directory -C n64 clean
+	@$(MAKE) --no-print-directory -C pc/EverDrive64 clean
