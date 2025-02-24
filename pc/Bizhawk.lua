@@ -3,10 +3,13 @@ local output_ptr = 0x80400004
 local port = 0x5F64
 
 console.clear()
+local socket_loaded, socket = pcall(require, "socket")
+if not socket_loaded then
+  print("Please place this lua in the 'Archipelago/data/lua' directory. Use the Archipelago Launcher's 'Browse Files' button to find the Archipelago directory.")
+  return
+end
 print("Waiting for ROM to be ready...");
 print("Make sure you load the patched ROM and not the vanilla ROM...");
-
-local socket = require("socket")
 
 local ready = false
 local connection = nil
