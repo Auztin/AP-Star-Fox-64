@@ -21,6 +21,11 @@ void main_init() {
 }
 
 void main_loop() {
+  sf_fn_game_update();
+  u32 c0_count = C0_COUNT();
+  main.delta = (c0_count-main.last_c0_count)/TICKS_PER_MILLISECOND;
+  main.last_c0_count = c0_count;
+  if (main.delta >= 250) return;
   if (sf_controllers_held[0].start && sf_controllers_pressed[0].l) {
     if (sf_video_features1 == 0x0001300E) {
       sf_video_features1 = 0x0000320E;
@@ -31,17 +36,12 @@ void main_loop() {
       sf_video_features2 = 0x0001300E;
     }
   }
-  sf_fn_game_update();
   save_sram_write();
   if (main.is_emulator) {
     ap_input();
     ap_output();
   }
   else usb_check();
-
-  u32 c0_count = C0_COUNT();
-  main.delta = (c0_count-main.last_c0_count)/TICKS_PER_MILLISECOND;
-  main.last_c0_count = c0_count;
 }
 
 void main_goal_completed() {

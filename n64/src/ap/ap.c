@@ -19,7 +19,7 @@ void ap_init() {
 
 void ap_input() {
   ap.ping_timer += main.delta;
-  if (ap.ping_timer >= 500) ap.ping_timer = 0;
+  if (ap.ping_timer >= 1000) ap.ping_timer = 0;
   switch (ap.state & ~AP_STATE_PINGED) {
     case AP_STATE_DISCONNECTED:
       switch (ap.input.cmd) {
