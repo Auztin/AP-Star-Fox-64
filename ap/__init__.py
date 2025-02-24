@@ -1,5 +1,8 @@
 import worlds.LauncherComponents as LauncherComponents
-from worlds.AutoWorld import World
+import Options
+from worlds.AutoWorld import World, WebWorld
+from Options import OptionGroup
+from BaseClasses import Tutorial
 
 from . import options, regions, locations, items, data, rules
 from .options import StarFox64Options, StarFox64OptionsList
@@ -16,6 +19,33 @@ def launch_client():
 
 LauncherComponents.components.append(LauncherComponents.Component("Star Fox 64 Client", "SF64Client", func=launch_client))
 
+class StarFox64WebWorld(WebWorld):
+  rich_text_options_doc = True
+  tutorials = [
+    Tutorial(
+      "Setup Guide",
+      "A guide to setting up Star Fox 64 with Archipelago.",
+      "English",
+      "setup_en.md",
+      "setup/en",
+      ["Austin"]
+    )
+  ]
+  option_groups = [
+    OptionGroup("Common Options", [
+      Options.ProgressionBalancing,
+      Options.Accessibility,
+    ]),
+    OptionGroup("Goal Options", [
+      options.VictoryCondition,
+      options.RequiredMedals,
+    ]),
+    OptionGroup("Shuffle Options", [
+      options.ShufflePaths,
+      options.ShuffleMedals,
+    ]),
+  ]
+
 class StarFox64World(World):
   """
     Star Fox 64 is a 3D rail shooter game in which the player controls one of the vehicles piloted by Fox McCloud, usually an Arwing.
@@ -26,6 +56,7 @@ class StarFox64World(World):
   item_name_to_id = items.name_to_id
   location_name_to_id = locations.name_to_id
   topology_present = True
+  web = StarFox64WebWorld()
 
   def create_item(self, item_name):
     return items.create_item(self, item_name)
