@@ -23,6 +23,28 @@ You can play either on Bizhawk, on Project 64 4.0 or on a real n64 console using
 
 # Configuration & Playing
 
+## In development
+
+This world is currently in development, which means you must manually place some files in certain locations. The [releases](https://github.com/Auztin/AP-Star-Fox-64/releases/latest) page has all of the files you need. Use the Archipelago Launcher's `Browse Files` button to find the Archipelago directory.
+* `star_fox_64.apworld` - This needs to go in the `Archipelago/custom_worlds/` folder. You can also double click this file to have Archipelago do this for you.
+* `connector_sf64_bizhawk.lua` - If you will be using Bizhawk, this needs to go in the `Archipelago/data/lua/` folder.
+
+## Patched ROM
+
+Once `star_fox_64.apworld` is in the correct location, you will find the `Star Fox 64 Client` in the Archipelago Launcher. For every new version when you start this client for the first time, it will ask you to provide the original `Star Fox 64 v1.1` ROM. Once provided, the client will then generate a patched ROM in the Archipelago folder. This patched ROM can be used for all generated seeds of the same version.
+
+## Generic instructions
+
+* Open the `Star Fox 64 Client` using the Archipelago Launcher.
+* If prompted, provide the original `Star Fox 64 v1.1` ROM.
+* Open the [patched ROM](#patched-rom) on your platform of choice.
+* Load the connector for your platform of choice.
+* With the game running (not paused in the emulator), you should see it successfully connected in the `Star Fox 64 Client`.
+* Once you have a room hosted, connect the `Star Fox 64 Client` to the room.
+* You are now ready to play!
+
+## Platform specific instructions
+
 * [Bizhawk](#bizhawk)
 * [Project 64](#project-64)
 * [EverDrive 64](#everdrive-64)
@@ -31,7 +53,7 @@ You can play either on Bizhawk, on Project 64 4.0 or on a real n64 console using
 
 No specific configuration is necessary for Bizhawk. However, it is recommended to enable AutoSaveRAM. Every 5s is fine.
 
-Load the game, and then load the `Archipelago/data/lua/connector_sf64_bizhawk.lua`. Use the Archipelago Launcher's `Browse Files` button to find the Archipelago directory.
+Load the [patched ROM](#patched-rom), and then load `Archipelago/data/lua/connector_sf64_bizhawk.lua`. Use the Archipelago Launcher's `Browse Files` button to find the Archipelago folder.
 
 ## Project 64
 
@@ -45,10 +67,10 @@ Load the game, and then load the `Archipelago/data/lua/connector_sf64_bizhawk.lu
 * Click `Debugger` -> `Scripts...`
 * Click the `...` button. This will open the scripts folder. Place the `connector_sf64_pj64.js` file here
 
-Load the game, and then load the connector script.
+Load the [patched ROM](#patched-rom), and then load the connector script.
 
 ## EverDrive 64
 
 No specific configuration is necessary for EverDrive 64.
 
-Load the game, and then run the `connector_sf64_ed64` executable.
+Load the [patched ROM](#patched-rom), and then run the `connector_sf64_ed64` executable.
