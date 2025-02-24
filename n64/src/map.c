@@ -278,7 +278,6 @@ void map_init() {
 void map_idle() {
   if (!map.inited) {
     map.inited = true;
-    map.check = false;
     save.dirty = true;
     map_modify();
     save_sync_medals();
