@@ -123,7 +123,7 @@ class StarFox64Context(CommonContext):
           self.seed_name = args["seed_name"]
           self.n64_send_seed()
         case "RoomUpdate":
-          await self.n64_send_checked_locations(locations=set(args["checked_locations"]))
+          self.n64_send_checked_locations(locations=set(args["checked_locations"]))
         case "Connected":
           await self.check_assert("slot_data" in args, "Missing Slot Data", "Necessary data is missing from this slot...")
           self.slot_data = args["slot_data"]
