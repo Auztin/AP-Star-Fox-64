@@ -64,8 +64,8 @@ async def check_patch():
   if os.path.isfile(patch_path):
     rom = read_file(patch_path)
     existing_md5 = hashlib.md5(rom).hexdigest()
+  await asyncio.sleep(0.01)
   if not patch_path or existing_md5 != patch_md5:
-    await asyncio.sleep(0.01)
     rom = Utils.open_filename(f"Open your {game_name} {vanilla_version} ROM", (("Rom Files", (".z64", ".n64")), ("All Files", "*"),))
     if not rom:
       logger.info(f"No ROM selected. Please restart the {game_name} Client to try again.")
