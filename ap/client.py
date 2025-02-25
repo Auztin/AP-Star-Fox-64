@@ -51,30 +51,30 @@ def patch_rom(rom_path, dst_path, patch_path):
   write_file(dst_path, bsdiff4.patch(rom, patch))
 
 async def check_patch():
-  fpath = pathlib.Path(__file__)
-  archipelago_root = None
-  for i in range(0, 5, 1) :
-    if fpath.parents[i].stem == "Archipelago":
-      archipelago_root = pathlib.Path(__file__).parents[i]
-      break
   patch_path = None
-  if archipelago_root:
-    patch_path = os.path.join(archipelago_root, patch_name)
+  if os.access(Utils.user_path(), os.W_OK):
+    patch_path = Utils.user_path(patch_name)
+  elif os.access(Utils.cache_path(), os.W_OK):
+    patch_path = Utils.cache_path(patch_name)
   existing_md5 = None
-  if os.path.isfile(patch_path):
+  if patch_path and os.path.isfile(patch_path):
     rom = read_file(patch_path)
     existing_md5 = hashlib.md5(rom).hexdigest()
   await asyncio.sleep(0.01)
   if not patch_path or existing_md5 != patch_md5:
     rom = Utils.open_filename(f"Open your {game_name} {vanilla_version} ROM", (("Rom Files", (".z64", ".n64")), ("All Files", "*"),))
     if not rom:
-      logger.info(f"No ROM selected. Please restart the {game_name} Client to try again.")
+      logger.error(f"No ROM selected. Please restart the {game_name} Client to try again.")
       return
     if not patch_path:
-      patch_path = f"{os.path.split(rom)}/{patch_name}"
+      patch_path = os.path.split(rom)[0]
+      if os.access(patch_path, os.W_OK):
+        patch_path = os.path.join(patch_path, patch_name)
+      else:
+        logger.error("Unable to find writable path...")
+        return
     patch_rom(rom, patch_path, f"{game_name.replace(" ", "_")}.patch")
-  if patch_path:
-    logger.info(f"Patched {game_name} is located here: {patch_path}")
+  logger.info(f"Patched {game_name} is located here: {patch_path}")
 
 class StarFox64Context(CommonContext):
   tags = CommonContext.tags
