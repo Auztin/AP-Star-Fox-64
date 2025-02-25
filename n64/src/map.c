@@ -4,8 +4,10 @@
 #include "main.h"
 #include "ap/ap.h"
 #include "sf/map.h"
+#include "sf/gfx.h"
 #include "sf/game.h"
 #include "sf/controller.h"
+#include <stdlib.h>
 
 map_t map = {0, };
 
@@ -360,6 +362,26 @@ void map_idle() {
   sf_fn_map_idle();
 }
 
+void map_draw_medals() {
+  int num[2] = {ap_save.items[AP_ITEM_MEDAL], ap_save.options[AP_OPTION_REQUIRED_MEDALS]};
+  if (!ap_save.options[AP_OPTION_SHUFFLE_MEDALS] && !num[1]) return;
+  char medals[6];
+  for (int i = 0; i < 2; i++) {
+    if (num[i] < 99) itoa(num[i], medals+i*3, 10);
+  }
+  if (medals[1] == 0) {
+    medals[1] = medals[0];
+    medals[0] = ' ';
+  }
+  if (num[1]) medals[2] = ':';
+  else medals[2] = 0;
+  sf_fn_gfx_draw_medal(39.25, 25.75, 0);
+  sf_fn_gfx_setup(&sf_gfx, 0x53);
+  sf_gfx->raw = (sf_gfx_t){.cmd=SF_GFX_SET_PRIMARY_COLOR, ._unused=0, .m=0, .l=0, .r=0xFF, .g=0xFF, .b=0, .a=0xFF}.raw;
+  sf_gfx++;
+  sf_fn_gfx_draw_text(268, 38, 1, 1, medals);
+}
+
 void map_load_scene_data() {
   map.inited = false;
   util_inject(UTIL_INJECT_FUNCTION, 0x8019F278, (u32)map_set_level_flags, 0); // clear
@@ -371,4 +393,5 @@ void map_load_scene_data() {
   util_inject(UTIL_INJECT_FUNCTION, 0x801A0000, (u32)map_idle, 0);
   util_inject(UTIL_INJECT_JUMP    , 0x801A2AF8, 0x801A2B7C, 1);
   util_inject(UTIL_INJECT_JUMP    , 0x801A2EB8, (u32)map_camera_animations, 1);
+  util_inject(UTIL_INJECT_JUMP    , 0x801AB174, (u32)map_draw_medals, 0);
 }
