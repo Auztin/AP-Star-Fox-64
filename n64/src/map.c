@@ -256,6 +256,9 @@ void map_check_mission() {
 }
 
 void map_modify() {
+  sf_map_previous_planet = sf_map_mission_list[sf_map_current_mission-1];
+  sf_map_current_planet = sf_map_mission_list[sf_map_current_mission];
+  sf_map_next_planet = sf_map_mission_list[sf_map_current_mission];
   sf_map_planets[PLANET_BOLSE].dest.complete = PLANET_VENOM;
   sf_map_planets[PLANET_AREA_6].dest.complete = PLANET_VENOM;
   util_inject(UTIL_INJECT_JUMP, 0x801A6620, (u32)map_check_mission, 0);
