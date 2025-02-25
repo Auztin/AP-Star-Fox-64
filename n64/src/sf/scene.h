@@ -32,5 +32,7 @@ typedef enum {
   SCENE_LOGO = 99,
 } sf_scenes_t;
 
+#define sf_current_scene (*(s32*)0x801774F8)
+
 typedef bool (*sf_fnt_load_scene_data)(sf_scenes_t scene, u8 _unk);
 #define sf_fn_load_scene_data ((sf_fnt_load_scene_data)0x80058F14)

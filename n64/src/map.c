@@ -370,6 +370,7 @@ void map_idle() {
 }
 
 void map_draw_medals() {
+  if (sf_current_scene != SCENE_MAP) return;
   int num[2] = {ap_save.items[AP_ITEM_MEDAL], ap_save.options[AP_OPTION_REQUIRED_MEDALS]};
   if (!ap_save.options[AP_OPTION_SHUFFLE_MEDALS] && !num[1]) return;
   char medals[6];
