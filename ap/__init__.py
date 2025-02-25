@@ -44,6 +44,9 @@ class StarFox64WebWorld(WebWorld):
       options.ShufflePaths,
       options.ShuffleMedals,
     ]),
+    OptionGroup("Speedup Options", [
+      options.AccomplishedSendsComplete,
+    ]),
   ]
 
 class StarFox64World(World):

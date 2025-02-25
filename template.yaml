@@ -21,3 +21,6 @@ Star Fox 64:
   # andross_and_robot_andross - Defeat both Andross and Robot Andross
   # andross - Defeat Andross in Venom 2
   victory_condition: andross_or_robot_andross
+
+  # Getting 'Mission Accomplished' on any level will also count as getting 'Mission Complete' for that level.
+  accomplished_sends_complete: false

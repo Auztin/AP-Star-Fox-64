@@ -66,17 +66,24 @@ ap_item_t map_path_item(sf_planet_id_t from, sf_planet_id_t to) {
   return AP_ITEM_NONE;
 }
 
+void map_give_clear_location(sf_planet_id_t planet, u8 mission_status) {
+  ap_location_t location = map_get_clear_location(planet, mission_status);
+  if (location >= 0) {
+    set_bit(ap_save.locations, location);
+    if (!ap_save.options[AP_OPTION_SHUFFLE_PATHS]) {
+      ap_item_t item = map_path_item(planet, sf_map_planets[planet].dests[mission_status]);
+      if (item != AP_ITEM_NONE) ap_save.items[item] = 1;
+    }
+  }
+}
+
 int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
   ap_location_t location;
   switch (flag) {
     case LEVEL_FLAG_CLEAR:
-      location = map_get_clear_location(sf_map_current_planet, sf_map_mission_status);
-      if (location >= 0) {
-        set_bit(ap_save.locations, location);
-        if (!ap_save.options[AP_OPTION_SHUFFLE_PATHS]) {
-          ap_item_t item = map_path_item(sf_map_current_planet, sf_map_planets[sf_map_current_planet].dests[sf_map_mission_status]);
-          if (item != AP_ITEM_NONE) ap_save.items[item] = 1;
-        }
+      map_give_clear_location(sf_map_current_planet, sf_map_mission_status);
+      if (ap_save.options[AP_OPTION_ACCOMPLISHED_SENDS_COMPLETE] && sf_map_mission_status == MISSION_ACCOMPLISHED) {
+        map_give_clear_location(sf_map_current_planet, MISSION_COMPLETE);
       }
       if (sf_map_current_planet == PLANET_VENOM) {
         if (sf_map_venom_hard_clear) set_bit(ap_save.locations, AP_LOCATION_VENOM_DEFEAT_ANDROSS);

@@ -4,7 +4,8 @@ option_name_to_id = {
   "victory_condition": 0,
   "required_medals": 1,
   "shuffle_medals": 2,
-  "shuffle_paths": 3
+  "shuffle_paths": 3,
+  "accomplished_sends_complete": 4
 }
 
 item_name_to_id = {

@@ -34,12 +34,19 @@ class ShufflePaths(DefaultOnToggle):
   """
   display_name = "Shuffle Paths"
 
+class AccomplishedSendsComplete(Toggle):
+  """
+    Getting 'Mission Accomplished' on any level will also count as getting 'Mission Complete' for that level.
+  """
+  display_name = "Shuffle Paths"
+
 @dataclass
 class StarFox64OptionsList:
   victory_condition: VictoryCondition
   required_medals: RequiredMedals
   shuffle_medals: ShuffleMedals
   shuffle_paths: ShufflePaths
+  accomplished_sends_complete: AccomplishedSendsComplete
 
 @dataclass
 class StarFox64Options(StarFox64OptionsList, PerGameCommonOptions):
