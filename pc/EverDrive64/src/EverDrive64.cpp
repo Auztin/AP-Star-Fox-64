@@ -164,7 +164,7 @@ public:
 
   FT_STATUS write(uint8_t* packet) {
     DWORD size;
-    int packet_size = (packet[0] << 8) | packet[1];
+    int packet_size = ((packet[0] << 8) | packet[1])+2;
     if (packet_size < 8) packet_size = 8;
     else if (packet_size) {
       packet_size--;
