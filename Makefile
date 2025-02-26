@@ -22,7 +22,7 @@ pc:
 	@$(MAKE) --no-print-directory -C pc/EverDrive64
 
 .PHONY: release
-release:
+release: clean .WAIT all
 	$(RM) -r\
 		release/$(GAME_LOWER).apworld release/connector_$(GAME_SHORT)_bizhawk.lua release/connector_$(GAME_SHORT)_pj64.js\
 		release/connector_$(GAME_SHORT)_ed64_linux release/connector_$(GAME_SHORT)_ed64.exe ap/__pycache__ ap/assets
