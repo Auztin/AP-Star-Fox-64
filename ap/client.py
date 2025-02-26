@@ -1,15 +1,16 @@
-import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile
+import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile, settings, atexit
 import worlds.LauncherComponents as LauncherComponents
-from CommonClient import CommonContext, get_base_parser, server_loop, gui_enabled, logger
+from CommonClient import CommonContext, ClientCommandProcessor, get_base_parser, server_loop, gui_enabled, logger
 from NetUtils import ClientStatus
 
 from .version import version
 from .ids import option_name_to_id, location_name_to_id, AP_CMD, AP_STATE
 
-patch_md5: str = "2d8101d76ea62ec9b3e01818f78a2c2f"
 game_name = "Star Fox 64"
 vanilla_version = "v1.1"
 patch_name = f"{game_name} AP v{version.major}.{version.minor}.{version.build}.z64"
+
+program = None
 
 def read_file(path):
   with open(path, "rb") as fi:
@@ -46,23 +47,35 @@ def patch_rom(rom_path, dst_path, patch_path):
     rom = bytes(swapped)
   elif (md5 != "741a94eee093c4c8684e66b89f8685e8"):
     logger.error("Unknown ROM!")
-    return
-  patch = open_world_file(patch_path).read()
+    return False
+  with open_world_file(patch_path) as f:
+    patch = f.read()
   write_file(dst_path, bsdiff4.patch(rom, patch))
+  return True
 
-async def check_patch():
-  patch_path = None
-  if os.access(Utils.user_path(), os.W_OK):
+async def patch_and_run(show_path):
+  global program
+  sf64_options = settings.get_settings().sf64_options
+  patch_path = sf64_options.get("patch_path", "")
+  if patch_path != "" and os.access(patch_path, os.W_OK):
+    patch_path = os.path.join(patch_path, patch_name)
+  elif os.access(Utils.user_path(), os.W_OK):
     patch_path = Utils.user_path(patch_name)
   elif os.access(Utils.cache_path(), os.W_OK):
     patch_path = Utils.cache_path(patch_name)
+  else:
+    patch_path = None
   existing_md5 = None
   if patch_path and os.path.isfile(patch_path):
     rom = read_file(patch_path)
     existing_md5 = hashlib.md5(rom).hexdigest()
+  with open_world_file(f"assets/{game_name.replace(" ", "_")}_Patched.z64-md5") as f:
+    patch_md5 = f.read().decode()
   await asyncio.sleep(0.01)
   if not patch_path or existing_md5 != patch_md5:
-    rom = Utils.open_filename(f"Open your {game_name} {vanilla_version} ROM", (("Rom Files", (".z64", ".n64")), ("All Files", "*"),))
+    rom = sf64_options.get("rom_path", "")
+    if rom == "" or not os.path.isfile(rom):
+      rom = Utils.open_filename(f"Open your {game_name} {vanilla_version} ROM", (("Rom Files", (".z64", ".n64")), ("All Files", "*"),))
     if not rom:
       logger.error(f"No ROM selected. Please restart the {game_name} Client to try again.")
       return
@@ -73,14 +86,66 @@ async def check_patch():
       else:
         logger.error("Unable to find writable path...")
         return
-    patch_rom(rom, patch_path, f"{game_name.replace(" ", "_")}.patch")
-  logger.info(f"Patched {game_name} is located here: {patch_path}")
+    logger.info("Patching...")
+    if patch_rom(rom, patch_path, f"assets/{game_name.replace(" ", "_")}.patch"):
+      sf64_options.rom_path = rom
+      sf64_options.patch_path = os.path.split(patch_path)[0]
+    else:
+      sf64_options.rom_path = None
+    sf64_options._changed = True
+  if show_path:
+    logger.info(f"Patched {game_name} is located here: {patch_path}")
+  program_path = sf64_options.program_path
+  if program_path != "" and os.path.isfile(program_path):
+    import shlex, subprocess
+    logger.info(f"Automatically starting {program_path}")
+    lua = Utils.local_path("data", "lua", "connector_sf64_bizhawk.lua")
+    if os.access(os.path.split(lua)[0], os.W_OK):
+      with open(lua, "w") as to:
+        with open_world_file("assets/connector_sf64_bizhawk.lua") as f:
+          to.write(f.read().decode())
+    program = subprocess.Popen(
+      [
+        *shlex.split(program_path),
+        sf64_options.program_args,
+        patch_path
+      ],
+      cwd=Utils.local_path("."),
+      stdin=subprocess.DEVNULL,
+      stdout=subprocess.DEVNULL,
+      stderr=subprocess.DEVNULL,
+    )
+
+class StarFox64CommandProcessor(ClientCommandProcessor):
+  def _cmd_autostart(self):
+    """Allows configuring a program to automatically start with the client.
+      This allows you to, for example, automatically start Bizhawk with the patched ROM and lua.
+      If already configured, disables the configuration."""
+    sf64_options = settings.get_settings().sf64_options
+    program_path = sf64_options.get("program_path", "")
+    if program_path == "" or not os.path.isfile(program_path):
+      program_path = Utils.open_filename(f"Select your program to automatically start", (("All Files", "*"),))
+      if program_path:
+        sf64_options.program_path = program_path
+        sf64_options._changed = True
+        logger.info(f"Autostart configured for: {program_path}")
+        if not program or program.poll() != None:
+          asyncio.create_task(patch_and_run(False))
+      else:
+        logger.error("No file selected...")
+        return False
+    else:
+      sf64_options.program_path = ""
+      sf64_options._changed = True
+      logger.info("Autostart disabled.")
+    return True
 
 class StarFox64Context(CommonContext):
   tags = CommonContext.tags
   game = "Star Fox 64"
   items_handling = 0b111
   want_slot_data = True
+  command_processor = StarFox64CommandProcessor
 
   seed_name = 0
 
@@ -88,14 +153,29 @@ class StarFox64Context(CommonContext):
   n64_sockets = set()
 
   def make_gui(self):
-    from kvui import GameManager
+    from kvui import GameManager, Window
+
+    Window.bind(on_request_close=self.on_request_close)
 
     class StarFox64Manager(GameManager):
       base_title = f"Star Fox 64 Client {version.as_string()} | AP"
 
-    asyncio.create_task(check_patch())
+    asyncio.create_task(patch_and_run(True))
 
     return StarFox64Manager
+
+  def on_request_close(self, *args):
+    title = "Warning: Autostart program still running!"
+    message = "Attempting to close this window again will forcibly close it."
+    def cleanup(messagebox):
+      self._messagebox = None
+    if self._messagebox and self._messagebox.title == title:
+      return False
+    if program and program.poll() == None:
+      self.gui_error(title, message)
+      self._messagebox.bind(on_dismiss=cleanup)
+      return True
+    return False
 
   async def server_auth(self, password_requested=False):
     if password_requested and not self.password:
@@ -275,6 +355,13 @@ class N64Socket:
         return
       else:
         self.state |= AP_STATE.PINGED
+
+@atexit.register
+def close_program():
+  global program
+  if program and program.poll() == None:
+    program.kill()
+    program = None
 
 def run(*args):
 

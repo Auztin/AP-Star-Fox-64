@@ -2,6 +2,7 @@ __pycache__/
 .vscode
 release/
 tools/enum_gen.last
+ap/assets/
 n64/rom/
 n64/tools/mips64/
 n64/tools/armips

@@ -1,5 +1,5 @@
 import worlds.LauncherComponents as LauncherComponents
-import Options
+import Options, settings, Utils
 from worlds.AutoWorld import World, WebWorld
 from Options import OptionGroup
 from BaseClasses import Tutorial
@@ -18,6 +18,30 @@ def launch_client():
   LauncherComponents.launch_subprocess(client.run, name="Star Fox 64 Client")
 
 LauncherComponents.components.append(LauncherComponents.Component("Star Fox 64 Client", "SF64Client", func=launch_client))
+
+class StarFox64Settings(settings.Group):
+  class RomPath(settings.OptionalUserFilePath):
+    """File path of the Star Fox 64 v1.1 ROM."""
+
+  class PatchPath(settings.OptionalUserFolderPath):
+    """Folder path of where to save the patched ROM."""
+
+  class ProgramPath(settings.OptionalUserFilePath):
+    """
+      File path of the program to automatically run.
+      Leave blank to disable.
+    """
+
+  class ProgramArgs(str):
+    """
+      Arguments to pass to the automatically run program.
+      Leave blank to disable.
+    """
+
+  rom_path: RomPath = ""
+  patch_path: PatchPath = ""
+  program_path: ProgramPath = ""
+  program_args: ProgramArgs = f"--lua={Utils.local_path("data", "lua", "connector_sf64_bizhawk.lua")}"
 
 class StarFox64WebWorld(WebWorld):
   rich_text_options_doc = True
@@ -56,6 +80,8 @@ class StarFox64World(World):
   game = "Star Fox 64"
   options_dataclass = StarFox64Options
   options: StarFox64Options
+  settings: StarFox64Settings
+  settings_key = "sf64_options"
   item_name_to_id = items.name_to_id
   location_name_to_id = locations.name_to_id
   topology_present = True

@@ -25,12 +25,13 @@ pc:
 release:
 	$(RM) -r\
 		release/$(GAME_LOWER).apworld release/connector_$(GAME_SHORT)_bizhawk.lua release/connector_$(GAME_SHORT)_pj64.js\
-		release/connector_$(GAME_SHORT)_ed64_linux release/connector_$(GAME_SHORT)_ed64.exe ap/__pycache__
-	mkdir -p release
+		release/connector_$(GAME_SHORT)_ed64_linux release/connector_$(GAME_SHORT)_ed64.exe ap/__pycache__ ap/assets
+	mkdir -p release ap/assets
 	mv ap $(GAME_LOWER)
-	ln n64/rom/$(GAME).patch $(GAME_LOWER)/
+	ln n64/rom/$(GAME).patch $(GAME_LOWER)/assets/
+	ln n64/rom/$(GAME)_Patched.z64-md5 $(GAME_LOWER)/assets/
+	ln pc/Bizhawk.lua $(GAME_LOWER)/assets/connector_$(GAME_SHORT)_bizhawk.lua
 	zip -qr9 release/$(GAME_LOWER).apworld $(GAME_LOWER)
-	rm $(GAME_LOWER)/$(GAME).patch
 	mv $(GAME_LOWER) ap
 	cp pc/Bizhawk.lua release/connector_$(GAME_SHORT)_bizhawk.lua
 	cp pc/Project64.js release/connector_$(GAME_SHORT)_pj64.js

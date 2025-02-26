@@ -32,3 +32,9 @@ For example, let's assume you have Corneria selected, and have all paths. `D-Pad
 
 Any of the items which can be shuffled may also be placed into another player's world. It is possible to choose to limit
 certain items to your own world.
+
+## Unique Local Commands
+
+The following commands are only available when using the Star Fox 64 Client to play with Archipelago.
+
+* `/autostart` - Toggle `autostart`. This feature allows you to automatically start a program (such as Bizhawk) with the patched ROM.
