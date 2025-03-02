@@ -11,6 +11,7 @@ vanilla_version = "v1.1"
 patch_name = f"{game_name} AP v{version.major}.{version.minor}.{version.build}.z64"
 
 program = None
+sf64_options = settings.get_settings().sf64_options
 
 def read_file(path):
   with open(path, "rb") as fi:
@@ -46,7 +47,7 @@ def patch_rom(rom_path, dst_path, patch_path):
       swapped[i+1] = rom[i]
     rom = bytes(swapped)
   elif (md5 != "741a94eee093c4c8684e66b89f8685e8"):
-    logger.error("Unknown ROM!")
+    logger.error(f"Unknown ROM! Please use /patch or restart the {game_name} Client to try again.")
     return False
   with open_world_file(patch_path) as f:
     patch = f.read()
@@ -55,9 +56,8 @@ def patch_rom(rom_path, dst_path, patch_path):
 
 async def patch_and_run(show_path):
   global program
-  sf64_options = settings.get_settings().sf64_options
   patch_path = sf64_options.get("patch_path", "")
-  if patch_path != "" and os.access(patch_path, os.W_OK):
+  if patch_path and os.access(patch_path, os.W_OK):
     patch_path = os.path.join(patch_path, patch_name)
   elif os.access(Utils.user_path(), os.W_OK):
     patch_path = Utils.user_path(patch_name)
@@ -72,56 +72,64 @@ async def patch_and_run(show_path):
   with open_world_file(f"assets/{game_name.replace(" ", "_")}_Patched.z64-md5") as f:
     patch_md5 = f.read().decode()
   await asyncio.sleep(0.01)
+  patch_successful = True
   if not patch_path or existing_md5 != patch_md5:
     rom = sf64_options.get("rom_path", "")
-    if rom == "" or not os.path.isfile(rom):
+    if not rom or not os.path.isfile(rom):
       rom = Utils.open_filename(f"Open your {game_name} {vanilla_version} ROM", (("Rom Files", (".z64", ".n64")), ("All Files", "*"),))
     if not rom:
-      logger.error(f"No ROM selected. Please restart the {game_name} Client to try again.")
+      logger.error(f"No ROM selected. Please use /patch or restart the {game_name} Client to try again.")
       return
     if not patch_path:
       patch_path = os.path.split(rom)[0]
       if os.access(patch_path, os.W_OK):
         patch_path = os.path.join(patch_path, patch_name)
       else:
-        logger.error("Unable to find writable path...")
+        logger.error(f"Unable to find writable path... Please use /patch or restart the {game_name} Client to try again.")
         return
     logger.info("Patching...")
-    if patch_rom(rom, patch_path, f"assets/{game_name.replace(" ", "_")}.patch"):
+    patch_successful = patch_rom(rom, patch_path, f"assets/{game_name.replace(" ", "_")}.patch")
+    if patch_successful:
       sf64_options.rom_path = rom
       sf64_options.patch_path = os.path.split(patch_path)[0]
     else:
       sf64_options.rom_path = None
     sf64_options._changed = True
-  if show_path:
-    logger.info(f"Patched {game_name} is located here: {patch_path}")
-  program_path = sf64_options.program_path
-  if program_path != "" and os.path.isfile(program_path):
-    import shlex, subprocess
-    logger.info(f"Automatically starting {program_path}")
-    lua = Utils.local_path("data", "lua", "connector_sf64_bizhawk.lua")
-    if os.access(os.path.split(lua)[0], os.W_OK):
-      with open(lua, "w") as to:
-        with open_world_file("assets/connector_sf64_bizhawk.lua") as f:
-          to.write(f.read().decode())
-    program = subprocess.Popen(
-      [
-        *shlex.split(program_path),
-        sf64_options.program_args,
-        patch_path
-      ],
-      cwd=Utils.local_path("."),
-      stdin=subprocess.DEVNULL,
-      stdout=subprocess.DEVNULL,
-      stderr=subprocess.DEVNULL,
-    )
+  if patch_successful:
+    if show_path:
+      logger.info(f"Patched {game_name} is located here: {patch_path}")
+    program_path = sf64_options.get("program_path", "")
+    if program_path and os.path.isfile(program_path) and (not program or program.poll() != None):
+      import shlex, subprocess
+      logger.info(f"Automatically starting {program_path}")
+      lua = Utils.local_path("data", "lua", "connector_sf64_bizhawk.lua")
+      if os.access(os.path.split(lua)[0], os.W_OK):
+        with open(lua, "w") as to:
+          with open_world_file("assets/connector_sf64_bizhawk.lua") as f:
+            to.write(f.read().decode())
+      args = [*shlex.split(program_path)]
+      program_args = sf64_options.program_args
+      if program_args:
+        args.append(program_args)
+      args.append(patch_path)
+      program = subprocess.Popen(
+        args,
+        cwd=Utils.local_path("."),
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+      )
 
 class StarFox64CommandProcessor(ClientCommandProcessor):
+  def _cmd_patch(self):
+    """Reruns the patcher."""
+    asyncio.create_task(patch_and_run(True))
+    return True
+
   def _cmd_autostart(self):
     """Allows configuring a program to automatically start with the client.
       This allows you to, for example, automatically start Bizhawk with the patched ROM and lua.
       If already configured, disables the configuration."""
-    sf64_options = settings.get_settings().sf64_options
     program_path = sf64_options.get("program_path", "")
     if program_path == "" or not os.path.isfile(program_path):
       program_path = Utils.open_filename(f"Select your program to automatically start", (("All Files", "*"),))
@@ -138,6 +146,36 @@ class StarFox64CommandProcessor(ClientCommandProcessor):
       sf64_options.program_path = ""
       sf64_options._changed = True
       logger.info("Autostart disabled.")
+    return True
+
+  def _cmd_rom_path(self, path=""):
+    """Sets (or unsets) the file path of the vanilla ROM used for patching."""
+    sf64_options.rom_path = path
+    sf64_options._changed = True
+    if path:
+      logger.info("rom_path set!")
+    else:
+      logger.info("rom_path unset!")
+    return True
+
+  def _cmd_patch_path(self, path=""):
+    """Sets (or unsets) the folder path of where to save the patched ROM."""
+    sf64_options.patch_path = path
+    sf64_options._changed = True
+    if path:
+      logger.info("patch_path set!")
+    else:
+      logger.info("patch_path unset!")
+    return True
+
+  def _cmd_program_args(self, path=""):
+    """Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk."""
+    sf64_options.program_args = path
+    sf64_options._changed = True
+    if path:
+      logger.info("program_args set!")
+    else:
+      logger.info("program_args unset!")
     return True
 
 class StarFox64Context(CommonContext):
