@@ -1,5 +1,5 @@
 import worlds.LauncherComponents as LauncherComponents
-import Options, settings, Utils
+import Options, settings, Utils, logging
 from worlds.AutoWorld import World, WebWorld
 from Options import OptionGroup
 from BaseClasses import Tutorial
@@ -87,6 +87,14 @@ class StarFox64World(World):
   topology_present = True
   web = StarFox64WebWorld()
 
+  def check_options(self):
+    if not self.options.shuffle_medals and self.options.required_medals == 15 and self.options.victory_condition == "andross_or_robot_andross":
+      logging.warning(
+        f"{self.game} player {self.player} ({self.player_name}): "
+        "Wants all Medals to access Venom and wants Venom to have a Medal. Forcing required_medals to 14."
+      )
+      self.options.required_medals.value = 14
+
   def create_item(self, item_name):
     return items.create_item(self, item_name)
 
@@ -129,6 +137,7 @@ class StarFox64World(World):
     regions.cache.clear()
 
   def create_items(self):
+    self.check_options()
     self.create_everything()
 
   def fill_slot_data(self):
