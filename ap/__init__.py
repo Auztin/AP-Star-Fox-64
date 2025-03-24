@@ -41,7 +41,7 @@ class StarFox64Settings(settings.Group):
   rom_path: RomPath = ""
   patch_path: PatchPath = ""
   program_path: ProgramPath = ""
-  program_args: ProgramArgs = f"--lua={Utils.local_path("data", "lua", "connector_sf64_bizhawk.lua")}"
+  program_args: ProgramArgs = f"--lua={Utils.local_path('data', 'lua', 'connector_sf64_bizhawk.lua')}"
 
 class StarFox64WebWorld(WebWorld):
   rich_text_options_doc = True

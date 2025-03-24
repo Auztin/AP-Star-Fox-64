@@ -69,7 +69,7 @@ async def patch_and_run(show_path):
   if patch_path and os.path.isfile(patch_path):
     rom = read_file(patch_path)
     existing_md5 = hashlib.md5(rom).hexdigest()
-  with open_world_file(f"assets/{game_name.replace(" ", "_")}_Patched.z64-md5") as f:
+  with open_world_file(f"assets/{game_name.replace(' ', '_')}_Patched.z64-md5") as f:
     patch_md5 = f.read().decode()
   await asyncio.sleep(0.01)
   patch_successful = True
@@ -88,7 +88,7 @@ async def patch_and_run(show_path):
         logger.error(f"Unable to find writable path... Please use /patch or restart the {game_name} Client to try again.")
         return
     logger.info("Patching...")
-    patch_successful = patch_rom(rom, patch_path, f"assets/{game_name.replace(" ", "_")}.patch")
+    patch_successful = patch_rom(rom, patch_path, f"assets/{game_name.replace(' ', '_')}.patch")
     if patch_successful:
       sf64_options.rom_path = rom
       sf64_options.patch_path = os.path.split(patch_path)[0]
@@ -260,7 +260,7 @@ class StarFox64Context(CommonContext):
 
   def n64_send_seed(self, writer=None):
     if self.seed_name == None: return
-    send = AP_CMD.SEED.to_bytes(2)
+    send = AP_CMD.SEED.to_bytes(2, "big")
     send += self.seed_name.encode()
     self.n64_send(send, writer)
 
@@ -268,28 +268,28 @@ class StarFox64Context(CommonContext):
     if self.seed_name == None: return
     send = bytes()
     for name, value in self.slot_data["options"].items():
-      send += option_name_to_id[name].to_bytes(1)
-      send += value.to_bytes(1)
-    self.n64_split_and_send(AP_CMD.OPTIONS.to_bytes(2), send, 2, writer)
+      send += option_name_to_id[name].to_bytes(1, "big")
+      send += value.to_bytes(1, "big")
+    self.n64_split_and_send(AP_CMD.OPTIONS.to_bytes(2, "big"), send, 2, writer)
 
   def n64_send_checked_locations(self, writer=None, locations=None):
     if self.seed_name == None: return
     if not locations: locations = self.checked_locations
     send = bytes()
     for location in locations:
-      send += location.to_bytes(4)
-    self.n64_split_and_send(AP_CMD.LOCATIONS.to_bytes(2), send, 4, writer)
+      send += location.to_bytes(4, "big")
+    self.n64_split_and_send(AP_CMD.LOCATIONS.to_bytes(2, "big"), send, 4, writer)
 
   def n64_send_items(self, writer=None, items=None):
     if self.seed_name == None: return
     if not items: items = self.items_received
     send = bytes()
     for item in items:
-      send += item.item.to_bytes(4)
-    self.n64_split_and_send(AP_CMD.ITEMS.to_bytes(2), send, 4, writer)
+      send += item.item.to_bytes(4, "big")
+    self.n64_split_and_send(AP_CMD.ITEMS.to_bytes(2, "big"), send, 4, writer)
 
   def n64_send(self, send, writer=None):
-    send = len(send).to_bytes(2) + send
+    send = len(send).to_bytes(2, "big") + send
     writers = self.n64_sockets
     if writer: writers = {writer}
     for n64 in writers:
@@ -324,11 +324,11 @@ class N64Socket:
   async def loop(self):
     try:
       while not self.reader.at_eof():
-        size = int.from_bytes(await self.reader.readexactly(2))-2
+        size = int.from_bytes(await self.reader.readexactly(2), "big")-2
         if size < 0 or size > 512:
           logger.error(f"[N64] Invalid packet")
           return
-        cmd = int.from_bytes(await self.reader.readexactly(2))
+        cmd = int.from_bytes(await self.reader.readexactly(2), "big")
         data = b""
         if size:
           data = await self.reader.readexactly(size)
@@ -336,22 +336,22 @@ class N64Socket:
           case AP_STATE.DISCONNECTED:
             match cmd:
               case AP_CMD.HANDSHAKE:
-                v = int.from_bytes(data[:4])
+                v = int.from_bytes(data[:4], "big")
                 if v != version.as_u32():
                   logger.error(f"[N64] ROM Version Mismatch: {hex(version.as_u32())} (client) vs {hex(v)} (ROM)")
                   return
                 if data[4:] != b"HELO":
                   logger.error(f"[N64] Unexpected packet")
                   return
-                send = AP_CMD.HANDSHAKE.to_bytes(2)
-                send += v.to_bytes(4)
+                send = AP_CMD.HANDSHAKE.to_bytes(2, "big")
+                send += v.to_bytes(4, "big")
                 send += b"'LO!"
                 self.ctx.n64_send(send, self.writer)
                 self.state = AP_STATE.CONNECTING
           case AP_STATE.CONNECTING:
             match cmd:
               case AP_CMD.PING:
-                self.ctx.n64_send(AP_CMD.PONG.to_bytes(2), self.writer)
+                self.ctx.n64_send(AP_CMD.PONG.to_bytes(2, "big"), self.writer)
                 self.state = AP_STATE.CONNECTED
                 self.ctx.n64_send_seed(self.writer)
                 self.ctx.n64_send_slot_data(self.writer)
@@ -363,11 +363,11 @@ class N64Socket:
             self.state &= ~AP_STATE.PINGED
             match cmd:
               case AP_CMD.PING:
-                self.ctx.n64_send(AP_CMD.PONG.to_bytes(2), self.writer)
+                self.ctx.n64_send(AP_CMD.PONG.to_bytes(2, "big"), self.writer)
               case AP_CMD.LOCATIONS:
                 locations = set()
                 for idx in range(0, len(data), 4):
-                  location = int.from_bytes(data[idx:idx+4])
+                  location = int.from_bytes(data[idx:idx+4], "big")
                   if location == location_name_to_id["Goal Completed"]:
                     self.ctx.finished_game = True
                     await self.ctx.send_msgs([{"cmd": "StatusUpdate", "status": ClientStatus.CLIENT_GOAL}])
