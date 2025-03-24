@@ -38,3 +38,7 @@ certain items to your own world.
 The following commands are only available when using the Star Fox 64 Client to play with Archipelago.
 
 * `/autostart` - Toggle `autostart`. This feature allows you to automatically start a program (such as Bizhawk) with the patched ROM.
+* `/patch` - Reruns the patcher.
+* `/rom_path` - Sets (or unsets) the file path of the vanilla ROM used for patching.
+* `/patch_path` - Sets (or unsets) the folder path of where to save the patched ROM.
+* `/program_args` - Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk.
