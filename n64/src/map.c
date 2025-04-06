@@ -78,6 +78,10 @@ void map_give_clear_location(sf_planet_id_t planet, u8 mission_status) {
 }
 
 int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
+  if (map.ignore_rewards) {
+    map.ignore_rewards = false;
+    return 0;
+  }
   ap_location_t location;
   switch (flag) {
     case LEVEL_FLAG_CLEAR:
@@ -388,8 +392,7 @@ void map_draw_medals() {
   else medals[2] = 0;
   sf_fn_gfx_draw_medal(39.25, 25.75, 0);
   sf_fn_gfx_setup(&sf_gfx, 0x53);
-  sf_gfx->raw = (sf_gfx_t){.cmd=SF_GFX_SET_PRIMARY_COLOR, ._unused=0, .m=0, .l=0, .r=0xFF, .g=0xFF, .b=0, .a=0xFF}.raw;
-  sf_gfx++;
+  sf_fn_gfx_color(0xFF, 0xFF, 0, 0xFF);
   sf_fn_gfx_draw_text(268, 38, 1, 1, medals);
 }
 

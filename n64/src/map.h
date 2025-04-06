@@ -5,6 +5,7 @@
 typedef struct {
   bool inited;
   bool check;
+  bool ignore_rewards;
 } map_t;
 extern map_t map;
 

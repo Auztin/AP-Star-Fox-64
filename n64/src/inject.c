@@ -2,6 +2,7 @@
 #include "util.h"
 #include "main.h"
 #include "save.h"
+#include "hud.h"
 
 u32 inject_hooks() {
   main_init();
@@ -14,4 +15,10 @@ u32 inject_hooks() {
   util_inject(UTIL_INJECT_RETURN  , 0x80023F50, 1, 1); // convince game eeprom exists
   util_inject(UTIL_INJECT_JUMP    , 0x800234B0, (u32)save_eeprom_read, 1);
   util_inject(UTIL_INJECT_JUMP    , 0x800237B0, (u32)save_eeprom_write, 1);
+
+  util_inject(UTIL_INJECT_FUNCTION, 0x80089304, (u32)hud_pause_draw_selections, 1);
+  util_inject(UTIL_INJECT_JUMP    , 0x8008930C, 0x800895E8, 1);
+  util_inject(UTIL_INJECT_FUNCTION, 0x80088A54, (u32)hud_pause_check_input, 1);
+  util_inject(UTIL_INJECT_JUMP    , 0x80088A5C, 0x8008903C, 0);
+  util_inject(UTIL_INJECT_RAW     , 0x80088A60, 0x3C088016, 0);
 }

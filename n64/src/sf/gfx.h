@@ -19,6 +19,10 @@ typedef union {
 } sf_gfx_t;
 
 #define sf_gfx (*(sf_gfx_t**)0x80137E64)
+#define sf_fn_gfx_color(red, green, blue, alpha) ({                                                                         \
+  sf_gfx->raw = (sf_gfx_t){.cmd=SF_GFX_SET_PRIMARY_COLOR, ._unused=0, .m=0, .l=0, .r=red, .g=green, .b=blue, .a=alpha}.raw; \
+  sf_gfx++;                                                                                                                 \
+})
 
 typedef int (*sf_fnt_gfx_setup)(sf_gfx_t**, u64 id);
 #define sf_fn_gfx_setup ((sf_fnt_gfx_setup)0x800B8DD0)
