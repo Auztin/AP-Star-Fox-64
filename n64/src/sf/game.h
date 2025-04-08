@@ -2,7 +2,7 @@
 
 #include "n64/types.h"
 
-typedef enum TeamId {
+typedef enum {
   TEAM_ID_FOX,
   TEAM_ID_FALCO,
   TEAM_ID_SLIPPY,
@@ -12,8 +12,28 @@ typedef enum TeamId {
   TEAM_ID_MAX,
 } sf_team_id_t;
 
+typedef enum {
+  PLAYER_STATE_STANDBY,
+  PLAYER_STATE_INIT,
+  PLAYER_STATE_LEVEL_INTRO,
+  PLAYER_STATE_ACTIVE,
+  PLAYER_STATE_DOWN,
+  PLAYER_STATE_U_TURN,
+  PLAYER_STATE_NEXT,
+  PLAYER_STATE_LEVEL_COMPLETE,
+  PLAYER_STATE_ENTER_WARP_ZONE,
+  PLAYER_STATE_START_360,
+  PLAYER_STATE_GFOX_REPAIR,
+  PLAYER_STATE_ANDROSS_MOUTH,
+  PLAYER_STATE_UNK_12,
+  PLAYER_STATE_VS_STANDBY,
+  PLAYER_STATE_MAX,
+} sf_player_state_t;
+
 typedef struct {
-  u8 _unknown_0x000_0x21F[0x21F];
+  u8 _unknown_0x000_0x1C7[0x1C7];
+  sf_player_state_t state;
+  u8 _unknown_0x1CC_0x21F[0x053];
   s32 radioDamageTimer;
   u8 _unknown_0x224_0x263[0x03F];
   s32 shields;

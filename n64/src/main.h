@@ -2,11 +2,13 @@
 
 #include "n64/types.h"
 #include "sf/scene.h"
+#include "sf/game.h"
 
 typedef struct {
   bool is_emulator;
   u32 last_c0_count;
   u32 delta; // milliseconds since last frame
+  sf_player_state_t last_player_state;
 } main_t;
 extern main_t main;
 

@@ -59,6 +59,7 @@ class StarFox64WebWorld(WebWorld):
     OptionGroup("Common Options", [
       Options.ProgressionBalancing,
       Options.Accessibility,
+      options.DeathLink,
     ]),
     OptionGroup("Goal Options", [
       options.VictoryCondition,

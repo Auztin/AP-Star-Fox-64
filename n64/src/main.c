@@ -9,7 +9,6 @@
 #include "sf/global.h"
 #include "sf/controller.h"
 #include "sf/map.h"
-#include "sf/game.h"
 
 main_t main = {0, };
 
@@ -42,6 +41,22 @@ void main_loop() {
     ap_output();
   }
   else usb_check();
+  if (sf_cur_state == GSTATE_PLAY && sf_player) {
+    u8* deathlink = &ap.received_items[AP_ITEM_DEATHLINK];
+    if (*deathlink) {
+      if (sf_player->state == PLAYER_STATE_ACTIVE) {
+        sf_player->shields = 0;
+        sf_player->radioDamageTimer = 2;
+      }
+    }
+    if (sf_player->state != main.last_player_state) {
+      if (sf_player->state == PLAYER_STATE_DOWN) {
+        if (*deathlink) (*deathlink)--;
+        else set_bit(ap_save.locations, AP_LOCATION_DEATH_LINK);
+      }
+      main.last_player_state = sf_player->state;
+    }
+  }
 }
 
 void main_goal_completed() {

@@ -1,10 +1,10 @@
 import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile, settings, atexit
 import worlds.LauncherComponents as LauncherComponents
 from CommonClient import CommonContext, ClientCommandProcessor, get_base_parser, server_loop, gui_enabled, logger
-from NetUtils import ClientStatus
+from NetUtils import ClientStatus, NetworkItem
 
 from .version import version
-from .ids import option_name_to_id, location_name_to_id, AP_CMD, AP_STATE
+from .ids import option_name_to_id, location_name_to_id, item_name_to_id, AP_CMD, AP_STATE
 
 game_name = "Star Fox 64"
 vanilla_version = "v1.1"
@@ -178,6 +178,11 @@ class StarFox64CommandProcessor(ClientCommandProcessor):
       logger.info("program_args unset!")
     return True
 
+  def _cmd_deathlink(self):
+    """Toggles Death Link."""
+    asyncio.create_task(self.ctx.update_death_link(not "DeathLink" in self.ctx.tags))
+    return True
+
 class StarFox64Context(CommonContext):
   tags = CommonContext.tags
   game = "Star Fox 64"
@@ -246,6 +251,7 @@ class StarFox64Context(CommonContext):
           await self.check_assert("slot_data" in args, "Missing Slot Data", "Necessary data is missing from this slot...")
           self.slot_data = args["slot_data"]
           await self.check_assert(version.as_u32() == self.slot_data["version"], "Version Mismatch", "The client version does not match the generated version.")
+          await self.update_death_link(self.slot_data["options"]["deathlink"])
           self.n64_send_slot_data()
           self.n64_send_checked_locations()
         case "ReceivedItems":
@@ -257,6 +263,10 @@ class StarFox64Context(CommonContext):
         #       print(f"  item: {args["item"]}") # item.item, item.player
     except AssertionError as e:
       logger.error(e)
+
+  def on_deathlink(self, data):
+    super().on_deathlink(data)
+    self.n64_send_items(None, [NetworkItem(item_name_to_id["Death Link"], 0, 0)])
 
   def n64_send_seed(self, writer=None):
     if self.seed_name == None: return
@@ -371,6 +381,8 @@ class N64Socket:
                   if location == location_name_to_id["Goal Completed"]:
                     self.ctx.finished_game = True
                     await self.ctx.send_msgs([{"cmd": "StatusUpdate", "status": ClientStatus.CLIENT_GOAL}])
+                  elif location == location_name_to_id["Death Link"]:
+                    if "DeathLink" in self.ctx.tags: await self.ctx.send_death()
                   else:
                     locations.add(location)
                 await self.ctx.send_msgs([{"cmd": 'LocationChecks', "locations": tuple(locations)}])

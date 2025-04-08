@@ -3,18 +3,18 @@ GAME_LOWER:=star_fox_64
 GAME_SHORT:=sf64
 
 .PHONY: all
-all: tools .WAIT n64patch pc
+all: n64patch pc
 
 .PHONY: tools
 tools:
 	@$(MAKE) --no-print-directory -C tools
 
 .PHONY: n64
-n64:
+n64: tools
 	@$(MAKE) --no-print-directory -C n64
 
 .PHONY: n64patch
-n64patch:
+n64patch: tools
 	@$(MAKE) --no-print-directory -C n64 patch
 
 .PHONY: pc

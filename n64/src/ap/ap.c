@@ -134,6 +134,8 @@ void ap_output() {
   if (offset) {
     ap.output.cmd = AP_CMD_LOCATIONS;
     ap.output.size = 2+offset*sizeof(*ap.output.locations);
+    change_bit(ap_save.locations, AP_LOCATION_DEATH_LINK, false);
+    change_bit(ap.sent_locations, AP_LOCATION_DEATH_LINK, false);
     return;
   }
 }

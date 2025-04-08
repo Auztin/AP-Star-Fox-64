@@ -1,5 +1,6 @@
 #include "hud.h"
 #include "map.h"
+#include "save.h"
 #include "sf/gfx.h"
 #include "sf/sfx.h"
 #include "sf/map.h"
@@ -62,8 +63,7 @@ void hud_pause_check_input() {
         break;
       case 2:
         sf_pause_action = 10;
-        sf_player->shields = 0;
-        sf_player->radioDamageTimer = 2;
+        ap.received_items[AP_ITEM_DEATHLINK]++;
         break;
       case 3:
         sf_next_state = GSTATE_MAP;

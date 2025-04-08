@@ -3,6 +3,9 @@ name: Player{NUMBER}
 game: Star Fox 64
 Star Fox 64:
 
+  # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+  deathlink: false
+
   # Require a certain number of medals before you can enter Venom 2.
   # The same requirment will apply for Venom 1 if your victory condition is 'andross_or_robot_andross'
   required_medals: 0

@@ -42,3 +42,4 @@ The following commands are only available when using the Star Fox 64 Client to p
 * `/rom_path` - Sets (or unsets) the file path of the vanilla ROM used for patching.
 * `/patch_path` - Sets (or unsets) the folder path of where to save the patched ROM.
 * `/program_args` - Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk.
+* `/deathlink` - Toggles Death Link.

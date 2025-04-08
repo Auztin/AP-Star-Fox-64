@@ -1,4 +1,9 @@
 items = {
+  "Death Link": {
+    "alias": "DeathLink",
+    "type": "DeathLink",
+    "class": "filler",
+  },
   "Medal": {
     "alias": "Medal",
     "type": "Medal",

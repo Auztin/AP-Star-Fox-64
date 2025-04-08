@@ -1,6 +1,11 @@
 from dataclasses import dataclass
 from Options import PerGameCommonOptions, Choice, Range, Toggle, DefaultOnToggle
 
+class DeathLink(Toggle):
+  """
+    When you die, everyone who enabled death link dies. Of course, the reverse is true too.
+  """
+
 class VictoryCondition(Choice):
   """
     Choose your victory condition.
@@ -42,6 +47,7 @@ class AccomplishedSendsComplete(Toggle):
 
 @dataclass
 class StarFox64OptionsList:
+  deathlink: DeathLink
   victory_condition: VictoryCondition
   required_medals: RequiredMedals
   shuffle_medals: ShuffleMedals
