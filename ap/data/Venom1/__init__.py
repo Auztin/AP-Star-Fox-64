@@ -2,7 +2,7 @@ regions = {
   "Venom 1": {
     "locations": {
       "Venom - Defeat Robot Andross": {
-        "item": "DefeatedRobotAndross",
+        "item": "Defeated Robot Andross",
         "logic": "true",
       },
     },

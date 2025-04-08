@@ -1,4 +1,4 @@
-import ast
+import ast, re
 
 from Options import Choice
 
@@ -16,6 +16,9 @@ class StarFox64Rules(ast.NodeTransformer):
       if isinstance(option, Choice):
         value = option.current_key
       self.options[option_class.__name__] = value
+    self.items = {}
+    for item_name, item_id in items.name_to_id.items():
+      self.items[re.sub("[^a-zA-Z0-9]+", "", item_name)] = item_name
 
   def parse(self, logic, file):
     self.file = file
@@ -39,7 +42,7 @@ class StarFox64Rules(ast.NodeTransformer):
     )
 
   def get_item(self, alias):
-    return ast.Constant(value=items.alias_to_name[alias])
+    return ast.Constant(value=self.items[alias])
 
   def visit_Compare(self, node):
     self.generic_visit(node)
@@ -54,7 +57,7 @@ class StarFox64Rules(ast.NodeTransformer):
     match node.id:
       case "true": return ast.Constant(value=True)
       case "false": return ast.Constant(value=False)
-    if node.id in items.alias_to_name: return self.make_call("has", [self.get_item(node.id)])
+    if node.id in self.items: return self.make_call("has", [self.get_item(node.id)])
     if node.id in self.options: return ast.Constant(value=self.options[node.id])
     raise NameError(f"{self.file}: name '{node.id}' is not defined")
 
@@ -63,7 +66,7 @@ class StarFox64Rules(ast.NodeTransformer):
     item, count = node.elts
     count = self.visit(count)
     assert isinstance(item, ast.Name), f"{self.file}: The first element of a Tuple must be an ast.Name."
-    assert item.id in items.alias_to_name, f"{self.file}: The first element of a Tuple must be a collectable."
+    assert item.id in self.items, f"{self.file}: The first element of a Tuple must be a collectable."
     if isinstance(count, ast.Constant) and count.value == 0: return ast.Constant(value=True)
     return self.make_call("has", [self.get_item(item.id), count])
 

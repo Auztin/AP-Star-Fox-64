@@ -2,7 +2,7 @@ regions = {
   "Area 6": {
     "locations": {
       "Area 6 - Mission Complete": {
-        "item": "Area6RedPath",
+        "item": "Area 6 - Red Path",
         "logic": "true",
       },
       "Area 6 - Medal": {

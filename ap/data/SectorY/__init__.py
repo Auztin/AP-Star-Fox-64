@@ -2,11 +2,11 @@ regions = {
   "Sector Y": {
     "locations": {
       "Sector Y - Mission Complete": {
-        "item": "SectorYYellowPath",
+        "item": "Sector Y - Yellow Path",
         "logic": "true",
       },
       "Sector Y - Mission Accomplished": {
-        "item": "SectorYRedPath",
+        "item": "Sector Y - Red Path",
         "logic": "true",
       },
       "Sector Y - Medal": {

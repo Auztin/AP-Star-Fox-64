@@ -101,8 +101,8 @@ class StarFox64World(World):
 
   def create_victory_condition(self):
     condition = lambda state: False
-    andross = items.alias_to_name["DefeatedAndross"]
-    robot_andross = items.alias_to_name["DefeatedRobotAndross"]
+    andross = "Defeated Andross"
+    robot_andross = "Defeated Robot Andross"
     match self.options.victory_condition:
       case "andross_or_robot_andross":
         condition = lambda state: state.has_any([andross, robot_andross], self.player)
@@ -122,7 +122,7 @@ class StarFox64World(World):
           case "locations":
             for location_name, location in value.items():
               ap_location = StarFox64Location(self.player, location_name, None, ap_region)
-              item = self.create_item(items.alias_to_name[location["item"]])
+              item = self.create_item(location["item"])
               if item.code:
                 ap_location.address = self.location_name_to_id[location_name]
                 self.multiworld.itempool.append(item)

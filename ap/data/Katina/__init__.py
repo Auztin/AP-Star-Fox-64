@@ -2,11 +2,11 @@ regions = {
   "Katina": {
     "locations": {
       "Katina - Mission Complete": {
-        "item": "KatinaBluePath",
+        "item": "Katina - Blue Path",
         "logic": "true",
       },
       "Katina - Mission Accomplished": {
-        "item": "KatinaYellowPath",
+        "item": "Katina - Yellow Path",
         "logic": "true",
       },
       "Katina - Medal": {

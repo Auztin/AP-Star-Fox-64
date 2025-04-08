@@ -2,7 +2,7 @@ regions = {
   "Aquas": {
     "locations": {
       "Aquas - Mission Complete": {
-        "item": "AquasRedPath",
+        "item": "Aquas - Red Path",
         "logic": "true",
       },
       "Aquas - Medal": {

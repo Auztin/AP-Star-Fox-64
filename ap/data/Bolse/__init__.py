@@ -2,7 +2,7 @@ regions = {
   "Bolse": {
     "locations": {
       "Bolse - Mission Complete": {
-        "item": "BolseBluePath",
+        "item": "Bolse - Blue Path",
         "logic": "true",
       },
       "Bolse - Medal": {

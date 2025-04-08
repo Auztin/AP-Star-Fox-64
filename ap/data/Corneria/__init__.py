@@ -2,11 +2,11 @@ regions = {
   "Corneria": {
     "locations": {
       "Corneria - Mission Complete": {
-        "item": "CorneriaBluePath",
+        "item": "Corneria - Blue Path",
         "logic": "true",
       },
       "Corneria - Mission Accomplished": {
-        "item": "CorneriaRedPath",
+        "item": "Corneria - Red Path",
         "logic": "true",
       },
       "Corneria - Medal": {

@@ -10,6 +10,7 @@ option_name_to_id = {
 }
 
 item_name_to_id = {
+  "None": -1,
   "Death Link": 1,
   "Medal": 2,
   "Aquas - Red Path": 3,
@@ -38,37 +39,6 @@ item_name_to_id = {
   "Zoness - Red Path": 26,
   "Defeated Robot Andross": 27,
   "Defeated Andross": 28
-}
-
-item_alias_to_name = {
-  "DeathLink": "Death Link",
-  "Medal": "Medal",
-  "AquasRedPath": "Aquas - Red Path",
-  "Area6RedPath": "Area 6 - Red Path",
-  "BolseBluePath": "Bolse - Blue Path",
-  "CorneriaBluePath": "Corneria - Blue Path",
-  "CorneriaRedPath": "Corneria - Red Path",
-  "FortunaBluePath": "Fortuna - Blue Path",
-  "FortunaYellowPath": "Fortuna - Yellow Path",
-  "KatinaBluePath": "Katina - Blue Path",
-  "KatinaYellowPath": "Katina - Yellow Path",
-  "MacbethBluePath": "Macbeth - Blue Path",
-  "MacbethRedPath": "Macbeth - Red Path",
-  "MeteoBluePath": "Meteo - Blue Path",
-  "MeteoWarpPath": "Meteo - Warp Path",
-  "SectorXBluePath": "Sector X - Blue Path",
-  "SectorXYellowPath": "Sector X - Yellow Path",
-  "SectorXWarpPath": "Sector X - Warp Path",
-  "SectorYYellowPath": "Sector Y - Yellow Path",
-  "SectorYRedPath": "Sector Y - Red Path",
-  "SectorZBluePath": "Sector Z - Blue Path",
-  "SectorZRedPath": "Sector Z - Red Path",
-  "SolarYellowPath": "Solar - Yellow Path",
-  "TitaniaBluePath": "Titania - Blue Path",
-  "ZonessYellowPath": "Zoness - Yellow Path",
-  "ZonessRedPath": "Zoness - Red Path",
-  "DefeatedRobotAndross": "Defeated Robot Andross",
-  "DefeatedAndross": "Defeated Andross"
 }
 
 location_name_to_id = {

@@ -2,7 +2,7 @@ regions = {
   "Titania": {
     "locations": {
       "Titania - Mission Complete": {
-        "item": "TitaniaBluePath",
+        "item": "Titania - Blue Path",
         "logic": "true",
       },
       "Titania - Medal": {

@@ -2,15 +2,15 @@ regions = {
   "Sector X": {
     "locations": {
       "Sector X - Mission Complete": {
-        "item": "SectorXBluePath",
+        "item": "Sector X - Blue Path",
         "logic": "true",
       },
       "Sector X - Mission Accomplished": {
-        "item": "SectorXYellowPath",
+        "item": "Sector X - Yellow Path",
         "logic": "true",
       },
       "Sector X - Warp": {
-        "item": "SectorXWarpPath",
+        "item": "Sector X - Warp Path",
         "logic": "true",
       },
       "Sector X - Medal": {

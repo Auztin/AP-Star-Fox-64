@@ -2,11 +2,11 @@ regions = {
   "Meteo": {
     "locations": {
       "Meteo - Mission Complete": {
-        "item": "MeteoBluePath",
+        "item": "Meteo - Blue Path",
         "logic": "true",
       },
       "Meteo - Warp": {
-        "item": "MeteoWarpPath",
+        "item": "Meteo - Warp Path",
         "logic": "true",
       },
       "Meteo - Medal": {

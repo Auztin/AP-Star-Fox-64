@@ -6,9 +6,7 @@ import data
 
 options = {}
 option_choices = {}
-item_name_to_id = {}
-item_alias_to_name = {}
-item_alias_to_id = {"None":-1}
+item_name_to_id = {"None":-1}
 location_name_to_id = {"None":-1, "Goal Completed":0, "Death Link":1}
 
 for idx, (name, cls) in enumerate(typing.get_type_hints(StarFox64OptionsList).items()):
@@ -23,8 +21,6 @@ last_id = 0
 for item_name, item in data.items.items():
   last_id += 1
   item_name_to_id[item_name] = last_id
-  item_alias_to_name[item["alias"]] = item_name
-  item_alias_to_id[item["alias"]] = last_id
 
 last_id = 1
 for region_name, region in data.regions.items():
@@ -58,7 +54,6 @@ with open("../ap/ids.py", "w") as f:
   f.write("# Automatically generated using enum_gen.py\n\n")
   f.write(f"option_name_to_id = {json.dumps(options, indent=2)}\n\n")
   f.write(f"item_name_to_id = {json.dumps(item_name_to_id, indent=2)}\n\n")
-  f.write(f"item_alias_to_name = {json.dumps(item_alias_to_name, indent=2)}\n\n")
   f.write(f"location_name_to_id = {json.dumps(location_name_to_id, indent=2)}\n\n")
   f.write(f"class AP_CMD:\n")
   for cmd, value in commands.items():
@@ -115,7 +110,7 @@ with open("../n64/src/ap/options.h", "w") as f:
 with open("../n64/src/ap/items.h", "w") as f:
   c_header(f)
   f.write("typedef enum {\n")
-  for key, value in names_to_c(item_alias_to_id):
+  for key, value in names_to_c(item_name_to_id):
     f.write(f"  AP_ITEM_{key} = {value},\n")
   f.write("} ap_item_t;\n")
 

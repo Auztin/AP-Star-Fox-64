@@ -2,11 +2,11 @@ regions = {
   "Fortuna": {
     "locations": {
       "Fortuna - Mission Complete": {
-        "item": "FortunaBluePath",
+        "item": "Fortuna - Blue Path",
         "logic": "true",
       },
       "Fortuna - Mission Accomplished": {
-        "item": "FortunaYellowPath",
+        "item": "Fortuna - Yellow Path",
         "logic": "true",
       },
       "Fortuna - Medal": {

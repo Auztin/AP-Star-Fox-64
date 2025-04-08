@@ -2,7 +2,7 @@ regions = {
   "Solar": {
     "locations": {
       "Solar - Mission Complete": {
-        "item": "SolarYellowPath",
+        "item": "Solar - Yellow Path",
         "logic": "true",
       },
       "Solar - Medal": {

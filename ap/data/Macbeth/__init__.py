@@ -2,11 +2,11 @@ regions = {
   "Macbeth": {
     "locations": {
       "Macbeth - Mission Complete": {
-        "item": "MacbethBluePath",
+        "item": "Macbeth - Blue Path",
         "logic": "true",
       },
       "Macbeth - Mission Accomplished": {
-        "item": "MacbethRedPath",
+        "item": "Macbeth - Red Path",
         "logic": "true",
       },
       "Macbeth - Medal": {

@@ -2,11 +2,11 @@ regions = {
   "Sector Z": {
     "locations": {
       "Sector Z - Mission Complete": {
-        "item": "SectorZBluePath",
+        "item": "Sector Z - Blue Path",
         "logic": "true",
       },
       "Sector Z - Mission Accomplished": {
-        "item": "SectorZRedPath",
+        "item": "Sector Z - Red Path",
         "logic": "true",
       },
       "Sector Z - Medal": {

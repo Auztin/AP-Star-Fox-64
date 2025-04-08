@@ -42,7 +42,7 @@ void main_loop() {
   }
   else usb_check();
   if (sf_cur_state == GSTATE_PLAY && sf_player) {
-    u8* deathlink = &ap.received_items[AP_ITEM_DEATHLINK];
+    u8* deathlink = &ap.received_items[AP_ITEM_DEATH_LINK];
     if (*deathlink) {
       if (sf_player->state == PLAYER_STATE_ACTIVE) {
         sf_player->shields = 0;

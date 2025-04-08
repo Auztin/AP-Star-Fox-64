@@ -1,6 +1,6 @@
 from BaseClasses import Item, ItemClassification
 from . import data
-from .ids import item_name_to_id, item_alias_to_name as alias_to_name
+from .ids import item_name_to_id
 
 name_to_id = {}
 

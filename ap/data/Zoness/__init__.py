@@ -2,11 +2,11 @@ regions = {
   "Zoness": {
     "locations": {
       "Zoness - Mission Complete": {
-        "item": "ZonessYellowPath",
+        "item": "Zoness - Yellow Path",
         "logic": "true",
       },
       "Zoness - Mission Accomplished": {
-        "item": "ZonessRedPath",
+        "item": "Zoness - Red Path",
         "logic": "true",
       },
       "Zoness - Medal": {
