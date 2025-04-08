@@ -1,6 +1,7 @@
 #include "hud.h"
 #include "map.h"
 #include "save.h"
+#include "ap/ap.h"
 #include "sf/gfx.h"
 #include "sf/sfx.h"
 #include "sf/map.h"
