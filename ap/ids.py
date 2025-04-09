@@ -6,7 +6,8 @@ option_name_to_id = {
   "required_medals": 2,
   "shuffle_medals": 3,
   "shuffle_paths": 4,
-  "accomplished_sends_complete": 5
+  "accomplished_sends_complete": 5,
+  "radio_rando": 6
 }
 
 item_name_to_id = {

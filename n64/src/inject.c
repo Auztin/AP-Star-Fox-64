@@ -3,6 +3,7 @@
 #include "main.h"
 #include "save.h"
 #include "hud.h"
+#include "radio.h"
 
 u32 inject_hooks() {
   main_init();
@@ -21,4 +22,6 @@ u32 inject_hooks() {
   util_inject(UTIL_INJECT_FUNCTION, 0x80088A54, (u32)hud_pause_check_input, 1);
   util_inject(UTIL_INJECT_JUMP    , 0x80088A5C, 0x8008903C, 0);
   util_inject(UTIL_INJECT_RAW     , 0x80088A60, 0x3C088016, 0);
+
+  util_inject(UTIL_INJECT_JUMP    , 0x800BA808, (u32)radio_play, 1);
 }

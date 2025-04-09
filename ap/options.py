@@ -45,6 +45,11 @@ class AccomplishedSendsComplete(Toggle):
   """
   display_name = "Shuffle Paths"
 
+class RadioRando(Toggle):
+  """
+    Randomize the radio dialog.
+  """
+
 @dataclass
 class StarFox64OptionsList:
   deathlink: DeathLink
@@ -53,6 +58,7 @@ class StarFox64OptionsList:
   shuffle_medals: ShuffleMedals
   shuffle_paths: ShufflePaths
   accomplished_sends_complete: AccomplishedSendsComplete
+  radio_rando: RadioRando
 
 @dataclass
 class StarFox64Options(StarFox64OptionsList, PerGameCommonOptions):

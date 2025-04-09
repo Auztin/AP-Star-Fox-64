@@ -1,11 +1,31 @@
 #include <string.h>
 #include "save.h"
 #include "util.h"
+#include "radio.h"
 #include "n64/dma.h"
 #include "ap/version.h"
 #include "sf/save.h"
 
 save_t save = {0,};
+
+void save_init_random() {
+  u32 ap_seed[5];
+  memcpy(ap_seed, ap_save.seed, 20);
+  typedef union {
+    u8 bytes[4];
+    u32 i;
+  } seed_t;
+  seed_t seed;
+  for (int i = 0; i < 4; i++) {
+    csrand(ap_seed[i]);
+    seed.bytes[i] = crand()%256;
+  }
+  csrand(ap_seed[4]);
+  int iters = crand()%256;
+  csrand(seed.i);
+  for (; iters; iters--) crand();
+  radio_randomize();
+}
 
 void save_init() {
   const u32 size = sizeof(save.data);
@@ -19,6 +39,7 @@ void save_init() {
     save_sram_write();
   }
   save.slot = save.data.recents[0];
+  save_init_random();
 }
 
 void save_sram_write() {
@@ -93,4 +114,5 @@ void save_load_slot(char* seed) {
     if (save.slot == slot) break;
   }
   save_sync_medals();
+  save_init_random();
 }

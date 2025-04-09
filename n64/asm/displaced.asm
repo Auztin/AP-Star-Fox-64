@@ -38,3 +38,10 @@ SW A3, 0x0010 (SP)
 LW RA, 0x0000 (SP)
 JR RA
 ADDIU SP, SP, 0x18
+
+.align 0x08
+sf_fn_play_radio_message:
+ADDIU SP, SP, -0x28
+SW RA, 0x0014 (SP)
+JAL 0x800BA810
+NOP

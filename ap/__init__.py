@@ -72,6 +72,9 @@ class StarFox64WebWorld(WebWorld):
     OptionGroup("Speedup Options", [
       options.AccomplishedSendsComplete,
     ]),
+    OptionGroup("Vanity Options", [
+      options.RadioRando,
+    ]),
   ]
 
 class StarFox64World(World):

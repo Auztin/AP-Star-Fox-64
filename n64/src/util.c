@@ -58,3 +58,17 @@ bool set_bit(u8* data, u32 id) {
 bool unset_bit(u8* data, u32 id) {
   return change_bit(data, id, 0);
 }
+
+u32 util_rand_state = 1;
+
+void csrand(u32 seed) {
+  util_rand_state = seed ? seed : 1;
+}
+
+u32 crand() {
+  u32 x = util_rand_state;
+  x ^= x << 13;
+  x ^= x >> 7;
+  x ^= x << 5;
+  return util_rand_state = x;
+}

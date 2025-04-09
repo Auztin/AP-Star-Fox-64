@@ -39,6 +39,49 @@ typedef struct {
   s32 shields;
 } sf_player_t;
 
+typedef enum {
+  RCID_FOX = 0,
+  RCID_STATIC = 2,
+  RCID_FOX_RED = 5,
+  RCID_FALCO = 10,
+  RCID_FALCO_RED = 15,
+  RCID_SLIPPY = 20,
+  RCID_SLIPPY_RED = 25,
+  RCID_PEPPY = 30,
+  RCID_PEPPY_RED = 35,
+  RCID_KATT = 40,
+  RCID_ANDROSS = 50,
+  RCID_ANDROSS_RED = 55,
+  RCID_JAMES = 60,
+  RCID_GEN_PEPPER = 70,
+  RCID_BOSS_CORNERIA = 80,
+  RCID_ROB64 = 90,
+  RCID_ROB64_RED = 95,
+  RCID_BOSS_METEO = 100,
+  RCID_BOSS_CORNERIA2 = 110,
+  RCID_BOSS_AREA6 = 120,
+  RCID_BOSS_ZONESS = 130,
+  RCID_ROB64_2 = 140,
+  RCID_BOSS_SECTORX = 150,
+  RCID_BOSS_SECTORY = 160,
+  RCID_BILL = 170,
+  RCID_CAIMAN_AREA6 = 180,
+  RCID_BOSS_MACBETH = 190,
+  RCID_WOLF = 200,
+  RCID_PIGMA = 210,
+  RCID_LEON = 220,
+  RCID_ANDREW = 230,
+  RCID_WOLF_2 = 240,
+  RCID_PIGMA_2 = 250,
+  RCID_LEON_2 = 260,
+  RCID_ANDREW_2 = 270,
+  RCID_ROB64_TITLE = 300,
+  RCID_GEN_PEPPER_TITLE = 310,
+  RCID_TR = 350,
+  RCID_FOX_EXPERT = 400,
+  RCID_1000 = 1000,
+} sf_radio_character_t;
+
 #define sf_team_shields ((s32*)0x801778B0)
 #define sf_saved_team_shields ((s32*)0x801778D0)
 #define sf_total_hits (*(s32*)0x80161714)
@@ -51,5 +94,7 @@ typedef struct {
 typedef int (*sf_fnt_game_update)();
 #define sf_fn_game_update ((sf_fnt_game_update)0x800A26C0)
 
-typedef s32 (*sf_fnt_pause_check_joystick)();
+typedef int (*sf_fnt_pause_check_joystick)();
 #define sf_fn_pause_check_joystick ((sf_fnt_pause_check_joystick)0x800886B8)
+
+extern void sf_fn_play_radio_message(u16* msg, sf_radio_character_t);

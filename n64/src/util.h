@@ -16,3 +16,5 @@ bool get_bit(u8* data, u32 id);
 bool change_bit(u8* data, u32 id, bool value);
 bool set_bit(u8* data, u32 id);
 bool unset_bit(u8* data, u32 id);
+void csrand(u32 seed);
+u32 crand();

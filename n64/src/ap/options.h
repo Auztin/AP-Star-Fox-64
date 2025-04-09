@@ -9,7 +9,8 @@ typedef enum {
   AP_OPTION_SHUFFLE_MEDALS = 3,
   AP_OPTION_SHUFFLE_PATHS = 4,
   AP_OPTION_ACCOMPLISHED_SENDS_COMPLETE = 5,
-  AP_OPTION_MAX = 6,
+  AP_OPTION_RADIO_RANDO = 6,
+  AP_OPTION_MAX = 7,
 } ap_option_t;
 
 typedef enum {
