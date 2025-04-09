@@ -27,3 +27,6 @@ Star Fox 64:
 
   # Getting 'Mission Accomplished' on any level will also count as getting 'Mission Complete' for that level.
   accomplished_sends_complete: false
+
+  # Randomize the radio dialog.
+  radio_rando: true
