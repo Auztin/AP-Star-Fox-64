@@ -71,6 +71,7 @@ bool main_load_scene_data(sf_scenes_t scene, u8 _unk) {
       case SCENE_TITLE:
       case SCENE_MENU:
       case SCENE_MAP:
+      case SCENE_GAME_OVER:
         map_load_scene_data();
         break;
     }
