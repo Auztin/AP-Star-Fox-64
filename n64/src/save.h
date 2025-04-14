@@ -10,16 +10,20 @@
 #define SAVE_SLOTS 3
 
 typedef struct {
+  u16 team;
+  u16 slot;
+  char seed[20];
+  u8 options[AP_OPTION_MAX];
+  u8 locations[AP_LOCATION_MAX_BYTES/8];
+  u8 items[AP_ITEM_MAX];
+} save_custom_data_t;
+
+typedef struct {
   u32 magic_start;
   u32 version;
   u32 eeprom[128];
   u8 recents[SAVE_SLOTS];
-  struct {
-    char seed[20];
-    u8 options[AP_OPTION_MAX];
-    u8 locations[AP_LOCATION_MAX_BYTES/8];
-    u8 items[AP_ITEM_MAX];
-  } custom[SAVE_SLOTS];
+  save_custom_data_t custom[SAVE_SLOTS];
   u32 magic_end;
 } save_data_t;
 
@@ -35,5 +39,5 @@ void save_init();
 void save_sram_write();
 u32 save_eeprom_read(u32 _unused, u32 offset, u32 *ramAddr);
 u32 save_eeprom_write(u32 _unused, u32 offset, u32 *ramAddr);
-void save_load_slot(char* seed);
+void save_load_slot(u16 ap_team, u16 ap_slot, char* ap_seed);
 void save_sync_medals();

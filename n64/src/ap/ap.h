@@ -24,6 +24,11 @@ typedef struct {
       u32 version;
       char msg[4];
     } handshake;
+    struct {
+      u16 team;
+      u16 slot;
+      char data[20];
+    } seed;
     ap_packet_option_t options[PACKET_SIZE/sizeof(ap_packet_option_t)];
     u32 locations[PACKET_SIZE/4];
     u32 items[PACKET_SIZE/4];

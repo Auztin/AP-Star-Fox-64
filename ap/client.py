@@ -244,7 +244,6 @@ class StarFox64Context(CommonContext):
       match cmd:
         case "RoomInfo":
           self.seed_name = args["seed_name"]
-          self.n64_send_seed()
         case "RoomUpdate":
           self.n64_send_checked_locations(locations=set(args["checked_locations"]))
         case "Connected":
@@ -252,6 +251,7 @@ class StarFox64Context(CommonContext):
           self.slot_data = args["slot_data"]
           await self.check_assert(version.as_u32() == self.slot_data["version"], "Version Mismatch", "The client version does not match the generated version.")
           await self.update_death_link(self.slot_data["options"]["deathlink"])
+          self.n64_send_seed()
           self.n64_send_slot_data()
           self.n64_send_checked_locations()
         case "ReceivedItems":
@@ -271,6 +271,8 @@ class StarFox64Context(CommonContext):
   def n64_send_seed(self, writer=None):
     if self.seed_name == None: return
     send = AP_CMD.SEED.to_bytes(2, "big")
+    send += self.team.to_bytes(2, "big")
+    send += self.slot.to_bytes(2, "big")
     send += self.seed_name.encode()
     self.n64_send(send, writer)
 

@@ -21,7 +21,10 @@ void save_init_random() {
     seed.bytes[i] = crand()%256;
   }
   csrand(ap_seed[4]);
-  int iters = crand()%256;
+  for (int i = 0; i < ap_save.team; i++) crand();
+  int iters = crand()%129;
+  for (int i = 0; i < ap_save.slot; i++) crand();
+  iters += crand()%128;
   csrand(seed.i);
   for (; iters; iters--) crand();
   radio_randomize();
@@ -91,18 +94,22 @@ void save_sync_medals() {
   }
 }
 
-void save_load_slot(char* seed) {
+void save_load_slot(u16 ap_team, u16 ap_slot, char* ap_seed) {
   int slot = -1;
+  save_custom_data_t* data;
   for (int i = 0; i < SAVE_SLOTS; i++) {
-    if (!memcmp(save.data.custom[i].seed, seed, sizeof(save.data.custom[i].seed))) {
+    data = &save.data.custom[i];
+    if (!memcmp(data->seed, ap_seed, sizeof(data->seed)) && data->team == ap_team && data->slot == ap_slot) {
       slot = i;
       break;
     }
   }
   if (slot == -1) {
     slot = save.data.recents[SAVE_SLOTS-1];
-    memset(&save.data.custom[slot], 0, sizeof(*save.data.custom));
-    memcpy(save.data.custom[slot].seed, seed, sizeof(save.data.custom[slot].seed));
+    memset(data, 0, sizeof(save_custom_data_t));
+    memcpy(data->seed, ap_seed, sizeof(data->seed));
+    data->team = ap_team;
+    data->slot = ap_slot;
     save.dirty = true;
   }
   save.slot = slot;

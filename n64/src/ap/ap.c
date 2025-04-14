@@ -77,7 +77,7 @@ void ap_input() {
           ap.ping_timer = 0;
           break;
         case AP_CMD_SEED:
-          save_load_slot(ap.input.data);
+          save_load_slot(ap.input.seed.team, ap.input.seed.slot, ap.input.seed.data);
           memset(&ap.sent_locations, 0, sizeof(ap.sent_locations));
           memset(&ap.received_items, 0, sizeof(ap.received_items));
           break;
