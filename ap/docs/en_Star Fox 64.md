@@ -43,3 +43,23 @@ The following commands are only available when using the Star Fox 64 Client to p
 * `/patch_path` - Sets (or unsets) the folder path of where to save the patched ROM.
 * `/program_args` - Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk.
 * `/deathlink` - Toggles Death Link.
+
+## Vanilla Medal Requirements
+
+| Mission  | Hit Score |
+|----------|-----------|
+| Corneria |       150 |
+| Meteo    |       200 |
+| Sector Y |       150 |
+| Katina   |       150 |
+| Fortuna  |        50 |
+| Aquas    |       150 |
+| Solar    |       100 |
+| Sector X |       150 |
+| Zoness   |       250 |
+| Titania  |       150 |
+| Sector Z |       100 |
+| Macbeth  |       150 |
+| Area 6   |       300 |
+| Bolse    |       150 |
+| Venom    |       200 |
