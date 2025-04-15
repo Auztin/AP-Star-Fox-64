@@ -1,13 +1,20 @@
 #pragma once
 
-// #include "util.h"
 #include "n64/types.h"
 #include "ap/options.h"
 #include "ap/locations.h"
 #include "ap/items.h"
+#include "sf/map.h"
 
 #define SAVE_MAGIC 0x005F6400
 #define SAVE_SLOTS 3
+
+typedef struct {
+  u8 peppy : 1;
+  u8 slippy : 1;
+  u8 falco : 1;
+  u16 score;
+} save_custom_data_planet_t;
 
 typedef struct {
   u16 team;
@@ -16,6 +23,26 @@ typedef struct {
   u8 options[AP_OPTION_MAX];
   u8 locations[AP_LOCATION_MAX_BYTES/8];
   u8 items[AP_ITEM_MAX];
+  save_custom_data_planet_t planets[PLANET_MAX];
+  union {
+    struct {
+      u16 falco;
+      u16 slippy;
+      u16 peppy;
+    };
+    s16 team[3];
+  } shields;
+  struct {
+    u8 wolf : 1;
+    u8 leon : 1;
+    u8 pigma : 1;
+    u8 andrew : 1;
+  } star_wolf_alive;
+  u8 bombs : 4;
+  u8 lasers : 2;
+  u8 gold_rings : 2;
+  u8 great_fox_intact : 1;
+  s8 lives;
 } save_custom_data_t;
 
 typedef struct {

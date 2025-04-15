@@ -110,6 +110,13 @@ void save_load_slot(u16 ap_team, u16 ap_slot, char* ap_seed) {
     memcpy(data->seed, ap_seed, sizeof(data->seed));
     data->team = ap_team;
     data->slot = ap_slot;
+    for (int i = 0; i < countof(data->shields.team); i++) data->shields.team[i] = 0xFF;
+    data->star_wolf_alive.wolf = 1;
+    data->star_wolf_alive.leon = 1;
+    data->star_wolf_alive.pigma = 1;
+    data->star_wolf_alive.andrew = 1;
+    data->lives = -1;
+    data->great_fox_intact = 1;
     save.dirty = true;
   }
   save.slot = slot;

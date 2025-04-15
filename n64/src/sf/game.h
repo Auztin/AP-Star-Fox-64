@@ -13,6 +13,13 @@ typedef enum {
 } sf_team_id_t;
 
 typedef enum {
+  TEAM_ID_WOLF,
+  TEAM_ID_LEON,
+  TEAM_ID_PIGMA,
+  TEAM_ID_ANDREW,
+} sf_star_wolf_team_id_t;
+
+typedef enum {
   PLAYER_STATE_STANDBY,
   PLAYER_STATE_INIT,
   PLAYER_STATE_LEVEL_INTRO,
@@ -82,14 +89,42 @@ typedef enum {
   RCID_1000 = 1000,
 } sf_radio_character_t;
 
+typedef enum {
+  LASERS_SINGLE,
+  LASERS_TWIN,
+  LASERS_HYPER,
+} sf_laser_strength_t;
+
+typedef struct {
+  u8 padding;
+  u8 peppy;
+  u8 slippy;
+  u8 falco;
+} sf_mission_team_t;
+
 #define sf_team_shields ((s32*)0x801778B0)
 #define sf_saved_team_shields ((s32*)0x801778D0)
+#define sf_prev_planet_team_shields ((s32*)0x80177C38)
+#define sf_prev_planet_saved_team_shields ((s32*)0x801778F0)
+#define sf_star_wolf_alive ((s32*)0x80177CD0)
+#define sf_saved_star_wolf_alive ((s32*)0x80177CF0)
+#define sf_hits (*(s32*)0x80161A98)
 #define sf_total_hits (*(s32*)0x80161714)
 #define sf_mission_hits ((s32*)0x80177B70)
+#define sf_mission_medals ((s32*)0x80177BB0)
+#define sf_mission_team ((sf_mission_team_t*)0x80177B50)
+#define sf_mission_clear ((u8*)0x800D3180)
 #define sf_player (*(sf_player_t**)0x80178280)
 #define sf_pause_action (*(s32*)0x80161810)
 #define sf_pause_selection (*(s32*)0x80161814)
 #define sf_pause_timer (*(s32*)0x80161838)
+#define sf_reset_flags (*(s32*)0x80177824)
+#define sf_lives (*(s16*)0x80161AA0)
+#define sf_laser_strength (*(sf_laser_strength_t*)0x80161AA8)
+#define sf_gold_rings (*(u8*)0x80161A90)
+#define sf_saved_gold_rings (*(u8*)0x80161A94)
+#define sf_bombs (*(s32*)0x80177DA0)
+#define sf_great_fox_intact (*(u8*)0x80177B8C)
 
 typedef int (*sf_fnt_game_update)();
 #define sf_fn_game_update ((sf_fnt_game_update)0x800A26C0)

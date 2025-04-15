@@ -8,6 +8,7 @@
 #include "sf/game.h"
 #include "sf/controller.h"
 #include <stdlib.h>
+#include <string.h>
 
 map_t map = {0, };
 
@@ -78,6 +79,24 @@ void map_give_clear_location(sf_planet_id_t planet, u8 mission_status) {
 }
 
 int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
+  if (flag == LEVEL_FLAG_CLEAR) {
+    save_custom_data_planet_t* save_planet = &ap_save.planets[sf_map_current_planet];
+    if (sf_team_shields[TEAM_ID_PEPPY] > 0) save_planet->peppy = 1;
+    if (sf_team_shields[TEAM_ID_SLIPPY] > 0) save_planet->slippy = 1;
+    if (sf_team_shields[TEAM_ID_FALCO] > 0) save_planet->falco = 1;
+    if (sf_hits > save_planet->score) save_planet->score = sf_hits;
+    for (int i = TEAM_ID_FALCO; i <= TEAM_ID_PEPPY; i++) {
+      ap_save.shields.team[i-1] =
+      sf_saved_team_shields[i] =
+      sf_prev_planet_team_shields[i] =
+      sf_prev_planet_saved_team_shields[i] = sf_team_shields[i];
+    }
+    ap_save.lasers = sf_laser_strength;
+    ap_save.gold_rings = sf_gold_rings;
+    ap_save.lives = sf_lives;
+    ap_save.bombs = sf_bombs;
+    ap_save.great_fox_intact = sf_great_fox_intact;
+  }
   if (map.ignore_rewards) {
     map.ignore_rewards = false;
     return 0;
@@ -85,6 +104,12 @@ int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
   ap_location_t location;
   switch (flag) {
     case LEVEL_FLAG_CLEAR:
+      if (sf_map_current_planet == PLANET_FORTUNA) {
+        ap_save.star_wolf_alive.wolf = sf_star_wolf_alive[TEAM_ID_WOLF];
+        ap_save.star_wolf_alive.leon = sf_star_wolf_alive[TEAM_ID_LEON];
+        ap_save.star_wolf_alive.pigma = sf_star_wolf_alive[TEAM_ID_PIGMA];
+        ap_save.star_wolf_alive.andrew = sf_star_wolf_alive[TEAM_ID_ANDREW];
+      }
       map_give_clear_location(sf_map_current_planet, sf_map_mission_status);
       if (ap_save.options[AP_OPTION_ACCOMPLISHED_SENDS_COMPLETE] && sf_map_mission_status == MISSION_ACCOMPLISHED) {
         map_give_clear_location(sf_map_current_planet, MISSION_COMPLETE);
@@ -204,6 +229,40 @@ void map_check_paths(sf_planet_id_t from, bool* planet_access) {
 }
 
 void map_paths() {
+  const ap_location_t medal_locations[] = {
+    AP_LOCATION_METEO_MEDAL,
+    AP_LOCATION_AREA_6_MEDAL,
+    AP_LOCATION_BOLSE_MEDAL,
+    AP_LOCATION_SECTOR_Z_MEDAL,
+    AP_LOCATION_SECTOR_X_MEDAL,
+    AP_LOCATION_SECTOR_Y_MEDAL,
+    AP_LOCATION_KATINA_MEDAL,
+    AP_LOCATION_MACBETH_MEDAL,
+    AP_LOCATION_ZONESS_MEDAL,
+    AP_LOCATION_CORNERIA_MEDAL,
+    AP_LOCATION_TITANIA_MEDAL,
+    AP_LOCATION_AQUAS_MEDAL,
+    AP_LOCATION_FORTUNA_MEDAL,
+    AP_LOCATION_VENOM_MEDAL,
+    AP_LOCATION_SOLAR_MEDAL,
+  };
+  const sf_level_t planet_to_level[] = {
+    LEVEL_METEO,
+    LEVEL_AREA_6,
+    LEVEL_BOLSE,
+    LEVEL_SECTOR_Z,
+    LEVEL_SECTOR_X,
+    LEVEL_SECTOR_Y,
+    LEVEL_KATINA,
+    LEVEL_MACBETH,
+    LEVEL_ZONESS,
+    LEVEL_CORNERIA,
+    LEVEL_TITANIA,
+    LEVEL_AQUAS,
+    LEVEL_FORTUNA,
+    LEVEL_VENOM_ANDROSS,
+    LEVEL_SOLAR,
+  };
   bool planet_access[PLANET_MAX] = {0, };
   map_check_paths(PLANET_CORNERIA, planet_access);
   for (int i = 0; i < 24; i++) {
@@ -228,21 +287,34 @@ void map_paths() {
     else path->ship = 2;
   }
   sf_planet_id_t last = PLANET_CORNERIA;
-  for (int i = 1; i <= sf_map_current_mission; i++) {
+  sf_total_hits = 0;
+  memset(sf_mission_clear, 0, 30);
+  for (int i = 0; i < 7; i++) {
     sf_planet_id_t next = sf_map_mission_list[i];
-    for (int i = 0; i < 24; i++) {
-      if (sf_map_paths[i].start == last && sf_map_paths[i].end == next) {
-        sf_map_paths[i].alpha = 0xFF;
-        last = next;
-        break;
+    save_custom_data_planet_t* save_planet = &ap_save.planets[next];
+    sf_mission_hits[i] = save_planet->score;
+    if (next > PLANET_NONE && next < PLANET_MAX) sf_mission_medals[i] = get_bit(ap_save.locations, medal_locations[next]);
+    sf_mission_team[i].peppy = save_planet->peppy ? 0xFF : 0;
+    sf_mission_team[i].slippy = save_planet->slippy ? 0xFF : 0;
+    sf_mission_team[i].falco = save_planet->falco ? 0xFF : 0;
+    if (i < sf_map_current_mission) {
+      sf_total_hits += sf_mission_hits[i];
+      sf_mission_clear[planet_to_level[next]] = sf_mission_medals[i] + 1;
+    }
+    if (i && i <= sf_map_current_mission) {
+      for (int i = 0; i < 24; i++) {
+        if (sf_map_paths[i].start == last && sf_map_paths[i].end == next) {
+          sf_map_paths[i].alpha = 0xFF;
+          last = next;
+          break;
+        }
       }
     }
   }
-  sf_total_hits = 0;
-  for (int i = 0; i < sf_map_current_mission; i++) sf_total_hits += sf_mission_hits[i];
 }
 
 void map_check_mission() {
+  sf_gold_rings = sf_saved_gold_rings = ap_save.gold_rings;
   switch (sf_map_level_id) {
     case LEVEL_VENOM_1:
     case LEVEL_VENOM_2:
@@ -255,6 +327,19 @@ void map_check_mission() {
         sf_team_shields[i] = 0xFF;
         sf_saved_team_shields[i] = 0xFF;
       }
+      break;
+    case LEVEL_BOLSE:
+      for (int i = TEAM_ID_WOLF; i <= TEAM_ID_ANDREW; i++) sf_star_wolf_alive[i] = 1;
+      for (int i = 0; i < 7; i++) {
+        if (sf_map_mission_list[i] == PLANET_FORTUNA) {
+          sf_star_wolf_alive[TEAM_ID_WOLF] = ap_save.star_wolf_alive.wolf;
+          sf_star_wolf_alive[TEAM_ID_LEON] = ap_save.star_wolf_alive.leon;
+          sf_star_wolf_alive[TEAM_ID_PIGMA] = ap_save.star_wolf_alive.pigma;
+          sf_star_wolf_alive[TEAM_ID_ANDREW] = ap_save.star_wolf_alive.andrew;
+          break;
+        }
+      }
+      for (int i = TEAM_ID_WOLF; i <= TEAM_ID_ANDREW; i++) sf_saved_star_wolf_alive[i] = sf_star_wolf_alive[i];
       break;
   }
 }
@@ -289,6 +374,23 @@ void map_set_mission() {
 void map_init() {
   sf_map_no_menu = true;
   sf_map_last_state = 7;
+  sf_reset_flags = false;
+  for (int i = TEAM_ID_FALCO; i < TEAM_ID_MAX; i++) {
+    sf_team_shields[i] =
+    sf_saved_team_shields[i] =
+    sf_prev_planet_team_shields[i] =
+    sf_prev_planet_saved_team_shields[i] = i <= TEAM_ID_PEPPY ? ap_save.shields.team[i-1] : 0xFF;
+  }
+  for (int i = 0; i < 6; i++) {
+    sf_star_wolf_alive[i] =
+    sf_saved_star_wolf_alive[i] = true;
+  }
+  sf_laser_strength = ap_save.lasers;
+  sf_gold_rings = sf_saved_gold_rings = ap_save.gold_rings;
+  sf_total_hits = 0;
+  sf_lives = ap_save.lives == -1 ? 2 : ap_save.lives;
+  sf_bombs = ap_save.bombs;
+  sf_great_fox_intact = ap_save.great_fox_intact;
   save_sync_medals();
 }
 
@@ -396,7 +498,7 @@ void map_draw_medals() {
   sf_fn_gfx_draw_text(268, 38, 1, 1, medals);
 }
 
-void map_load_scene_data() {
+void map_load_scene_data(sf_scenes_t scene) {
   map.inited = false;
   util_inject(UTIL_INJECT_FUNCTION, 0x8019F278, (u32)map_set_level_flags, 0); // clear
   util_inject(UTIL_INJECT_FUNCTION, 0x8019F2C0, (u32)map_set_level_flags, 0); // medal
@@ -408,4 +510,5 @@ void map_load_scene_data() {
   util_inject(UTIL_INJECT_JUMP    , 0x801A2AF8, 0x801A2B7C, 1);
   util_inject(UTIL_INJECT_JUMP    , 0x801A2EB8, (u32)map_camera_animations, 1);
   util_inject(UTIL_INJECT_JUMP    , 0x801AB174, (u32)map_draw_medals, 0);
+  if (scene == SCENE_GAME_OVER) ap_save.lives = -1;
 }
