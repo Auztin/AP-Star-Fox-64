@@ -64,7 +64,7 @@ void hud_pause_check_input() {
         break;
       case 2:
         sf_pause_action = 10;
-        ap.received_items[AP_ITEM_DEATH_LINK]++;
+        ap.in.deathlink++;
         break;
       case 3:
         sf_next_state = GSTATE_MAP;

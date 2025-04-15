@@ -1,7 +1,7 @@
 import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile, settings, atexit
 import worlds.LauncherComponents as LauncherComponents
 from CommonClient import CommonContext, ClientCommandProcessor, get_base_parser, server_loop, gui_enabled, logger
-from NetUtils import ClientStatus, NetworkItem
+from NetUtils import ClientStatus
 
 from .version import version
 from .ids import option_name_to_id, location_name_to_id, item_name_to_id, AP_CMD, AP_STATE
@@ -266,7 +266,9 @@ class StarFox64Context(CommonContext):
 
   def on_deathlink(self, data):
     super().on_deathlink(data)
-    self.n64_send_items(None, [NetworkItem(item_name_to_id["Death Link"], 0, 0)])
+    if self.seed_name == None: return
+    send = AP_CMD.DEATHLINK.to_bytes(2, "big")
+    self.n64_send(send)
 
   def n64_send_seed(self, writer=None):
     if self.seed_name == None: return
@@ -383,12 +385,11 @@ class N64Socket:
                   if location == location_name_to_id["Goal Completed"]:
                     self.ctx.finished_game = True
                     await self.ctx.send_msgs([{"cmd": "StatusUpdate", "status": ClientStatus.CLIENT_GOAL}])
-                  elif location == location_name_to_id["Death Link"]:
-                    if "DeathLink" in self.ctx.tags: await self.ctx.send_death()
                   else:
                     locations.add(location)
                 await self.ctx.send_msgs([{"cmd": 'LocationChecks', "locations": tuple(locations)}])
-                pass
+              case AP_CMD.DEATHLINK:
+                if "DeathLink" in self.ctx.tags: await self.ctx.send_death()
               case _:
                 logger.error(f"[N64] Unexpected packet: {cmd}")
                 return

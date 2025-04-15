@@ -42,6 +42,12 @@ typedef struct {
   u8 state;
   u8 sent_locations[AP_LOCATION_MAX_BYTES/8];
   u8 received_items[AP_ITEM_MAX];
+  struct {
+    u8 deathlink;
+  } in;
+  struct {
+    u8 deathlink;
+  } out;
 } ap_t;
 extern ap_t ap;
 

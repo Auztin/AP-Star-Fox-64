@@ -11,5 +11,6 @@ typedef enum {
   AP_CMD_OPTIONS = 5,
   AP_CMD_LOCATIONS = 6,
   AP_CMD_ITEMS = 7,
-  AP_CMD_MAX = 8,
+  AP_CMD_DEATHLINK = 8,
+  AP_CMD_MAX = 9,
 } ap_cmd_t;

@@ -107,6 +107,9 @@ void ap_input() {
           map.check = true;
           save.dirty = true;
           break;
+        case AP_CMD_DEATHLINK:
+          ap.in.deathlink++;
+          break;
         default:
           ap.state = AP_STATE_DISCONNECTED;
       }
@@ -134,8 +137,14 @@ void ap_output() {
   if (offset) {
     ap.output.cmd = AP_CMD_LOCATIONS;
     ap.output.size = 2+offset*sizeof(*ap.output.locations);
-    change_bit(ap_save.locations, AP_LOCATION_DEATH_LINK, false);
-    change_bit(ap.sent_locations, AP_LOCATION_DEATH_LINK, false);
+    ap.ping_timer = 0;
+    return;
+  }
+  if (ap.out.deathlink) {
+    ap.out.deathlink--;
+    ap.output.cmd = AP_CMD_DEATHLINK;
+    ap.output.size = 2;
+    ap.ping_timer = 0;
     return;
   }
 }

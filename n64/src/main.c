@@ -42,8 +42,7 @@ void main_loop() {
   }
   else usb_check();
   if (sf_cur_state == GSTATE_PLAY && sf_player) {
-    u8* deathlink = &ap.received_items[AP_ITEM_DEATH_LINK];
-    if (*deathlink) {
+    if (ap.in.deathlink) {
       if (sf_player->state == PLAYER_STATE_ACTIVE) {
         sf_player->shields = 0;
         sf_player->radioDamageTimer = 2;
@@ -51,8 +50,8 @@ void main_loop() {
     }
     if (sf_player->state != main.last_player_state) {
       if (sf_player->state == PLAYER_STATE_DOWN) {
-        if (*deathlink) (*deathlink)--;
-        else set_bit(ap_save.locations, AP_LOCATION_DEATH_LINK);
+        if (ap.in.deathlink) ap.in.deathlink--;
+        else ap.out.deathlink++;
       }
       main.last_player_state = sf_player->state;
     }

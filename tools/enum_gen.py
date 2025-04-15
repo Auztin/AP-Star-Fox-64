@@ -7,7 +7,7 @@ import data
 options = {}
 option_choices = {}
 item_name_to_id = {"None":-1}
-location_name_to_id = {"None":-1, "Goal Completed":0, "Death Link":1}
+location_name_to_id = {"None":-1, "Goal Completed":0}
 
 for idx, (name, cls) in enumerate(typing.get_type_hints(StarFox64OptionsList).items()):
   options[name] = idx
@@ -22,7 +22,7 @@ for item_name, item in data.items.items():
   last_id += 1
   item_name_to_id[item_name] = last_id
 
-last_id = 1
+last_id = 0
 for region_name, region in data.regions.items():
   for key, value in region.items():
     match key:
@@ -40,6 +40,7 @@ command_list = [
   "OPTIONS",
   "LOCATIONS",
   "ITEMS",
+  "DEATHLINK",
 ]
 commands = {cmd: value for value, cmd in enumerate(command_list)}
 
