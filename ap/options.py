@@ -50,6 +50,14 @@ class RadioRando(Toggle):
     Randomize the radio dialog.
   """
 
+class DefaultLives(Range):
+  """
+    Set the number of lives (Arwings) you start with and reset to after a game over.
+  """
+  range_start = 0
+  range_end = 99
+  default = 2
+
 @dataclass
 class StarFox64OptionsList:
   deathlink: DeathLink
@@ -59,6 +67,7 @@ class StarFox64OptionsList:
   shuffle_paths: ShufflePaths
   accomplished_sends_complete: AccomplishedSendsComplete
   radio_rando: RadioRando
+  default_lives: DefaultLives
 
 @dataclass
 class StarFox64Options(StarFox64OptionsList, PerGameCommonOptions):

@@ -30,3 +30,6 @@ Star Fox 64:
 
   # Randomize the radio dialog.
   radio_rando: true
+
+  # Set the number of lives (Arwings) you start with and reset to after a game over.
+  default_lives: 2

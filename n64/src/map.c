@@ -388,7 +388,7 @@ void map_init() {
   sf_laser_strength = ap_save.lasers;
   sf_gold_rings = sf_saved_gold_rings = ap_save.gold_rings;
   sf_total_hits = 0;
-  sf_lives = ap_save.lives == -1 ? 2 : ap_save.lives;
+  sf_lives = ap_save.lives == -1 ? ap_save.options[AP_OPTION_DEFAULT_LIVES] : ap_save.lives;
   sf_bombs = ap_save.bombs;
   sf_great_fox_intact = ap_save.great_fox_intact;
   save_sync_medals();

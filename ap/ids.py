@@ -7,7 +7,8 @@ option_name_to_id = {
   "shuffle_medals": 3,
   "shuffle_paths": 4,
   "accomplished_sends_complete": 5,
-  "radio_rando": 6
+  "radio_rando": 6,
+  "default_lives": 7
 }
 
 item_name_to_id = {

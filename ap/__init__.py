@@ -75,6 +75,9 @@ class StarFox64WebWorld(WebWorld):
     OptionGroup("Vanity Options", [
       options.RadioRando,
     ]),
+    OptionGroup("Accessibility Options", [
+      options.DefaultLives,
+    ]),
   ]
 
 class StarFox64World(World):
