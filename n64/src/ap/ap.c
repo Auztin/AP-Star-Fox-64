@@ -20,7 +20,9 @@ void ap_init() {
 void ap_input() {
   ap.ping_timer += main.delta;
   if (ap.ping_timer >= 1000) ap.ping_timer = 0;
-  switch (ap.state & ~AP_STATE_PINGED) {
+  int state = ap.state & ~AP_STATE_PINGED;
+  if (state != AP_STATE_CONNECTED) ap.ready = false;
+  switch (state) {
     case AP_STATE_DISCONNECTED:
       switch (ap.input.cmd) {
         case AP_CMD_NONE:
@@ -87,6 +89,9 @@ void ap_input() {
             if (option->name >= AP_OPTION_MAX) break;
             ap_save.options[option->name] = option->value;
           }
+          break;
+        case AP_CMD_READY:
+          ap.ready = true;
           break;
         case AP_CMD_LOCATIONS:
           for (int i = 0; i < (ap.input.size-2)/sizeof(*ap.input.locations); i++) {

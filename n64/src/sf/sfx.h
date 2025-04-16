@@ -1,6 +1,7 @@
 #pragma once
 
 #define SF_SFX_CURSOR 0x49000002
+#define SF_SFX_ERROR  0x4900100A
 
 #define sf_sfx_default_pos ((float*)0x800C5D28)
 

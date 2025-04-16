@@ -253,6 +253,7 @@ class StarFox64Context(CommonContext):
           await self.update_death_link(self.slot_data["options"]["deathlink"])
           self.n64_send_seed()
           self.n64_send_slot_data()
+          self.n64_send_ready()
           self.n64_send_checked_locations()
         case "ReceivedItems":
           self.n64_send_items(items=args["items"])
@@ -266,9 +267,7 @@ class StarFox64Context(CommonContext):
 
   def on_deathlink(self, data):
     super().on_deathlink(data)
-    if self.seed_name == None: return
-    send = AP_CMD.DEATHLINK.to_bytes(2, "big")
-    self.n64_send(send)
+    self.n64_send_deathlink()
 
   def n64_send_seed(self, writer=None):
     if self.seed_name == None: return
@@ -286,6 +285,11 @@ class StarFox64Context(CommonContext):
       send += value.to_bytes(1, "big")
     self.n64_split_and_send(AP_CMD.OPTIONS.to_bytes(2, "big"), send, 2, writer)
 
+  def n64_send_ready(self, writer=None):
+    if self.seed_name == None: return
+    send = AP_CMD.READY.to_bytes(2, "big")
+    self.n64_send(send, writer)
+
   def n64_send_checked_locations(self, writer=None, locations=None):
     if self.seed_name == None: return
     if not locations: locations = self.checked_locations
@@ -301,6 +305,11 @@ class StarFox64Context(CommonContext):
     for item in items:
       send += item.item.to_bytes(4, "big")
     self.n64_split_and_send(AP_CMD.ITEMS.to_bytes(2, "big"), send, 4, writer)
+
+  def n64_send_deathlink(self, writer=None):
+    if self.seed_name == None: return
+    send = AP_CMD.DEATHLINK.to_bytes(2, "big")
+    self.n64_send(send, writer)
 
   def n64_send(self, send, writer=None):
     send = len(send).to_bytes(2, "big") + send

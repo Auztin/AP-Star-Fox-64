@@ -132,4 +132,7 @@ typedef int (*sf_fnt_game_update)();
 typedef int (*sf_fnt_pause_check_joystick)();
 #define sf_fn_pause_check_joystick ((sf_fnt_pause_check_joystick)0x800886B8)
 
+typedef int (*sf_fnt_main_menu_update)();
+#define sf_fn_main_menu_update ((sf_fnt_main_menu_update)0x80192D58)
+
 extern void sf_fn_play_radio_message(u16* msg, sf_radio_character_t);

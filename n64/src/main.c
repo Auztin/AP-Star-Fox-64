@@ -6,9 +6,12 @@
 #include "n64/sys.h"
 #include "n64/dma.h"
 #include "ap/ap.h"
+#include "ap/states.h"
 #include "sf/global.h"
 #include "sf/controller.h"
 #include "sf/map.h"
+#include "sf/sfx.h"
+#include "sf/gfx.h"
 
 main_t main = {0, };
 
@@ -62,6 +65,37 @@ void main_goal_completed() {
   if (!set_bit(ap_save.locations, AP_LOCATION_GOAL_COMPLETED)) sf_next_state = GSTATE_ENDING;
 }
 
+extern bool main_menu_selected_displaced();
+bool main_menu_selected() {
+  s32* selected = (s32*)0x801B91A4;
+  sf_controller_t* p1 = &sf_controllers_pressed[0];
+  sf_controller_t* h1 = &sf_controllers_held[0];
+  if (p1->a || p1->start) {
+    switch (*selected) {
+      case 0: // Main Game/Expert
+      case 1: // Training
+        if (ap.ready || (h1->z && h1->r)) return true;
+        sf_fn_sfx_play(SF_SFX_ERROR, sf_sfx_default_pos, 4);
+        break;
+      default:
+        return true;
+    }
+  }
+  return false;
+}
+
+void main_menu_update() {
+  char* text_client = "CLIENT DISCONNECTED";
+  char* text_ap = "AP DISCONNECTED";
+  if ((ap.state & ~AP_STATE_PINGED) == AP_STATE_CONNECTED) text_client = "CLIENT CONNECTED";
+  if (ap.ready) text_ap = "AP CONNECTED";
+  sf_fn_main_menu_update();
+  sf_fn_gfx_setup(&sf_gfx, 0x53);
+  sf_fn_gfx_color(0xFF, 0xFF, 0, 0xFF);
+  sf_fn_gfx_draw_text(10, 205, 1, 1, text_client);
+  sf_fn_gfx_draw_text(10, 215, 1, 1, text_ap);
+}
+
 bool main_load_scene_data(sf_scenes_t scene, u8 _unk) {
   if (scene == SCENE_CREDITS && !get_bit(ap_save.locations, AP_LOCATION_GOAL_COMPLETED)) sf_next_state = GSTATE_MAP;
   bool ret = sf_fn_load_scene_data(scene, _unk);
@@ -71,6 +105,8 @@ bool main_load_scene_data(sf_scenes_t scene, u8 _unk) {
       case SCENE_MENU:
       case SCENE_MAP:
       case SCENE_GAME_OVER:
+        util_inject(UTIL_INJECT_FUNCTION, 0x80192224, (u32)main_menu_update, 0);
+        util_inject(UTIL_INJECT_FUNCTION, 0x801933E4, (u32)main_menu_selected_displaced, 1);
         map_load_scene_data(scene);
         break;
     }

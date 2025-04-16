@@ -95,9 +95,10 @@ class AP_CMD:
   PONG = 3
   SEED = 4
   OPTIONS = 5
-  LOCATIONS = 6
-  ITEMS = 7
-  DEATHLINK = 8
+  READY = 6
+  LOCATIONS = 7
+  ITEMS = 8
+  DEATHLINK = 9
 
 class AP_STATE:
   DISCONNECTED = 0

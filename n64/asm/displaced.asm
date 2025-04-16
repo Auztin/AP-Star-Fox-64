@@ -45,3 +45,18 @@ ADDIU SP, SP, -0x28
 SW RA, 0x0014 (SP)
 JAL 0x800BA810
 NOP
+
+.align 0x08
+main_menu_selected_displaced:
+LHU V0, 0xD898 (V0)
+ANDI T2, V0, 0x9000
+ADDIU SP, SP, -0x18
+SW RA, 0x0000 (SP)
+JAL main_menu_selected
+SW V0, 0x0004 (SP)
+ADDIU T2, V0, 0x0000
+LW RA, 0x0000 (SP)
+LW V0, 0x0004 (SP)
+ADDIU SP, SP, 0x18
+JR RA
+NOP

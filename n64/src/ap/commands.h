@@ -9,8 +9,9 @@ typedef enum {
   AP_CMD_PONG = 3,
   AP_CMD_SEED = 4,
   AP_CMD_OPTIONS = 5,
-  AP_CMD_LOCATIONS = 6,
-  AP_CMD_ITEMS = 7,
-  AP_CMD_DEATHLINK = 8,
-  AP_CMD_MAX = 9,
+  AP_CMD_READY = 6,
+  AP_CMD_LOCATIONS = 7,
+  AP_CMD_ITEMS = 8,
+  AP_CMD_DEATHLINK = 9,
+  AP_CMD_MAX = 10,
 } ap_cmd_t;

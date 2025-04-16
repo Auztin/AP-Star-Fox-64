@@ -38,6 +38,7 @@ command_list = [
   "PONG",
   "SEED",
   "OPTIONS",
+  "READY",
   "LOCATIONS",
   "ITEMS",
   "DEATHLINK",
