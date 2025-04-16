@@ -115,6 +115,9 @@ int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
         map_give_clear_location(sf_map_current_planet, MISSION_COMPLETE);
       }
       if (sf_map_current_planet == PLANET_VENOM) {
+        sf_mission_clear[LEVEL_VENOM_1] = main_check_medal(200) + 1;
+        sf_mission_clear[LEVEL_VENOM_2] = sf_mission_clear[LEVEL_VENOM_1];
+        sf_mission_clear[LEVEL_VENOM_ANDROSS] = sf_mission_clear[LEVEL_VENOM_1];
         if (sf_map_venom_hard_clear) set_bit(ap_save.locations, AP_LOCATION_VENOM_DEFEAT_ANDROSS);
         else set_bit(ap_save.locations, AP_LOCATION_VENOM_DEFEAT_ROBOT_ANDROSS);
         bool andross = get_bit(ap_save.locations, AP_LOCATION_VENOM_DEFEAT_ANDROSS);
