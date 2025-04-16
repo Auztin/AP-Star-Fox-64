@@ -44,6 +44,8 @@ typedef struct {
   s32 radioDamageTimer;
   u8 _unknown_0x224_0x263[0x03F];
   s32 shields;
+  u8 _unknown_0x268_0x2BB[0x053];
+  float boost_meter;
 } sf_player_t;
 
 typedef enum {

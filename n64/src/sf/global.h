@@ -31,3 +31,5 @@ typedef enum {
 #define sf_last_state (*(s16*)0x80161A34)
 #define sf_video_features1 (*(u32*)0x800C7EEC)
 #define sf_video_features2 (*(u32*)0x800C7F1C)
+
+extern bool sf_fn_check_medal(u16 score);

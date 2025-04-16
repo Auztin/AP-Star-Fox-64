@@ -24,4 +24,6 @@ u32 inject_hooks() {
   util_inject(UTIL_INJECT_RAW     , 0x80088A60, 0x3C088016, 0);
 
   util_inject(UTIL_INJECT_JUMP    , 0x800BA808, (u32)radio_play, 1);
+
+  util_inject(UTIL_INJECT_JUMP    , 0x800A3F50, (u32)main_check_medal, 1);
 }

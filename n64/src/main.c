@@ -96,6 +96,33 @@ void main_menu_update() {
   sf_fn_gfx_draw_text(10, 215, 1, 1, text_ap);
 }
 
+bool main_check_medal(u16 score) {
+  const u16 medals[] = {
+    ap_save.options[AP_OPTION_MEDAL_CORNERIA],
+    ap_save.options[AP_OPTION_MEDAL_METEO],
+    ap_save.options[AP_OPTION_MEDAL_SECTOR_X],
+    ap_save.options[AP_OPTION_MEDAL_AREA_6],
+    score,
+    ap_save.options[AP_OPTION_MEDAL_SECTOR_Y],
+    ap_save.options[AP_OPTION_MEDAL_VENOM],
+    ap_save.options[AP_OPTION_MEDAL_SOLAR],
+    ap_save.options[AP_OPTION_MEDAL_ZONESS],
+    ap_save.options[AP_OPTION_MEDAL_VENOM],
+    score,
+    ap_save.options[AP_OPTION_MEDAL_MACBETH],
+    ap_save.options[AP_OPTION_MEDAL_TITANIA],
+    ap_save.options[AP_OPTION_MEDAL_AQUAS],
+    ap_save.options[AP_OPTION_MEDAL_FORTUNA],
+    score,
+    ap_save.options[AP_OPTION_MEDAL_KATINA],
+    ap_save.options[AP_OPTION_MEDAL_BOLSE],
+    ap_save.options[AP_OPTION_MEDAL_SECTOR_Z],
+    ap_save.options[AP_OPTION_MEDAL_VENOM],
+  };
+  if (sf_map_level_id < countof(medals)) score = medals[sf_map_level_id];
+  return sf_fn_check_medal(score);
+}
+
 bool main_load_scene_data(sf_scenes_t scene, u8 _unk) {
   if (scene == SCENE_CREDITS && !get_bit(ap_save.locations, AP_LOCATION_GOAL_COMPLETED)) sf_next_state = GSTATE_MAP;
   bool ret = sf_fn_load_scene_data(scene, _unk);

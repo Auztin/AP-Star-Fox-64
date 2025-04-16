@@ -281,8 +281,8 @@ class StarFox64Context(CommonContext):
     if self.seed_name == None: return
     send = bytes()
     for name, value in self.slot_data["options"].items():
-      send += option_name_to_id[name].to_bytes(1, "big")
-      send += value.to_bytes(1, "big")
+      send += option_name_to_id[name].to_bytes(2, "big")
+      send += value.to_bytes(2, "big")
     self.n64_split_and_send(AP_CMD.OPTIONS.to_bytes(2, "big"), send, 2, writer)
 
   def n64_send_ready(self, writer=None):

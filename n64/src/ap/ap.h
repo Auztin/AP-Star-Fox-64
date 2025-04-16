@@ -8,8 +8,8 @@
 #define PACKET_SIZE (512-4)
 
 typedef struct {
-  u8 name;
-  u8 value;
+  u16 name;
+  u16 value;
 } ap_packet_option_t;
 
 typedef struct {

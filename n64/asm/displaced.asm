@@ -60,3 +60,8 @@ LW V0, 0x0004 (SP)
 ADDIU SP, SP, 0x18
 JR RA
 NOP
+
+.align 0x08
+sf_fn_check_medal:
+J 0x800A3F58
+ANDI T6, A0, 0xFFFF

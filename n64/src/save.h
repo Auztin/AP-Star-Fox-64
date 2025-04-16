@@ -20,7 +20,7 @@ typedef struct {
   u16 team;
   u16 slot;
   char seed[20];
-  u8 options[AP_OPTION_MAX];
+  u16 options[AP_OPTION_MAX];
   u8 locations[AP_LOCATION_MAX_BYTES/8];
   u8 items[AP_ITEM_MAX];
   save_custom_data_planet_t planets[PLANET_MAX];

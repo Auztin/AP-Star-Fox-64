@@ -8,7 +8,22 @@ option_name_to_id = {
   "shuffle_paths": 4,
   "accomplished_sends_complete": 5,
   "radio_rando": 6,
-  "default_lives": 7
+  "default_lives": 7,
+  "medal_corneria": 8,
+  "medal_meteo": 9,
+  "medal_sector_y": 10,
+  "medal_katina": 11,
+  "medal_fortuna": 12,
+  "medal_aquas": 13,
+  "medal_solar": 14,
+  "medal_sector_x": 15,
+  "medal_zoness": 16,
+  "medal_titania": 17,
+  "medal_sector_z": 18,
+  "medal_macbeth": 19,
+  "medal_area_6": 20,
+  "medal_bolse": 21,
+  "medal_venom": 22
 }
 
 item_name_to_id = {
