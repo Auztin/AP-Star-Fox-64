@@ -13,6 +13,11 @@ typedef struct {
 } ap_packet_option_t;
 
 typedef struct {
+  u16 header;
+  s16 data;
+} ap_packet_bounce_t;
+
+typedef struct {
   u16 size;
   u16 cmd;
   union {
@@ -24,6 +29,7 @@ typedef struct {
       u32 version;
       char msg[4];
     } handshake;
+    ap_packet_bounce_t bounce_packet;
     ap_packet_option_t options[PACKET_SIZE/sizeof(ap_packet_option_t)];
     u32 locations[PACKET_SIZE/4];
     u32 items[PACKET_SIZE/4];

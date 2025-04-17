@@ -60,6 +60,7 @@ class StarFox64WebWorld(WebWorld):
       Options.ProgressionBalancing,
       Options.Accessibility,
       options.DeathLink,
+      options.RingLink,
     ]),
     OptionGroup("Goal Options", [
       options.VictoryCondition,

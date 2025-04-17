@@ -90,6 +90,8 @@ typedef enum {
 #define sf_pause_action (*(s32*)0x80161810)
 #define sf_pause_selection (*(s32*)0x80161814)
 #define sf_pause_timer (*(s32*)0x80161838)
+#define sf_current_hits (*(u8*)0x8016172F) // the hit accumulating spinner the player sees
+#define sf_target_hits (*(u8*)0x80161A9B) // actual hit counter
 
 typedef int (*sf_fnt_game_update)();
 #define sf_fn_game_update ((sf_fnt_game_update)0x800A26C0)

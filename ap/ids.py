@@ -7,39 +7,41 @@ option_name_to_id = {
   "shuffle_medals": 3,
   "shuffle_paths": 4,
   "accomplished_sends_complete": 5,
-  "radio_rando": 6
+  "radio_rando": 6,
+  "ringlink": 7
 }
 
 item_name_to_id = {
   "None": -1,
   "Death Link": 1,
-  "Medal": 2,
-  "Aquas - Red Path": 3,
-  "Area 6 - Red Path": 4,
-  "Bolse - Blue Path": 5,
-  "Corneria - Blue Path": 6,
-  "Corneria - Red Path": 7,
-  "Fortuna - Blue Path": 8,
-  "Fortuna - Yellow Path": 9,
-  "Katina - Blue Path": 10,
-  "Katina - Yellow Path": 11,
-  "Macbeth - Blue Path": 12,
-  "Macbeth - Red Path": 13,
-  "Meteo - Blue Path": 14,
-  "Meteo - Warp Path": 15,
-  "Sector X - Blue Path": 16,
-  "Sector X - Yellow Path": 17,
-  "Sector X - Warp Path": 18,
-  "Sector Y - Yellow Path": 19,
-  "Sector Y - Red Path": 20,
-  "Sector Z - Blue Path": 21,
-  "Sector Z - Red Path": 22,
-  "Solar - Yellow Path": 23,
-  "Titania - Blue Path": 24,
-  "Zoness - Yellow Path": 25,
-  "Zoness - Red Path": 26,
-  "Defeated Robot Andross": 27,
-  "Defeated Andross": 28
+  "Ring Link": 2,
+  "Medal": 3,
+  "Aquas - Red Path": 4,
+  "Area 6 - Red Path": 5,
+  "Bolse - Blue Path": 6,
+  "Corneria - Blue Path": 7,
+  "Corneria - Red Path": 8,
+  "Fortuna - Blue Path": 9,
+  "Fortuna - Yellow Path": 10,
+  "Katina - Blue Path": 11,
+  "Katina - Yellow Path": 12,
+  "Macbeth - Blue Path": 13,
+  "Macbeth - Red Path": 14,
+  "Meteo - Blue Path": 15,
+  "Meteo - Warp Path": 16,
+  "Sector X - Blue Path": 17,
+  "Sector X - Yellow Path": 18,
+  "Sector X - Warp Path": 19,
+  "Sector Y - Yellow Path": 20,
+  "Sector Y - Red Path": 21,
+  "Sector Z - Blue Path": 22,
+  "Sector Z - Red Path": 23,
+  "Solar - Yellow Path": 24,
+  "Titania - Blue Path": 25,
+  "Zoness - Yellow Path": 26,
+  "Zoness - Red Path": 27,
+  "Defeated Robot Andross": 28,
+  "Defeated Andross": 29
 }
 
 location_name_to_id = {
@@ -98,6 +100,7 @@ class AP_CMD:
   OPTIONS = 5
   LOCATIONS = 6
   ITEMS = 7
+  BOUNCE = 8
 
 class AP_STATE:
   DISCONNECTED = 0

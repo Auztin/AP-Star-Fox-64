@@ -50,6 +50,11 @@ class RadioRando(Toggle):
     Randomize the radio dialog.
   """
 
+class RingLink(Toggle):
+  """
+    Enable Ring Link for use with games that support it. Incoming rings are converted to the current level's Hit counter.
+  """
+
 @dataclass
 class StarFox64OptionsList:
   deathlink: DeathLink
@@ -59,6 +64,7 @@ class StarFox64OptionsList:
   shuffle_paths: ShufflePaths
   accomplished_sends_complete: AccomplishedSendsComplete
   radio_rando: RadioRando
+  ringlink: RingLink
 
 @dataclass
 class StarFox64Options(StarFox64OptionsList, PerGameCommonOptions):
