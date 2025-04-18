@@ -79,12 +79,8 @@ void map_give_clear_location(sf_planet_id_t planet, u8 mission_status) {
 }
 
 int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
+  save_custom_data_planet_t* save_planet = &ap_save.planets[sf_map_current_planet];
   if (flag == LEVEL_FLAG_CLEAR) {
-    save_custom_data_planet_t* save_planet = &ap_save.planets[sf_map_current_planet];
-    if (sf_team_shields[TEAM_ID_PEPPY] > 0) save_planet->peppy = 1;
-    if (sf_team_shields[TEAM_ID_SLIPPY] > 0) save_planet->slippy = 1;
-    if (sf_team_shields[TEAM_ID_FALCO] > 0) save_planet->falco = 1;
-    if (sf_hits > save_planet->score) save_planet->score = sf_hits;
     for (int i = TEAM_ID_FALCO; i <= TEAM_ID_PEPPY; i++) {
       ap_save.shields.team[i-1] =
       sf_saved_team_shields[i] =
@@ -104,6 +100,10 @@ int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
   ap_location_t location;
   switch (flag) {
     case LEVEL_FLAG_CLEAR:
+      if (sf_team_shields[TEAM_ID_PEPPY] > 0) save_planet->peppy = 1;
+      if (sf_team_shields[TEAM_ID_SLIPPY] > 0) save_planet->slippy = 1;
+      if (sf_team_shields[TEAM_ID_FALCO] > 0) save_planet->falco = 1;
+      if (sf_hits > save_planet->score) save_planet->score = sf_hits;
       if (sf_map_current_planet == PLANET_FORTUNA) {
         ap_save.star_wolf_alive.wolf = sf_star_wolf_alive[TEAM_ID_WOLF];
         ap_save.star_wolf_alive.leon = sf_star_wolf_alive[TEAM_ID_LEON];

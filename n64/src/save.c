@@ -39,6 +39,7 @@ void save_init() {
     save.data.magic_end = SAVE_MAGIC;
     save.data.version = AP_VERSION.as_int;
     for (int i = 0; i < SAVE_SLOTS; i++) save.data.recents[i] = i;
+    save.dirty = true;
     save_sram_write();
   }
   save.slot = save.data.recents[0];
