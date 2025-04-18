@@ -116,6 +116,6 @@ void get_ringlink_state_str(char* buf){
 }
 
 bool is_player_transitioning_state(sf_player_state_t from, sf_player_state_t to){
-  if (!sf_player) return true;
+  if (!sf_player) return false;
   return (main.last_player_state == from && sf_player->state == to);
 }
