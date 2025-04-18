@@ -117,6 +117,7 @@ void save_load_slot(u16 ap_team, u16 ap_slot, char* ap_seed) {
     data->star_wolf_alive.pigma = 1;
     data->star_wolf_alive.andrew = 1;
     data->lives = -1;
+    data->bombs = 3;
     data->great_fox_intact = 1;
     save.dirty = true;
   }
