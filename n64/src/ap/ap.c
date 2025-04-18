@@ -7,6 +7,7 @@
 #include "version.h"
 #include "util.h"
 #include "save.h"
+#include "hit_count.h"
 
 ap_t ap = {0, };
 extern ap_packet_t* AP_INPUT_PTR;
@@ -161,4 +162,5 @@ void ap_output() {
     change_bit(ap.sent_locations, AP_LOCATION_DEATH_LINK, false);
     return;
   }
+  transmit_ring_message();
 }

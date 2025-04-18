@@ -42,6 +42,11 @@ void main_loop() {
     ap_output();
   }
   else usb_check();
+
+  if (ap_save.options[AP_OPTION_RINGLINK]) {
+    ringlink_update();
+  }
+
   if (sf_cur_state == GSTATE_PLAY && sf_player) {
     u8* deathlink = &ap.received_items[AP_ITEM_DEATH_LINK];
     if (*deathlink) {
@@ -50,10 +55,6 @@ void main_loop() {
         sf_player->radioDamageTimer = 2;
       }
     }
-    if (ap_save.options[AP_OPTION_RINGLINK]) {
-      ringlink_update();
-    }
-
     if (sf_player->state != main.last_player_state) {
       if (sf_player->state == PLAYER_STATE_DOWN) {
         if (*deathlink) (*deathlink)--;
@@ -88,8 +89,4 @@ void main_pre_venom() {
   sf_next_state = GSTATE_MAP;
   sf_map_current_mission--;
   main_pre_venom_displaced();
-}
-
-bool is_player_transitioning_state(sf_player_state_t from, sf_player_state_t to){
-  return (main.last_player_state == from && sf_player->state == to);
 }
