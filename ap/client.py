@@ -378,6 +378,7 @@ class N64Socket:
                 self.state = AP_STATE.CONNECTED
                 self.ctx.n64_send_seed(self.writer)
                 self.ctx.n64_send_slot_data(self.writer)
+                self.ctx.n64_send_ready(self.writer)
                 self.ctx.n64_send_checked_locations(self.writer)
                 self.ctx.n64_send_items(self.writer)
                 self.ctx.n64_sockets.add(self.writer)
