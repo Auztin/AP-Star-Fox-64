@@ -12,4 +12,4 @@ typedef union {
   };
   u32 as_int;
 } ap_version_t;
-static const ap_version_t AP_VERSION = {.major=0, .minor=2, .build=1};
+static const ap_version_t AP_VERSION = {.major=0, .minor=3, .build=0};
