@@ -45,7 +45,7 @@ typedef struct {
   s8 lives;
 } save_custom_data_t;
 
-typedef struct {
+typedef struct __attribute__ ((aligned (16))) {
   u32 magic_start;
   u32 version;
   u32 eeprom[128];
@@ -55,9 +55,9 @@ typedef struct {
 } save_data_t;
 
 typedef struct {
+  save_data_t data;
   u8 slot;
   bool dirty;
-  save_data_t data;
 } save_t;
 extern save_t save;
 #define ap_save (save.data.custom[save.slot])

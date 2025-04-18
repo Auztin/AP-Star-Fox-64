@@ -12,7 +12,7 @@ typedef struct {
   u16 value;
 } ap_packet_option_t;
 
-typedef struct {
+typedef struct __attribute__ ((aligned (16))) {
   u16 size;
   u16 cmd;
   union {
