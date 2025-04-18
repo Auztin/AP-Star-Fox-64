@@ -82,6 +82,14 @@ int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
   save_custom_data_planet_t* save_planet = &ap_save.planets[sf_map_current_planet];
   if (flag == LEVEL_FLAG_CLEAR) {
     for (int i = TEAM_ID_FALCO; i <= TEAM_ID_PEPPY; i++) {
+      if (map.ignore_rewards) {
+        switch (sf_map_current_planet) {
+          case PLANET_CORNERIA:
+          case PLANET_AQUAS:
+            sf_team_shields[i] = ap_save.shields.team[i-1];
+            break;
+        }
+      }
       if (sf_team_shields[i] == 0) {
         if (map.ignore_rewards) sf_team_shields[i]--;
         else sf_team_shields[i] = 0xFF;
