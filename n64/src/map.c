@@ -82,6 +82,10 @@ int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
   save_custom_data_planet_t* save_planet = &ap_save.planets[sf_map_current_planet];
   if (flag == LEVEL_FLAG_CLEAR) {
     for (int i = TEAM_ID_FALCO; i <= TEAM_ID_PEPPY; i++) {
+      if (sf_team_shields[i] == 0) {
+        if (map.ignore_rewards) sf_team_shields[i]--;
+        else sf_team_shields[i] = 0xFF;
+      }
       ap_save.shields.team[i-1] =
       sf_saved_team_shields[i] =
       sf_prev_planet_team_shields[i] =
@@ -197,8 +201,8 @@ extern void map_camera_animations_displaced();
 void map_camera_animations() {
   if (sf_map_counter == 30) {
     sf_map_counter++;
-    sf_map_state = 3;
-    sf_map_no_menu = true;
+    sf_map_cutscene_state = 3;
+    sf_map_no_menu = false;
     for (int i = 3; i < 6; i++) {
       sf_map_camera_pos[i] = sf_map_camera_pos[0];
       sf_map_camera_look[i] = sf_map_camera_look[0];
@@ -375,7 +379,7 @@ void map_set_mission() {
 }
 
 void map_init() {
-  sf_map_no_menu = true;
+  sf_map_no_menu = false;
   sf_map_last_state = 7;
   sf_reset_flags = false;
   for (int i = TEAM_ID_FALCO; i < TEAM_ID_MAX; i++) {
@@ -513,5 +517,6 @@ void map_load_scene_data(sf_scenes_t scene) {
   util_inject(UTIL_INJECT_JUMP    , 0x801A2AF8, 0x801A2B7C, 1);
   util_inject(UTIL_INJECT_JUMP    , 0x801A2EB8, (u32)map_camera_animations, 1);
   util_inject(UTIL_INJECT_JUMP    , 0x801AB174, (u32)map_draw_medals, 0);
+  util_inject(UTIL_INJECT_JUMP    , 0x801AD170, 0x801AD1D0, 0);
   if (scene == SCENE_GAME_OVER) ap_save.lives = -1;
 }

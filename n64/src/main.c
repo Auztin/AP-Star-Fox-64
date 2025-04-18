@@ -3,6 +3,7 @@
 #include "util.h"
 #include "usb.h"
 #include "map.h"
+#include "hud.h"
 #include "n64/sys.h"
 #include "n64/dma.h"
 #include "ap/ap.h"
@@ -135,6 +136,7 @@ bool main_load_scene_data(sf_scenes_t scene, u8 _unk) {
         util_inject(UTIL_INJECT_FUNCTION, 0x80192224, (u32)main_menu_update, 0);
         util_inject(UTIL_INJECT_FUNCTION, 0x801933E4, (u32)main_menu_selected_displaced, 1);
         map_load_scene_data(scene);
+        hud_load_scene_data(scene);
         break;
     }
   }

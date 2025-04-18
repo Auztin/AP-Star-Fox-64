@@ -65,3 +65,18 @@ NOP
 sf_fn_check_medal:
 J 0x800A3F58
 ANDI T6, A0, 0xFFFF
+
+.align 0x08
+sf_fn_gfx_draw_texture:
+LD V0, 0x0020 (SP)
+SW V0, 0x0010 (SP)
+LD V0, 0x0028 (SP)
+SW V0, 0x0014 (SP)
+LD V0, 0x0030 (SP)
+SW V0, 0x0018 (SP)
+LD V0, 0x0030 (SP)
+SW V0, 0x0018 (SP)
+LD V0, 0x0038 (SP)
+SW V0, 0x001C (SP)
+J 0x8009D994
+NOP
