@@ -528,5 +528,11 @@ void map_load_scene_data(sf_scenes_t scene) {
   util_inject(UTIL_INJECT_JUMP    , 0x801A2EB8, (u32)map_camera_animations, 1);
   util_inject(UTIL_INJECT_JUMP    , 0x801AB174, (u32)map_draw_medals, 0);
   util_inject(UTIL_INJECT_JUMP    , 0x801AD170, 0x801AD1D0, 0);
-  if (scene == SCENE_GAME_OVER) ap_save.lives = -1;
+  if (scene == SCENE_GAME_OVER) {
+    for (int i = TEAM_ID_FALCO; i <= TEAM_ID_PEPPY; i++) ap_save.shields.team[i-1] = 0xFF;
+    ap_save.lasers = LASERS_SINGLE;
+    ap_save.gold_rings = 0;
+    ap_save.lives = -1;
+    ap_save.bombs = 3;
+  }
 }
