@@ -84,6 +84,9 @@ int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
     for (int i = TEAM_ID_FALCO; i <= TEAM_ID_PEPPY; i++) {
       if (map.ignore_rewards) {
         switch (sf_map_current_planet) {
+          case PLANET_TITANIA:
+          case PLANET_SECTOR_X:
+            if (sf_team_shields[i] != -2) break;
           case PLANET_CORNERIA:
           case PLANET_AQUAS:
             sf_team_shields[i] = ap_save.shields.team[i-1];
@@ -94,6 +97,7 @@ int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
         if (map.ignore_rewards) sf_team_shields[i]--;
         else sf_team_shields[i] = 0xFF;
       }
+      if (sf_team_shields[i] == -2) sf_team_shields[i] = 0xFF;
       ap_save.shields.team[i-1] =
       sf_saved_team_shields[i] =
       sf_prev_planet_team_shields[i] =
@@ -418,8 +422,6 @@ void map_idle() {
     sf_map_ship_anim_state = 10;
     sf_controller_timeout = 0;
     if (sf_map_previous_planet == PLANET_AREA_6) sf_map_level_id = LEVEL_VENOM_2;
-    if (sf_team_shields[TEAM_ID_SLIPPY] == -2) sf_team_shields[TEAM_ID_SLIPPY] = 0;
-    if (sf_saved_team_shields[TEAM_ID_SLIPPY] == -2) sf_saved_team_shields[TEAM_ID_SLIPPY] = 0;
   }
   if (map.check) {
     map.check = false;
