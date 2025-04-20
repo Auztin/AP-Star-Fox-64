@@ -12,6 +12,7 @@ u32 inject_hooks() {
 
   util_inject(UTIL_INJECT_FUNCTION, 0x800A1BD8, (u32)main_load_scene_data, 0);
   util_inject(UTIL_INJECT_JUMP    , 0x80088564, (u32)main_pre_venom, 1);
+  util_inject(UTIL_INJECT_RAW     , 0x80088648, 0, 1);
 
   util_inject(UTIL_INJECT_RETURN  , 0x80023F50, 1, 1); // convince game eeprom exists
   util_inject(UTIL_INJECT_JUMP    , 0x800234B0, (u32)save_eeprom_read, 1);
@@ -24,4 +25,6 @@ u32 inject_hooks() {
   util_inject(UTIL_INJECT_RAW     , 0x80088A60, 0x3C088016, 0);
 
   util_inject(UTIL_INJECT_JUMP    , 0x800BA808, (u32)radio_play, 1);
+
+  util_inject(UTIL_INJECT_JUMP    , 0x800A3F50, (u32)main_check_medal, 1);
 }

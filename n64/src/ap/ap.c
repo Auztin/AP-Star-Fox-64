@@ -21,7 +21,9 @@ void ap_init() {
 void ap_input() {
   ap.ping_timer += main.delta;
   if (ap.ping_timer >= 1000) ap.ping_timer = 0;
-  switch (ap.state & ~AP_STATE_PINGED) {
+  int state = ap.state & ~AP_STATE_PINGED;
+  if (state != AP_STATE_CONNECTED) ap.ready = false;
+  switch (state) {
     case AP_STATE_DISCONNECTED:
       switch (ap.input.cmd) {
         case AP_CMD_NONE:
@@ -78,7 +80,7 @@ void ap_input() {
           ap.ping_timer = 0;
           break;
         case AP_CMD_SEED:
-          save_load_slot(ap.input.data);
+          save_load_slot(ap.input.seed.team, ap.input.seed.slot, ap.input.seed.data);
           memset(&ap.sent_locations, 0, sizeof(ap.sent_locations));
           memset(&ap.received_items, 0, sizeof(ap.received_items));
           break;
@@ -88,6 +90,9 @@ void ap_input() {
             if (option->name >= AP_OPTION_MAX) break;
             ap_save.options[option->name] = option->value;
           }
+          break;
+        case AP_CMD_READY:
+          ap.ready = true;
           break;
         case AP_CMD_LOCATIONS:
           for (int i = 0; i < (ap.input.size-2)/sizeof(*ap.input.locations); i++) {
@@ -130,6 +135,8 @@ void ap_input() {
             main.last_player_hits = sf_target_hits; // Prevent a ringlink reflection
 
           }
+        case AP_CMD_DEATHLINK:
+          ap.in.deathlink++;
           break;
         default:
           ap.state = AP_STATE_DISCONNECTED;
@@ -158,8 +165,14 @@ void ap_output() {
   if (offset) {
     ap.output.cmd = AP_CMD_LOCATIONS;
     ap.output.size = 2+offset*sizeof(*ap.output.locations);
-    change_bit(ap_save.locations, AP_LOCATION_DEATH_LINK, false);
-    change_bit(ap.sent_locations, AP_LOCATION_DEATH_LINK, false);
+    ap.ping_timer = 0;
+    return;
+  }
+  if (ap.out.deathlink) {
+    ap.out.deathlink--;
+    ap.output.cmd = AP_CMD_DEATHLINK;
+    ap.output.size = 2;
+    ap.ping_timer = 0;
     return;
   }
   transmit_ring_message();

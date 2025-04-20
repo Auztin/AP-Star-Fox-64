@@ -7,9 +7,13 @@ config file.
 
 ## What does randomization do to this game?
 
-To help Star Fox 64 fit into the environment of Archipelago, the map has been changed significantly. When completing a level, you are no longer forced to the next level based on what you did in the previous level. You can also no longer use the `Change Course` or `Retry Course` options on the map. Instead, the map has controls for selecting which level you can go to. The levels available for selection depend on what path items you have received. The map also functions as a sort of in game tracker.
+To help Star Fox 64 fit into the environment of Archipelago, the map has been changed significantly. When completing a level, you are no longer forced to the next level based on what you did in the previous level. Instead, the map has controls for selecting which level you can go to. The levels available for selection depend on what path items you have received. The map also functions as a sort of in game tracker. You can also no longer use the `Change Course` or `Retry Course` options on the map. This menu has been completely changed to allow you to spend lives (Arwings) to heal your team. This is especially useful when going for Medals.
 
-**Controls**
+The Pause Menu has also been changed to allow you to Respawn at a checkpoint, or to go back to the map.
+
+The game's state will be saved, allowing you to restart the game and continue your run with the same amount of lives and upgrades.
+
+**Map Controls**
 
 * `D-Pad Right` brings you closer to Venom
 * `D-Pad Left` brings you closer to Corneria.
@@ -44,3 +48,24 @@ The following commands are only available when using the Star Fox 64 Client to p
 * `/program_args` - Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk.
 * `/deathlink` - Toggles Death Link.
 * `/ringlink` - Toggles Ring Link. (Currency collection in other games translates to Hit count in SF64)
+
+
+## Vanilla Medal Requirements
+
+| Mission  | Hit Score |
+|----------|-----------|
+| Corneria |       150 |
+| Meteo    |       200 |
+| Sector Y |       150 |
+| Katina   |       150 |
+| Fortuna  |        50 |
+| Aquas    |       150 |
+| Solar    |       100 |
+| Sector X |       150 |
+| Zoness   |       250 |
+| Titania  |       150 |
+| Sector Z |       100 |
+| Macbeth  |       150 |
+| Area 6   |       300 |
+| Bolse    |       150 |
+| Venom    |       200 |

@@ -29,3 +29,4 @@ typedef struct {
 #define sf_controllers_held ((sf_controller_t*)0x800DD880)
 #define sf_controllers_pressed ((sf_controller_t*)0x800DD898)
 #define sf_controller_timeout (*(u32*)0x800DD8B4)
+#define sf_active_controller_pressed (*(sf_controller_t**)0x8017797C)

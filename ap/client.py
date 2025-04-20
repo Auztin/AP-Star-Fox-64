@@ -1,7 +1,7 @@
 import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile, settings, atexit
 import worlds.LauncherComponents as LauncherComponents
 from CommonClient import CommonContext, ClientCommandProcessor, get_base_parser, server_loop, gui_enabled, logger
-from NetUtils import ClientStatus, NetworkItem
+from NetUtils import ClientStatus
 
 from .version import version
 from .ids import option_name_to_id, location_name_to_id, item_name_to_id, AP_CMD, AP_STATE
@@ -251,7 +251,6 @@ class StarFox64Context(CommonContext):
       match cmd:
         case "RoomInfo":
           self.seed_name = args["seed_name"]
-          self.n64_send_seed()
         case "RoomUpdate":
           self.n64_send_checked_locations(locations=set(args["checked_locations"]))
         case "Connected":
@@ -261,7 +260,9 @@ class StarFox64Context(CommonContext):
           await self.update_death_link(self.slot_data["options"]["deathlink"])
           await self.update_ring_link(self.slot_data["options"]["ringlink"])
 
+          self.n64_send_seed()
           self.n64_send_slot_data()
+          self.n64_send_ready()
           self.n64_send_checked_locations()
 
         case "ReceivedItems":
@@ -283,7 +284,7 @@ class StarFox64Context(CommonContext):
 
   def on_deathlink(self, data):
     super().on_deathlink(data)
-    self.n64_send_items(None, [NetworkItem(item_name_to_id["Death Link"], 0, 0)])
+    self.n64_send_deathlink()
 
   def on_ringlink(self, data):
     # This is for an incoming ringlink.
@@ -325,6 +326,8 @@ class StarFox64Context(CommonContext):
   def n64_send_seed(self, writer=None):
     if self.seed_name == None: return
     send = AP_CMD.SEED.to_bytes(2, "big")
+    send += self.team.to_bytes(2, "big")
+    send += self.slot.to_bytes(2, "big")
     send += self.seed_name.encode()
     self.n64_send(send, writer)
 
@@ -332,9 +335,14 @@ class StarFox64Context(CommonContext):
     if self.seed_name == None: return
     send = bytes()
     for name, value in self.slot_data["options"].items():
-      send += option_name_to_id[name].to_bytes(1, "big")
-      send += value.to_bytes(1, "big")
+      send += option_name_to_id[name].to_bytes(2, "big")
+      send += value.to_bytes(2, "big")
     self.n64_split_and_send(AP_CMD.OPTIONS.to_bytes(2, "big"), send, 2, writer)
+
+  def n64_send_ready(self, writer=None):
+    if self.seed_name == None: return
+    send = AP_CMD.READY.to_bytes(2, "big")
+    self.n64_send(send, writer)
 
   def n64_send_checked_locations(self, writer=None, locations=None):
     if self.seed_name == None: return
@@ -364,6 +372,11 @@ class StarFox64Context(CommonContext):
       send += m.to_bytes(2, "big", signed=True)
 
     self.n64_split_and_send(AP_CMD.BOUNCE.to_bytes(2, "big"), send, 4, writer)
+
+  def n64_send_deathlink(self, writer=None):
+    if self.seed_name == None: return
+    send = AP_CMD.DEATHLINK.to_bytes(2, "big")
+    self.n64_send(send, writer)
 
   def n64_send(self, send, writer=None):
     send = len(send).to_bytes(2, "big") + send
@@ -432,6 +445,7 @@ class N64Socket:
                 self.state = AP_STATE.CONNECTED
                 self.ctx.n64_send_seed(self.writer)
                 self.ctx.n64_send_slot_data(self.writer)
+                self.ctx.n64_send_ready(self.writer)
                 self.ctx.n64_send_checked_locations(self.writer)
                 self.ctx.n64_send_items(self.writer)
                 self.ctx.n64_sockets.add(self.writer)
@@ -448,12 +462,9 @@ class N64Socket:
                   if location == location_name_to_id["Goal Completed"]:
                     self.ctx.finished_game = True
                     await self.ctx.send_msgs([{"cmd": "StatusUpdate", "status": ClientStatus.CLIENT_GOAL}])
-                  elif location == location_name_to_id["Death Link"]:
-                    if "DeathLink" in self.ctx.tags: await self.ctx.send_death()
                   else:
                     locations.add(location)
                 await self.ctx.send_msgs([{"cmd": 'LocationChecks', "locations": tuple(locations)}])
-                pass
               case AP_CMD.BOUNCE:
                 header = int.from_bytes(data[:2])
                 data = data[2:] # trim header
@@ -461,6 +472,8 @@ class N64Socket:
                   if "RingLink" in self.ctx.tags:
                     ring_amount = int.from_bytes(data, "big", signed=True)
                     await self.ctx.transmit_ring(ring_amount)
+              case AP_CMD.DEATHLINK:
+                if "DeathLink" in self.ctx.tags: await self.ctx.send_death()
               case _:
                 logger.error(f"[N64] Unexpected packet: {cmd}")
                 return

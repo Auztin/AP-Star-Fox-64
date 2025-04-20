@@ -33,3 +33,23 @@ Star Fox 64:
 
   # Synchronize hit score with currency collection in other games (eg: Rings in Sonic)
   ringlink: false
+
+  # Set the number of lives (Arwings) you start with and reset to after a game over.
+  default_lives: 2
+
+  # Set the score required to earn the medal on each level.
+  medal_corneria: 150
+  medal_meteo: 200
+  medal_sector_y: 150
+  medal_katina: 150
+  medal_fortuna: 50
+  medal_aquas: 150
+  medal_solar: 100
+  medal_sector_x: 150
+  medal_zoness: 250
+  medal_titania: 150
+  medal_sector_z: 100
+  medal_macbeth: 150
+  medal_area_6: 300
+  medal_bolse: 150
+  medal_venom: 200

@@ -2,6 +2,10 @@
 
 #include "n64/types.h"
 
+#define SF_GFXT_MENU_BG           0x0601B4B0
+
+#define SF_GFX_WIDTH              300
+#define SF_GFX_HEIGHT             220
 #define	SF_GFX_SET_PRIMARY_COLOR  0xFA
 
 typedef union {
@@ -29,3 +33,4 @@ typedef int (*sf_fnt_gfx_setup)(sf_gfx_t**, u64 id);
 
 extern void sf_fn_gfx_draw_medal(float x, float y, float z);
 extern void sf_fn_gfx_draw_text(s32 x, s32 y, float xScale, float yScale, char* text);
+extern void sf_fn_gfx_draw_texture(sf_gfx_t**, u32 texture, u32 width, u32 height, float xPos, float yPos, float xScale, float yScale);
