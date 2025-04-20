@@ -53,7 +53,7 @@ void ringlink_update(){ // Runs each tick
 
   if (is_player_transitioning_state(PLAYER_STATE_ACTIVE,
                                     PLAYER_STATE_DOWN)){ // died
-    if (sf_player_lives <= 0){ // Game over special case.
+    if (sf_lives <= 0){ // Game over special case.
       batch_rings(-sf_target_hits);
       prep_ring_transmission(true);
     }else

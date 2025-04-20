@@ -8,7 +8,7 @@ option_name_to_id = {
   "shuffle_paths": 4,
   "accomplished_sends_complete": 5,
   "radio_rando": 6,
-  "ringlink": 7
+  "ringlink": 7,
   "default_lives": 8,
   "medal_corneria": 9,
   "medal_meteo": 10,
@@ -113,10 +113,10 @@ class AP_CMD:
   PONG = 3
   SEED = 4
   OPTIONS = 5
-  LOCATIONS = 6
-  ITEMS = 7
-  BOUNCE = 8
-  READY = 9
+  READY = 6
+  LOCATIONS = 7
+  ITEMS = 8
+  BOUNCE = 9
   DEATHLINK = 10
 
 class AP_STATE:
