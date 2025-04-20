@@ -133,8 +133,8 @@ void ap_input() {
             }
 
             main.last_player_hits = sf_target_hits; // Prevent a ringlink reflection
-
           }
+          break;
         case AP_CMD_DEATHLINK:
           ap.in.deathlink++;
           break;
