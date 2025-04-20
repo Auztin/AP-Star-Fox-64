@@ -421,6 +421,7 @@ void map_idle() {
     save_sync_medals();
     sf_map_ship_anim_state = 10;
     sf_controller_timeout = 0;
+    sf_hits = 0;
     if (sf_map_previous_planet == PLANET_AREA_6) sf_map_level_id = LEVEL_VENOM_2;
   }
   if (map.check) {
