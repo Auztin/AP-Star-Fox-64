@@ -47,6 +47,8 @@ The following commands are only available when using the Star Fox 64 Client to p
 * `/patch_path` - Sets (or unsets) the folder path of where to save the patched ROM.
 * `/program_args` - Sets (or unsets) the arguments to pass to the automatically run program. Defaults to passing the lua to Bizhawk.
 * `/deathlink` - Toggles Death Link.
+* `/ringlink` - Toggles Ring Link. (Currency collection in other games translates to Hit count in SF64)
+
 
 ## Vanilla Medal Requirements
 

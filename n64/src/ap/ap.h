@@ -12,6 +12,12 @@ typedef struct {
   u16 value;
 } ap_packet_option_t;
 
+typedef struct {
+  u16 header;
+  s16 data;
+} ap_packet_bounce_t;
+
+
 typedef struct __attribute__ ((aligned (16))) {
   u16 size;
   u16 cmd;
@@ -24,6 +30,7 @@ typedef struct __attribute__ ((aligned (16))) {
       u32 version;
       char msg[4];
     } handshake;
+    ap_packet_bounce_t bounce_packet;
     struct {
       u16 team;
       u16 slot;

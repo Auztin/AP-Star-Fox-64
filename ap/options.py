@@ -50,6 +50,11 @@ class RadioRando(Toggle):
     Randomize the radio dialog.
   """
 
+class RingLink(Toggle):
+  """
+    Enable Ring Link for use with games that support it. Incoming rings are converted to the current level's Hit counter.
+  """
+
 class DefaultLives(Range):
   """
     Set the number of lives (Arwings) you start with and reset to after a game over.
@@ -178,6 +183,7 @@ class MedalVenom(Range):
   range_end = 200
   default = 200
 
+
 @dataclass
 class StarFox64OptionsList:
   deathlink: DeathLink
@@ -187,6 +193,7 @@ class StarFox64OptionsList:
   shuffle_paths: ShufflePaths
   accomplished_sends_complete: AccomplishedSendsComplete
   radio_rando: RadioRando
+  ringlink: RingLink
   default_lives: DefaultLives
   medal_corneria: MedalCorneria
   medal_meteo: MedalMeteo

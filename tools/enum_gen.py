@@ -41,6 +41,7 @@ command_list = [
   "READY",
   "LOCATIONS",
   "ITEMS",
+  "BOUNCE",
   "DEATHLINK",
 ]
 commands = {cmd: value for value, cmd in enumerate(command_list)}

@@ -11,6 +11,7 @@
 #include "sf/global.h"
 #include "sf/controller.h"
 #include "sf/map.h"
+#include "hit_count.h"
 #include "sf/sfx.h"
 #include "sf/gfx.h"
 
@@ -45,6 +46,11 @@ void main_loop() {
     ap_output();
   }
   else usb_check();
+
+  if (ap_save.options[AP_OPTION_RINGLINK]) {
+    ringlink_update();
+  }
+
   if (sf_cur_state == GSTATE_PLAY && sf_player) {
     if (ap.in.deathlink) {
       if (sf_player->state == PLAYER_STATE_ACTIVE) {

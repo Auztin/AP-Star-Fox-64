@@ -7,6 +7,7 @@
 #include "version.h"
 #include "util.h"
 #include "save.h"
+#include "hit_count.h"
 
 ap_t ap = {0, };
 extern ap_packet_t* AP_INPUT_PTR;
@@ -112,6 +113,28 @@ void ap_input() {
           map.check = true;
           save.dirty = true;
           break;
+        case AP_CMD_BOUNCE:
+          if (ap.input.bounce_packet.header == AP_ITEM_RING_LINK){
+            s16 received_rings = (s16)ap.input.bounce_packet.data;
+
+            // Reducing hit counter requires setting both current and target hits
+            // at the same time, or the UI spinner will flip out
+            if (received_rings < 0){
+              if (sf_target_hits + received_rings <= 0) sf_current_hits = sf_target_hits = 0;
+              else {
+                sf_current_hits += received_rings;
+                sf_target_hits += received_rings;
+              }
+            }
+            else{
+              // Just set target hits. Looks nicer with the UI animation.
+              if (sf_target_hits + received_rings >= 511) sf_target_hits = 511;
+              else sf_target_hits += received_rings;
+            }
+
+            main.last_player_hits = sf_target_hits; // Prevent a ringlink reflection
+          }
+          break;
         case AP_CMD_DEATHLINK:
           ap.in.deathlink++;
           break;
@@ -152,4 +175,5 @@ void ap_output() {
     ap.ping_timer = 0;
     return;
   }
+  transmit_ring_message();
 }
