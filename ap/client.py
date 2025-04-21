@@ -1,11 +1,10 @@
-import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile, settings, atexit
+import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile, settings, atexit, time
 import worlds.LauncherComponents as LauncherComponents
 from CommonClient import CommonContext, ClientCommandProcessor, get_base_parser, server_loop, gui_enabled, logger
 from NetUtils import ClientStatus
 
 from .version import version
 from .ids import option_name_to_id, location_name_to_id, item_name_to_id, AP_CMD, AP_STATE
-import time
 
 game_name = "Star Fox 64"
 vanilla_version = "v1.1"
@@ -234,7 +233,8 @@ class StarFox64Context(CommonContext):
     await self.send_connect()
 
   async def disconnect(self, allow_autoreconnect: bool = False):
-    seed_name = 0
+    self.seed_name = 0
+    self.tags = {"AP"}
     await super().disconnect(allow_autoreconnect)
 
   async def check_assert(self, condition, title, message):
@@ -257,23 +257,20 @@ class StarFox64Context(CommonContext):
           await self.check_assert("slot_data" in args, "Missing Slot Data", "Necessary data is missing from this slot...")
           self.slot_data = args["slot_data"]
           await self.check_assert(version.as_u32() == self.slot_data["version"], "Version Mismatch", "The client version does not match the generated version.")
-          await self.update_death_link(self.slot_data["options"]["deathlink"])
-          await self.update_ring_link(self.slot_data["options"]["ringlink"])
-
+          old_tags = self.tags.copy()
+          if self.slot_data["options"]["deathlink"]: self.tags.add("DeathLink")
+          if self.slot_data["options"]["ringlink"]: self.tags.add("RingLink")
+          if old_tags != self.tags: await self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}])
           self.n64_send_seed()
           self.n64_send_slot_data()
           self.n64_send_ready()
           self.n64_send_checked_locations()
-
         case "ReceivedItems":
           self.n64_send_items(items=args["items"])
         case "Bounced":
           tags = args.get("tags", [])
           if "RingLink" in tags and self.last_ring_link != args["data"]["time"]:
-              self.on_ringlink(args["data"])
-        case _:
-          tags = args.get("tags", [])
-          print("Unknown message:", tags)
+            self.on_ringlink(args["data"])
         # case "PrintJSON":
         #   match args["type"]:
         #     case "ItemSend" | "ItemCheat":
@@ -292,36 +289,31 @@ class StarFox64Context(CommonContext):
     source = data["source"]
     event_time = data["time"]
     if source == self.slot: return
-
-    self.n64_send_bounce_message(None, \
-      header=item_name_to_id["Ring Link"], msg=[rings]);
+    self.n64_send_ringlink(rings)
 
   async def update_ring_link(self, ring_link: bool):
     """Helper function to set Ring Link connection tag on/off and update the connection if already connected."""
     old_tags = self.tags.copy()
-
     if ring_link:
-        self.tags.add("RingLink")
+      self.tags.add("RingLink")
     else:
-        self.tags -= {"RingLink"}
-
+      self.tags -= {"RingLink"}
     if old_tags != self.tags and self.server and not self.server.socket.closed:
-        await self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}])
+      await self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}])
 
-  async def transmit_ring(self, amount: int = 1):
+  async def send_ring(self, amount: int = 1):
     """Helper function to send a ringlink"""
     if self.server and self.server.socket:
-        self.last_ring_link = time.time()
-        msg = [{
-            "cmd": "Bounce", "tags": ["RingLink"],
-            "data": {
-                "amount": amount,
-                "source": self.slot,
-                "time": int(self.last_ring_link)
-            }
-        }]
-
-        await self.send_msgs(msg)
+      self.last_ring_link = time.time()
+      msg = [{
+        "cmd": "Bounce", "tags": ["RingLink"],
+        "data": {
+          "amount": amount,
+          "source": self.slot,
+          "time": int(self.last_ring_link)
+        }
+      }]
+      await self.send_msgs(msg)
 
   def n64_send_seed(self, writer=None):
     if self.seed_name == None: return
@@ -337,7 +329,7 @@ class StarFox64Context(CommonContext):
     for name, value in self.slot_data["options"].items():
       send += option_name_to_id[name].to_bytes(2, "big")
       send += value.to_bytes(2, "big")
-    self.n64_split_and_send(AP_CMD.OPTIONS.to_bytes(2, "big"), send, 2, writer)
+    self.n64_split_and_send(AP_CMD.OPTIONS.to_bytes(2, "big"), send, 4, writer)
 
   def n64_send_ready(self, writer=None):
     if self.seed_name == None: return
@@ -360,22 +352,16 @@ class StarFox64Context(CommonContext):
       send += item.item.to_bytes(4, "big")
     self.n64_split_and_send(AP_CMD.ITEMS.to_bytes(2, "big"), send, 4, writer)
 
-  def n64_send_bounce_message(self, writer=None, header=None, msg=None):
-    """For RingLink messages etc"""
-    if self.seed_name == None: return
-    if msg == None: return
-    if header == None: header=item_name_to_id["None"]
-
-    send = bytes()
-    send += header.to_bytes(2, "big")
-    for m in msg:
-      send += m.to_bytes(2, "big", signed=True)
-
-    self.n64_split_and_send(AP_CMD.BOUNCE.to_bytes(2, "big"), send, 4, writer)
-
   def n64_send_deathlink(self, writer=None):
     if self.seed_name == None: return
     send = AP_CMD.DEATHLINK.to_bytes(2, "big")
+    self.n64_send(send, writer)
+
+  def n64_send_ringlink(self, amount, writer=None):
+    """For RingLink messages etc"""
+    if self.seed_name == None: return
+    send = AP_CMD.RINGLINK.to_bytes(2, "big")
+    send += amount.to_bytes(2, "big", signed=True)
     self.n64_send(send, writer)
 
   def n64_send(self, send, writer=None):
@@ -465,15 +451,12 @@ class N64Socket:
                   else:
                     locations.add(location)
                 await self.ctx.send_msgs([{"cmd": 'LocationChecks', "locations": tuple(locations)}])
-              case AP_CMD.BOUNCE:
-                header = int.from_bytes(data[:2])
-                data = data[2:] # trim header
-                if header == item_name_to_id["Ring Link"]:
-                  if "RingLink" in self.ctx.tags:
-                    ring_amount = int.from_bytes(data, "big", signed=True)
-                    await self.ctx.transmit_ring(ring_amount)
               case AP_CMD.DEATHLINK:
                 if "DeathLink" in self.ctx.tags: await self.ctx.send_death()
+              case AP_CMD.RINGLINK:
+                if "RingLink" in self.ctx.tags:
+                  ring_amount = int.from_bytes(data[:2], "big", signed=True)
+                  await self.ctx.send_ring(ring_amount)
               case _:
                 logger.error(f"[N64] Unexpected packet: {cmd}")
                 return

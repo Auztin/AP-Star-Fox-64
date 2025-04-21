@@ -111,6 +111,7 @@ typedef struct {
 #define sf_star_wolf_alive ((s32*)0x80177CD0)
 #define sf_saved_star_wolf_alive ((s32*)0x80177CF0)
 #define sf_hits (*(s32*)0x80161A98)
+#define sf_displayed_hits (*(s32*)0x8016172C) // the hit accumulating spinner the player sees
 #define sf_total_hits (*(s32*)0x80161714)
 #define sf_mission_hits ((s32*)0x80177B70)
 #define sf_mission_medals ((s32*)0x80177BB0)
@@ -120,9 +121,6 @@ typedef struct {
 #define sf_pause_action (*(s32*)0x80161810)
 #define sf_pause_selection (*(s32*)0x80161814)
 #define sf_pause_timer (*(s32*)0x80161838)
-#define sf_current_hits (*(u16*)0x8016172E) // the hit accumulating spinner the player sees
-#define sf_target_hits (*(u16*)0x80161A9A) // actual hit counter
-#define sf_player_bombs (*(u8*)0x80177DA3)
 #define sf_reset_flags (*(s32*)0x80177824)
 #define sf_lives (*(s16*)0x80161AA0)
 #define sf_laser_strength (*(sf_laser_strength_t*)0x80161AA8)

@@ -6,6 +6,11 @@ class DeathLink(Toggle):
     When you die, everyone who enabled death link dies. Of course, the reverse is true too.
   """
 
+class RingLink(Toggle):
+  """
+    Enable Ring Link for use with games that support it. Incoming rings are converted to the current level's Hit counter.
+  """
+
 class VictoryCondition(Choice):
   """
     Choose your victory condition.
@@ -48,11 +53,6 @@ class AccomplishedSendsComplete(Toggle):
 class RadioRando(Toggle):
   """
     Randomize the radio dialog.
-  """
-
-class RingLink(Toggle):
-  """
-    Enable Ring Link for use with games that support it. Incoming rings are converted to the current level's Hit counter.
   """
 
 class DefaultLives(Range):
@@ -183,17 +183,16 @@ class MedalVenom(Range):
   range_end = 200
   default = 200
 
-
 @dataclass
 class StarFox64OptionsList:
   deathlink: DeathLink
+  ringlink: RingLink
   victory_condition: VictoryCondition
   required_medals: RequiredMedals
   shuffle_medals: ShuffleMedals
   shuffle_paths: ShufflePaths
   accomplished_sends_complete: AccomplishedSendsComplete
   radio_rando: RadioRando
-  ringlink: RingLink
   default_lives: DefaultLives
   medal_corneria: MedalCorneria
   medal_meteo: MedalMeteo

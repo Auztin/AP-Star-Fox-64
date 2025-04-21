@@ -2,13 +2,13 @@
 #include "map.h"
 #include "save.h"
 #include "util.h"
+#include "ringlink.h"
 #include "ap/ap.h"
 #include "sf/gfx.h"
 #include "sf/sfx.h"
 #include "sf/map.h"
 #include "sf/game.h"
 #include "sf/controller.h"
-#include "hit_count.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -73,7 +73,7 @@ void hud_pause_check_input() {
         break;
       case 1:
         sf_pause_action = 2;
-        ringlink_state = RINGLINK_STATE_ZERO_OUT;
+        ringlink.state = RINGLINK_STATE_ZERO_OUT;
         break;
       case 2:
         sf_pause_action = 10;
@@ -83,7 +83,7 @@ void hud_pause_check_input() {
         sf_next_state = GSTATE_MAP;
         sf_last_state = GSTATE_PLAY;
         map.ignore_rewards = true;
-        ringlink_state = RINGLINK_STATE_ZERO_OUT;
+        ringlink.state = RINGLINK_STATE_ZERO_OUT;
         break;
     }
   }

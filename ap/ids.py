@@ -2,13 +2,13 @@
 
 option_name_to_id = {
   "deathlink": 0,
-  "victory_condition": 1,
-  "required_medals": 2,
-  "shuffle_medals": 3,
-  "shuffle_paths": 4,
-  "accomplished_sends_complete": 5,
-  "radio_rando": 6,
-  "ringlink": 7,
+  "ringlink": 1,
+  "victory_condition": 2,
+  "required_medals": 3,
+  "shuffle_medals": 4,
+  "shuffle_paths": 5,
+  "accomplished_sends_complete": 6,
+  "radio_rando": 7,
   "default_lives": 8,
   "medal_corneria": 9,
   "medal_meteo": 10,
@@ -29,35 +29,33 @@ option_name_to_id = {
 
 item_name_to_id = {
   "None": -1,
-  "Death Link": 1,
-  "Ring Link": 2,
-  "Medal": 3,
-  "Aquas - Red Path": 4,
-  "Area 6 - Red Path": 5,
-  "Bolse - Blue Path": 6,
-  "Corneria - Blue Path": 7,
-  "Corneria - Red Path": 8,
-  "Fortuna - Blue Path": 9,
-  "Fortuna - Yellow Path": 10,
-  "Katina - Blue Path": 11,
-  "Katina - Yellow Path": 12,
-  "Macbeth - Blue Path": 13,
-  "Macbeth - Red Path": 14,
-  "Meteo - Blue Path": 15,
-  "Meteo - Warp Path": 16,
-  "Sector X - Blue Path": 17,
-  "Sector X - Yellow Path": 18,
-  "Sector X - Warp Path": 19,
-  "Sector Y - Yellow Path": 20,
-  "Sector Y - Red Path": 21,
-  "Sector Z - Blue Path": 22,
-  "Sector Z - Red Path": 23,
-  "Solar - Yellow Path": 24,
-  "Titania - Blue Path": 25,
-  "Zoness - Yellow Path": 26,
-  "Zoness - Red Path": 27,
-  "Defeated Robot Andross": 28,
-  "Defeated Andross": 29
+  "Medal": 1,
+  "Aquas - Red Path": 2,
+  "Area 6 - Red Path": 3,
+  "Bolse - Blue Path": 4,
+  "Corneria - Blue Path": 5,
+  "Corneria - Red Path": 6,
+  "Fortuna - Blue Path": 7,
+  "Fortuna - Yellow Path": 8,
+  "Katina - Blue Path": 9,
+  "Katina - Yellow Path": 10,
+  "Macbeth - Blue Path": 11,
+  "Macbeth - Red Path": 12,
+  "Meteo - Blue Path": 13,
+  "Meteo - Warp Path": 14,
+  "Sector X - Blue Path": 15,
+  "Sector X - Yellow Path": 16,
+  "Sector X - Warp Path": 17,
+  "Sector Y - Yellow Path": 18,
+  "Sector Y - Red Path": 19,
+  "Sector Z - Blue Path": 20,
+  "Sector Z - Red Path": 21,
+  "Solar - Yellow Path": 22,
+  "Titania - Blue Path": 23,
+  "Zoness - Yellow Path": 24,
+  "Zoness - Red Path": 25,
+  "Defeated Robot Andross": 26,
+  "Defeated Andross": 27
 }
 
 location_name_to_id = {
@@ -116,8 +114,8 @@ class AP_CMD:
   READY = 6
   LOCATIONS = 7
   ITEMS = 8
-  BOUNCE = 9
-  DEATHLINK = 10
+  DEATHLINK = 9
+  RINGLINK = 10
 
 class AP_STATE:
   DISCONNECTED = 0

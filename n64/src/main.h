@@ -9,7 +9,6 @@ typedef struct {
   u32 last_c0_count;
   u32 delta; // milliseconds since last frame
   sf_player_state_t last_player_state;
-  u16 last_player_hits;
 } main_t;
 extern main_t main;
 

@@ -6,6 +6,9 @@ Star Fox 64:
   # When you die, everyone who enabled death link dies. Of course, the reverse is true too.
   deathlink: false
 
+  # Enable Ring Link for use with games that support it. Incoming rings are converted to the current level's Hit counter.
+  ringlink: false
+
   # Require a certain number of medals before you can enter Venom 2.
   # The same requirment will apply for Venom 1 if your victory condition is 'andross_or_robot_andross'
   required_medals: 0
@@ -30,9 +33,6 @@ Star Fox 64:
 
   # Randomize the radio dialog.
   radio_rando: true
-
-  # Synchronize hit score with currency collection in other games (eg: Rings in Sonic)
-  ringlink: false
 
   # Set the number of lives (Arwings) you start with and reset to after a game over.
   default_lives: 2

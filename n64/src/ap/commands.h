@@ -12,7 +12,7 @@ typedef enum {
   AP_CMD_READY = 6,
   AP_CMD_LOCATIONS = 7,
   AP_CMD_ITEMS = 8,
-  AP_CMD_BOUNCE = 9,
-  AP_CMD_DEATHLINK = 10,
+  AP_CMD_DEATHLINK = 9,
+  AP_CMD_RINGLINK = 10,
   AP_CMD_MAX = 11,
 } ap_cmd_t;
