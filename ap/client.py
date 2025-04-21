@@ -252,7 +252,7 @@ class StarFox64Context(CommonContext):
         case "RoomInfo":
           self.seed_name = args["seed_name"]
         case "RoomUpdate":
-          self.n64_send_checked_locations(locations=set(args["checked_locations"]))
+          if "checked_locations" in args: self.n64_send_checked_locations(locations=set(args["checked_locations"]))
         case "Connected":
           await self.check_assert("slot_data" in args, "Missing Slot Data", "Necessary data is missing from this slot...")
           self.slot_data = args["slot_data"]
