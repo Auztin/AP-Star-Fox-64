@@ -42,6 +42,7 @@ typedef struct {
   s16 ping_timer;
   u8 state;
   bool ready;
+  bool ping_reply;
   u8 sent_locations[AP_LOCATION_MAX_BYTES/8];
   u8 received_items[AP_ITEM_MAX];
   struct {

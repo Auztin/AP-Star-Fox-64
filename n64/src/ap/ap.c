@@ -56,28 +56,15 @@ void ap_input() {
       }
       break;
     case AP_STATE_CONNECTED:
-      if (!ap.ping_timer) {
-        if (ap.state & AP_STATE_PINGED) {
-          ap.state = AP_STATE_DISCONNECTED;
-          break;
-        }
-        ap.output.data[0] = 0;
-        ap.output.cmd = AP_CMD_PING;
-        ap.output.size = 2;
-        ap.state |= AP_STATE_PINGED;
-        break;
-      }
       switch (ap.input.cmd) {
         case AP_CMD_NONE:
           break;
         case AP_CMD_PING:
-          ap.output.data[0] = 0;
-          ap.output.cmd = AP_CMD_PONG;
-          ap.output.size = 2;
+          ap.ping_reply = true;
           break;
         case AP_CMD_PONG:
           ap.state &= ~AP_STATE_PINGED;
-          ap.ping_timer = 0;
+          ap.ping_timer = 1;
           break;
         case AP_CMD_SEED:
           save_load_slot(ap.input.seed.team, ap.input.seed.slot, ap.input.seed.data);
@@ -131,7 +118,35 @@ void ap_input() {
 }
 
 void ap_output() {
-  if (ap.output.cmd != AP_CMD_NONE) return;
+  switch (ap.state) {
+    case AP_STATE_CONNECTED:
+      if (!ap.ping_timer) {
+        ap.output.data[0] = 0;
+        ap.output.cmd = AP_CMD_PING;
+        ap.output.size = 2;
+        ap.state |= AP_STATE_PINGED;
+        return;
+      }
+      break;
+    case AP_STATE_CONNECTED | AP_STATE_PINGED:
+      if (!ap.ping_timer) {
+        ap.state = AP_STATE_DISCONNECTED;
+        return;
+      }
+      break;
+    default:
+      return;
+  }
+  if (ap.output.cmd != AP_CMD_NONE || !ap.ready) return;
+  int ping_timer = ap.ping_timer;
+  ap.ping_timer = 0;
+  if (ap.ping_reply) {
+    ap.output.data[0] = 0;
+    ap.output.cmd = AP_CMD_PONG;
+    ap.output.size = 2;
+    ap.ping_reply = false;
+    return;
+  }
   int offset = 0;
   for (int i = 0; i < AP_LOCATION_MAX_BYTES/8; i++) {
     u8 location = ap_save.locations[i];
@@ -149,15 +164,14 @@ void ap_output() {
   if (offset) {
     ap.output.cmd = AP_CMD_LOCATIONS;
     ap.output.size = 2+offset*sizeof(*ap.output.locations);
-    ap.ping_timer = 0;
     return;
   }
   if (ap.out.deathlink) {
     ap.out.deathlink--;
     ap.output.cmd = AP_CMD_DEATHLINK;
     ap.output.size = 2;
-    ap.ping_timer = 0;
     return;
   }
   if (ringlink_transmit()) return;
+  ap.ping_timer = ping_timer;
 }
