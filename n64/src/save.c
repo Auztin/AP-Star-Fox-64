@@ -107,6 +107,7 @@ void save_load_slot(u16 ap_team, u16 ap_slot, char* ap_seed) {
   }
   if (slot == -1) {
     slot = save.data.recents[SAVE_SLOTS-1];
+    data = &save.data.custom[slot];
     memset(data, 0, sizeof(save_custom_data_t));
     memcpy(data->seed, ap_seed, sizeof(data->seed));
     data->team = ap_team;
