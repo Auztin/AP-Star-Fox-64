@@ -58,12 +58,11 @@ void ap_input() {
     case AP_STATE_CONNECTED:
       switch (ap.input.cmd) {
         case AP_CMD_NONE:
-          break;
+          goto skip_ping_reset;
         case AP_CMD_PING:
           ap.ping_reply = true;
           break;
         case AP_CMD_PONG:
-          ap.state &= ~AP_STATE_PINGED;
           ap.ping_timer = 1;
           break;
         case AP_CMD_SEED:
@@ -112,6 +111,8 @@ void ap_input() {
         default:
           ap.state = AP_STATE_DISCONNECTED;
       }
+      ap.state &= ~AP_STATE_PINGED;
+      skip_ping_reset:
       break;
   }
   ap.input.cmd = AP_CMD_NONE;
@@ -137,7 +138,7 @@ void ap_output() {
     default:
       return;
   }
-  if (ap.output.cmd != AP_CMD_NONE || !ap.ready) return;
+  if (ap.output.cmd != AP_CMD_NONE) return;
   int ping_timer = ap.ping_timer;
   ap.ping_timer = 0;
   if (ap.ping_reply) {
@@ -147,6 +148,7 @@ void ap_output() {
     ap.ping_reply = false;
     return;
   }
+  if (!ap.ready) goto no_output;
   int offset = 0;
   for (int i = 0; i < AP_LOCATION_MAX_BYTES/8; i++) {
     u8 location = ap_save.locations[i];
@@ -173,5 +175,6 @@ void ap_output() {
     return;
   }
   if (ringlink_transmit()) return;
+  no_output:
   ap.ping_timer = ping_timer;
 }
