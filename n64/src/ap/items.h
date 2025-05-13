@@ -55,8 +55,8 @@ typedef enum {
 typedef enum {
   AP_ITEM_TYPE_NONE = -1,
   AP_ITEM_TYPE_CHECKPOINT = 0,
-  AP_ITEM_TYPE_PATH = 1,
-  AP_ITEM_TYPE_EVENT = 2,
+  AP_ITEM_TYPE_EVENT = 1,
+  AP_ITEM_TYPE_PATH = 2,
 } ap_item_type_t;
 
 ap_item_type_t ap_item_type(ap_item_t item);

@@ -17,8 +17,9 @@ location_group_set = set()
 with open("../template.yaml", "w") as file:
   file.write("name: Player{NUMBER}\n")
   file.write("game: Star Fox 64\n")
-  file.write("Star Fox 64:\n\n")
+  file.write("Star Fox 64:\n")
   for idx, (name, cls) in enumerate(typing.get_type_hints(StarFox64OptionsList).items()):
+    file.write("\n")
     for line in cls.__doc__.strip().split("\n"):
       file.write(f"  # {line.strip()}\n")
     cls_vars = vars(cls)
@@ -41,7 +42,7 @@ with open("../template.yaml", "w") as file:
         file.write(f"  # {option_idx} or {option_name}\n")
         option_idx += 1
 
-    file.write(f"  {name}: {default}\n\n")
+    file.write(f"  {name}: {default}\n")
 
 last_id = 0
 for item_name, item in data.items.items():
@@ -152,7 +153,7 @@ with open("../n64/src/ap/items.h", "w") as f:
   f.write("} ap_item_t;\n\n")
   f.write("typedef enum {\n")
   f.write(f"  AP_ITEM_TYPE_NONE = -1,\n")
-  for i, group in enumerate(item_type_set):
+  for i, group in enumerate(sorted(item_type_set)):
     f.write(f"  AP_ITEM_TYPE_{name_to_c(group)} = {i},\n")
   f.write("} ap_item_type_t;\n\n")
   f.write("ap_item_type_t ap_item_type(ap_item_t item);\n")
@@ -178,7 +179,7 @@ with open("../n64/src/ap/locations.h", "w") as f:
   f.write(f"#define AP_LOCATION_MAX_BYTES ((AP_LOCATION_MAX-1)-(AP_LOCATION_MAX-1)%8+8)\n\n")
   f.write("typedef enum {\n")
   f.write(f"  AP_LOCATION_GROUP_NONE = -1,\n")
-  for i, group in enumerate(location_group_set):
+  for i, group in enumerate(sorted(location_group_set)):
     f.write(f"  AP_LOCATION_GROUP_{name_to_c(group)} = {i},\n")
   f.write("} ap_location_group_t;\n\n")
   f.write("ap_item_t ap_location_item(ap_location_t location);\n")

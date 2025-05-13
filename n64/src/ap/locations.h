@@ -148,9 +148,9 @@ typedef enum {
 
 typedef enum {
   AP_LOCATION_GROUP_NONE = -1,
-  AP_LOCATION_GROUP_MEDALS = 0,
-  AP_LOCATION_GROUP_CHECKPOINTS = 1,
-  AP_LOCATION_GROUP_FREESTANDING_ITEMS = 2,
+  AP_LOCATION_GROUP_CHECKPOINTS = 0,
+  AP_LOCATION_GROUP_FREESTANDING_ITEMS = 1,
+  AP_LOCATION_GROUP_MEDALS = 2,
 } ap_location_group_t;
 
 ap_item_t ap_location_item(ap_location_t location);
