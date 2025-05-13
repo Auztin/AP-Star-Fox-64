@@ -25,6 +25,7 @@ void main_init() {
 }
 
 void main_loop() {
+  sf_segment_load(0x0B, AP_ASSETS);
   sf_fn_game_update();
   u32 c0_count = C0_COUNT();
   main.delta = (c0_count-main.last_c0_count)/TICKS_PER_MILLISECOND;
@@ -60,6 +61,37 @@ void main_loop() {
         else ap.out.deathlink++;
       }
       main.last_player_state = sf_player->state;
+    }
+    else if (sf_player->state == PLAYER_STATE_ACTIVE && sf_map_level_id != LEVEL_TRAINING) {
+      if (sf_laser_strength < LASERS_HYPER && ap_save.items[AP_ITEM_LASER_UPGRADE] > ap_save.received.lasers) {
+        if (sf_player->rightWingState == 1 || sf_player->leftWingState == 1) sf_fn_repair_wings();
+        else sf_laser_strength++;
+        ap_save.received.lasers++;
+      }
+      if (ap_save.items[AP_ITEM_SILVER_RING] > ap_save.received.silvers) {
+        sf_player->heal += (ap_save.items[AP_ITEM_SILVER_RING]-ap_save.received.silvers)*32;
+      }
+      ap_save.received.silvers = ap_save.items[AP_ITEM_SILVER_RING];
+      if (sf_gold_rings < 3 && ap_save.items[AP_ITEM_GOLD_RING] > ap_save.received.golds) {
+        sf_player->heal += 32;
+        sf_gold_rings++;
+        ap_save.received.golds++;
+        if (sf_gold_rings == 3) sf_fn_sfx_play(SF_SFX_SHIELD_UPGRADE, sf_player->sfx_source, 0);
+      }
+      if (ap_save.items[AP_ITEM_SILVER_STAR] > ap_save.received.stars) {
+        sf_player->heal += (ap_save.items[AP_ITEM_SILVER_STAR]-ap_save.received.stars)*128;
+      }
+      ap_save.received.stars = ap_save.items[AP_ITEM_SILVER_STAR];
+      if (sf_bombs < 9 && ap_save.items[AP_ITEM_BOMB] > ap_save.received.bombs) {
+        sf_bombs++;
+        ap_save.received.bombs++;
+      }
+      ap_save.received.bombs = ap_save.items[AP_ITEM_BOMB];
+      if (ap_save.items[AP_ITEM_EXTRA_ARWING] > ap_save.received.lives) {
+        sf_lives += ap_save.items[AP_ITEM_EXTRA_ARWING]-ap_save.received.lives;
+        if (sf_lives > 99) sf_lives = 99;
+      }
+      ap_save.received.lives = ap_save.items[AP_ITEM_EXTRA_ARWING];
     }
   }
 }

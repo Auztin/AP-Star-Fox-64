@@ -6,6 +6,8 @@
 #include "items.h"
 
 #define PACKET_SIZE (512-4)
+extern u32 AP_ASSETS;
+extern u32 ASSET_AP_LOGO;
 
 typedef struct {
   u16 name;

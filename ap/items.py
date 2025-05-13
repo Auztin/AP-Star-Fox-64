@@ -36,6 +36,9 @@ def create_item(world, item_name):
     case "Path":
       if not world.options.shuffle_paths:
         item_id = None
+    case "Checkpoint":
+      if not world.options.shuffle_checkpoints:
+        item_id = None
     case "Event":
       item_id = None
   return StarFox64Item(item_name, classification, item_id, world.player)

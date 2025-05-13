@@ -47,6 +47,13 @@ class ShufflePaths(DefaultOnToggle):
   """
   display_name = "Shuffle Paths"
 
+class ShuffleCheckpoints(Toggle):
+  """
+    Shuffle checkpoints rings for the levels that have them.
+    You will not be able to use the checkpoint ring in a level until you receive the item for it.
+  """
+  display_name = "Shuffle Checkpoints"
+
 class AccomplishedSendsComplete(Toggle):
   """
     Getting 'Mission Accomplished' on any level will also count as getting 'Mission Complete' for that level.
@@ -194,6 +201,7 @@ class StarFox64OptionsList:
   required_medals: RequiredMedals
   shuffle_medals: ShuffleMedals
   shuffle_paths: ShufflePaths
+  shuffle_checkpoints: ShuffleCheckpoints
   accomplished_sends_complete: AccomplishedSendsComplete
   radio_rando: RadioRando
   default_lives: DefaultLives

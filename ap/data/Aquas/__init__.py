@@ -10,6 +10,11 @@ regions = {
         "group": "Medals",
         "logic": "true",
       },
+      "Aquas - Checkpoint": {
+        "item": "Aquas - Checkpoint",
+        "group": "Checkpoints",
+        "logic": "true",
+      },
     },
     "exits": {
       "Zoness": {

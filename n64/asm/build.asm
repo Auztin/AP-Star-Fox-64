@@ -38,6 +38,11 @@ PAYLOAD_START:
 .align 0x10
 .importobj srcbundle
 .include "displaced.asm"
+.include "assets.asm"
+
+.align 0x10
+AP_ASSETS:
+.incbin assetsdir+"/assets.dl"
 
 PAYLOAD_END:
 .endarea ; payload max memory

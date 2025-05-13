@@ -38,14 +38,21 @@ typedef enum {
 } sf_player_state_t;
 
 typedef struct {
-  u8 _unknown_0x000_0x1C7[0x1C7];
+  u8 _unk_0x000_0x1C7[0x1C7];
   sf_player_state_t state;
-  u8 _unknown_0x1CC_0x21F[0x053];
+  u8 _unk_0x1CC_0x21F[0x053];
   s32 radioDamageTimer;
-  u8 _unknown_0x224_0x263[0x03F];
+  u8 _unk_0x224_0x263[0x03F];
   s32 shields;
-  u8 _unknown_0x268_0x2BB[0x053];
+  s32 damage;
+  s32 heal;
+  u8 _unk_0x270_0x2BB[0x04C];
   float boost_meter;
+  u8 _unk_0x2C0_0x45F[0x19F];
+  float sfx_source[3];
+  u8 _unk_0x46C_0x49B[0x030];
+  u8 rightWingState;
+  u8 leftWingState;
 } sf_player_t;
 
 typedef enum {
@@ -137,5 +144,8 @@ typedef int (*sf_fnt_pause_check_joystick)();
 
 typedef int (*sf_fnt_main_menu_update)();
 #define sf_fn_main_menu_update ((sf_fnt_main_menu_update)0x80192D58)
+
+typedef int (*sf_fnt_repair_wings)();
+#define sf_fn_repair_wings ((sf_fnt_repair_wings)0x80067A40)
 
 extern void sf_fn_play_radio_message(u16* msg, sf_radio_character_t);

@@ -14,6 +14,36 @@ regions = {
         "group": "Medals",
         "logic": "true",
       },
+      "Sector Y - Above Friendly Ship Near Start: Gold Ring": {
+        "item": "Gold Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Sector Y - Before Checkpoint: Gold Ring": {
+        "item": "Gold Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Sector Y - Checkpoint": {
+        "item": "Sector Y - Checkpoint",
+        "group": "Checkpoints",
+        "logic": "true",
+      },
+      "Sector Y - Breaking Through The Enemy Fleet, Beginning: Gold Ring": {
+        "item": "Gold Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Sector Y - Breaking Through The Enemy Fleet, Middle: Gold Ring": {
+        "item": "Gold Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Sector Y - Breaking Through The Enemy Fleet, End: Gold Ring": {
+        "item": "Gold Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
     },
     "exits": {
       "Katina": {

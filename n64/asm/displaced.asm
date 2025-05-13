@@ -80,3 +80,38 @@ LD V0, 0x0038 (SP)
 SW V0, 0x001C (SP)
 J 0x8009D994
 NOP
+
+.align 0x08
+sf_fn_gfx_set_scale:
+J 0x8005980C
+MTC1 A0, F12
+
+.align 0x08
+sf_fn_object_item_init:
+OR V0, A0, R0
+J 0x8006144C
+ADDIU A0, R0, 0x006C
+
+.align 0x08
+sf_fn_object_info:
+SLL T6, A1, 3
+J 0x800612C0
+ADDU T6, T6, A1
+
+.align 0x08
+sf_fn_item_load:
+ADDIU SP, SP, -0x18
+J 0x8006186C
+SW RA, 0x0014 (SP)
+
+.align 0x08
+sf_fn_item_drop:
+ADDIU SP, SP, -0x28
+J 0x800660F8
+SW RA, 0x0024 (SP)
+
+.align 0x08
+sf_fn_item_draw_silver_ring:
+ADDIU SP, SP, -0x18
+J 0x8005C908
+SW A0, 0x0018 (SP)

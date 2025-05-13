@@ -1,0 +1,2 @@
+ASSET_AP_LOGO:
+.word 0xB000440

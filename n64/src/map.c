@@ -493,6 +493,11 @@ void map_idle() {
       map_paths();
     }
   }
+  if (ap_save.items[AP_ITEM_EXTRA_ARWING] > ap_save.received.lives) {
+    sf_lives += ap_save.items[AP_ITEM_EXTRA_ARWING]-ap_save.received.lives;
+    if (sf_lives > 99) sf_lives = 99;
+  }
+  ap_save.received.lives = ap_save.items[AP_ITEM_EXTRA_ARWING];
   sf_fn_map_idle();
 }
 

@@ -23,6 +23,14 @@ typedef struct {
   u16 options[AP_OPTION_MAX];
   u8 locations[AP_LOCATION_MAX_BYTES/8];
   u8 items[AP_ITEM_MAX];
+  struct {
+    u8 lasers;
+    u8 silvers;
+    u8 golds;
+    u8 stars;
+    u8 bombs;
+    u8 lives;
+  } received;
   save_custom_data_planet_t planets[PLANET_MAX];
   union {
     struct {

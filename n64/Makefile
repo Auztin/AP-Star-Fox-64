@@ -3,7 +3,7 @@ BOOTDIR:= boot
 SRCDIR:= src
 TOOLSDIR:= tools
 ROMDIR:= rom
-ASSETS:= assets
+ASSETSDIR:= assets
 SHARED:= ../shared
 
 GAME:=Star_Fox_64
@@ -32,12 +32,13 @@ BOOTDEPS = $(shell find $(BOOTDIR)/ -type f -name '*.d')
 SOURCE:= $(shell find $(SRCDIR)/ -type f -name '*.c')
 OBJS = $(shell find $(SRCDIR)/ -type f -name '*.o')
 DEPS = $(shell find $(SRCDIR)/ -type f -name '*.d')
-CLEANUP = $(BOOTOBJS) $(BOOTDEPS) $(OBJS) $(DEPS)
+ASSETS:= $(shell find $(ASSETSDIR)/ -type f -name '*' ! -name 'assets.dl')
+CLEANUP = $(BOOTOBJS) $(BOOTDEPS) $(OBJS) $(DEPS) $(ASSETSDIR)/assets.dl
 
-$(PATCHEDROM): $(BOOTDIR)/bundle.o $(SRCDIR)/bundle.o $(ASM)
+$(PATCHEDROM): $(BOOTDIR)/bundle.o $(SRCDIR)/bundle.o $(ASM) $(ASSETSDIR)/assets.dl
 	$(ARMIPS) -root $(ASMDIR) -sym2 ../$(ROMDIR)/asm_symbols.txt build.asm\
 		-strequ romfile ../$(OGROM) -strequ patchedfile ../$@\
-		-strequ bootbundle ../$(word 1,$^) -strequ srcbundle ../$(word 2,$^) -strequ assetsdir ../$(ASSETS)
+		-strequ bootbundle ../$(word 1,$^) -strequ srcbundle ../$(word 2,$^) -strequ assetsdir ../$(ASSETSDIR)
 	python $(TOOLSDIR)/crc.py $@
 	$(ED64ROMCONFIG) -w sram256k $@
 
@@ -51,6 +52,9 @@ include $(BOOTDEPS) $(DEPS)
 
 %.o: %.c Makefile
 	$(CC) -o $@ -c $< $(CFLAGS) $(CPPFLAGS) -MMD
+
+$(ASSETSDIR)/assets.dl: $(ASSETS) $(TOOLSDIR)/assets.py
+	python $(TOOLSDIR)/assets.py $@ $(ASMDIR)/assets.asm $(shell find $(ASSETSDIR)/ -type f -name '*.obj')
 
 .PHONY: patch
 patch: $(PATCHFILE)

@@ -10,6 +10,11 @@ regions = {
         "group": "Medals",
         "logic": "true",
       },
+      "Solar - Checkpoint": {
+        "item": "Solar - Checkpoint",
+        "group": "Checkpoints",
+        "logic": "true",
+      },
     },
     "exits": {
       "Macbeth": {

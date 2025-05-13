@@ -1,8 +1,13 @@
 #pragma once
 
-#define SF_SFX_CURSOR 0x49000002
-#define SF_SFX_ERROR  0x4900100A
-#define SF_SFX_DECIDE 0x49000003
+#include "n64/types.h"
+
+#define SF_SFX_CURSOR           0x49000002
+#define SF_SFX_ERROR            0x4900100A
+#define SF_SFX_DECIDE           0x49000003
+#define SF_SFX_RING             0x4900200E
+#define SF_SFX_GET_EMBLEM       0x49008030
+#define SF_SFX_SHIELD_UPGRADE   0x49008015
 
 #define sf_sfx_default_pos ((float*)0x800C5D28)
 

@@ -3,6 +3,11 @@ __pycache__/
 release/
 tools/enum_gen.last
 ap/assets/
+n64/assets/assets.dl
+n64/assets/*/*.data
+n64/assets/*/*.blend1
+n64/assets/*/*.mtl
+n64/assets/*/*.obj
 n64/rom/
 n64/tools/mips64/
 n64/tools/armips

@@ -14,6 +14,46 @@ regions = {
         "group": "Medals",
         "logic": "true",
       },
+      "Meteo - After Starting Asteroids: Gold Ring": {
+        "item": "Gold Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Meteo - End Of First Tunnel, Top: Gold Ring": {
+        "item": "Gold Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Meteo - End Of First Tunnel, Middle: Silver Ring": {
+        "item": "Silver Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Meteo - End Of First Tunnel, Bottom: Bomb": {
+        "item": "Bomb",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Meteo - Between Two Big Asteroids: Bomb": {
+        "item": "Bomb",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Meteo - Checkpoint": {
+        "item": "Meteo - Checkpoint",
+        "group": "Checkpoints",
+        "logic": "true",
+      },
+      "Meteo - Near Warp Rings: Gold Ring": {
+        "item": "Gold Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
+      "Meteo - Just Before Boss: Gold Ring": {
+        "item": "Gold Ring",
+        "group": "Freestanding Items",
+        "logic": "true",
+      },
     },
     "exits": {
       "Fortuna": {

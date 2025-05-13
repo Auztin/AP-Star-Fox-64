@@ -1,6 +1,71 @@
 items = {
+  "Nothing": {
+    "class": "filler",
+  },
+  "Laser Upgrade": {
+    "class": "filler",
+  },
+  "Silver Ring": {
+    "class": "filler",
+  },
+  "Silver Star": {
+    "class": "filler",
+  },
+  "Gold Ring": {
+    "class": "filler",
+  },
+  "Bomb": {
+    "class": "filler",
+  },
+  "Extra Arwing": {
+    "class": "filler",
+  },
   "Medal": {
     "class": "filler",
+  },
+  "Corneria - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Meteo - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Sector X - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Titania - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Sector Y - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Aquas - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Zoness - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Area 6 - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Solar - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Macbeth - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
+  },
+  "Venom 1 - Checkpoint": {
+    "type": "Checkpoint",
+    "class": "useful",
   },
   "Aquas - Red Path": {
     "type": "Path",
