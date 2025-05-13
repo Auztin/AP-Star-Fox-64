@@ -5,11 +5,13 @@ class DeathLink(Toggle):
   """
     When you die, everyone who enabled death link dies. Of course, the reverse is true too.
   """
+  display_name = "Death Link"
 
 class RingLink(Toggle):
   """
     Enable Ring Link for use with games that support it. Incoming rings are converted to the current level's Hit counter.
   """
+  display_name = "Ring Link"
 
 class VictoryCondition(Choice):
   """
@@ -58,7 +60,7 @@ class AccomplishedSendsComplete(Toggle):
   """
     Getting 'Mission Accomplished' on any level will also count as getting 'Mission Complete' for that level.
   """
-  display_name = "Shuffle Paths"
+  display_name = "Accomplished Sends Complete"
 
 class RadioRando(Choice):
   """
@@ -74,6 +76,7 @@ class DefaultLives(Range):
   """
     Set the number of lives (Arwings) you start with and reset to after a game over.
   """
+  display_name = "Default Lives"
   range_start = 0
   range_end = 99
   default = 2
@@ -82,6 +85,7 @@ class MedalCorneria(Range):
   """
     Set the score required to earn the medal on Corneria.
   """
+  display_name = "Medal Corneria"
   range_start = 0
   range_end = 150
   default = 150
@@ -90,6 +94,7 @@ class MedalMeteo(Range):
   """
     Set the score required to earn the medal on Meteo.
   """
+  display_name = "Medal Meteo"
   range_start = 0
   range_end = 200
   default = 200
@@ -98,6 +103,7 @@ class MedalSectorY(Range):
   """
     Set the score required to earn the medal on Sector Y.
   """
+  display_name = "Medal Sector Y"
   range_start = 0
   range_end = 150
   default = 150
@@ -106,6 +112,7 @@ class MedalKatina(Range):
   """
     Set the score required to earn the medal on Katina.
   """
+  display_name = "Medal Katina"
   range_start = 0
   range_end = 150
   default = 150
@@ -114,6 +121,7 @@ class MedalFortuna(Range):
   """
     Set the score required to earn the medal on Fortuna.
   """
+  display_name = "Medal Fortuna"
   range_start = 0
   range_end = 50
   default = 50
@@ -122,6 +130,7 @@ class MedalAquas(Range):
   """
     Set the score required to earn the medal on Aquas.
   """
+  display_name = "Medal Aquas"
   range_start = 0
   range_end = 150
   default = 150
@@ -130,6 +139,7 @@ class MedalSolar(Range):
   """
     Set the score required to earn the medal on Solar.
   """
+  display_name = "Medal Solar"
   range_start = 0
   range_end = 100
   default = 100
@@ -138,6 +148,7 @@ class MedalSectorX(Range):
   """
     Set the score required to earn the medal on Sector X.
   """
+  display_name = "Medal Sector X"
   range_start = 0
   range_end = 150
   default = 150
@@ -146,6 +157,7 @@ class MedalZoness(Range):
   """
     Set the score required to earn the medal on Zoness.
   """
+  display_name = "Medal Zoness"
   range_start = 0
   range_end = 250
   default = 250
@@ -154,6 +166,7 @@ class MedalTitania(Range):
   """
     Set the score required to earn the medal on Titania.
   """
+  display_name = "Medal Titania"
   range_start = 0
   range_end = 150
   default = 150
@@ -162,6 +175,7 @@ class MedalSectorZ(Range):
   """
     Set the score required to earn the medal on Sector Z.
   """
+  display_name = "Medal Sector Z"
   range_start = 0
   range_end = 100
   default = 100
@@ -170,6 +184,7 @@ class MedalMacbeth(Range):
   """
     Set the score required to earn the medal on Macbeth.
   """
+  display_name = "Medal Macbeth"
   range_start = 0
   range_end = 150
   default = 150
@@ -178,6 +193,7 @@ class MedalArea6(Range):
   """
     Set the score required to earn the medal on Area 6.
   """
+  display_name = "Medal Area 6"
   range_start = 0
   range_end = 300
   default = 300
@@ -186,6 +202,7 @@ class MedalBolse(Range):
   """
     Set the score required to earn the medal on Bolse.
   """
+  display_name = "Medal Bolse"
   range_start = 0
   range_end = 150
   default = 150
@@ -194,6 +211,7 @@ class MedalVenom(Range):
   """
     Set the score required to earn the medal on Venom.
   """
+  display_name = "Medal Venom"
   range_start = 0
   range_end = 200
   default = 200
