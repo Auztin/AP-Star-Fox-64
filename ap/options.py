@@ -60,10 +60,15 @@ class AccomplishedSendsComplete(Toggle):
   """
   display_name = "Shuffle Paths"
 
-class RadioRando(DefaultOnToggle):
+class RadioRando(Choice):
   """
     Randomize the radio dialog.
   """
+  display_name = "Radio Rando"
+  option_off = 0
+  option_on = 1
+  option_on_including_training = 2
+  default = 1
 
 class DefaultLives(Range):
   """

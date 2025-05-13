@@ -76,6 +76,7 @@ void ap_input() {
             if (option->name >= AP_OPTION_MAX) break;
             ap_save.options[option->name] = option->value;
           }
+          save_init_random();
           break;
         case AP_CMD_READY:
           ap.ready = true;

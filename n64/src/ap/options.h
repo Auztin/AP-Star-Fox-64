@@ -37,3 +37,10 @@ typedef enum {
   AP_OPTION_VICTORY_CONDITION_ANDROSS = 2,
   AP_OPTION_VICTORY_CONDITION_MAX = 3,
 } ap_option_victory_condition_t;
+
+typedef enum {
+  AP_OPTION_RADIO_RANDO_OFF = 0,
+  AP_OPTION_RADIO_RANDO_ON = 1,
+  AP_OPTION_RADIO_RANDO_ON_INCLUDING_TRAINING = 2,
+  AP_OPTION_RADIO_RANDO_MAX = 3,
+} ap_option_radio_rando_t;

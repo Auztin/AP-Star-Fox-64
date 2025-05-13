@@ -39,7 +39,11 @@ Star Fox 64:
   accomplished_sends_complete: false
 
   # Randomize the radio dialog.
-  radio_rando: true
+  # You can use the following numbers or names:
+  # 0 or off
+  # 1 or on
+  # 2 or on_including_training
+  radio_rando: on
 
   # Set the number of lives (Arwings) you start with and reset to after a game over.
   default_lives: 2

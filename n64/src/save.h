@@ -70,6 +70,7 @@ typedef struct {
 extern save_t save;
 #define ap_save (save.data.custom[save.slot])
 
+void save_init_random();
 void save_init();
 void save_sram_write();
 u32 save_eeprom_read(u32 _unused, u32 offset, u32 *ramAddr);

@@ -735,7 +735,11 @@ u16 radio_rando[countof(radio_vanilla)];
 
 void radio_randomize() {
   memset(radio_rando, 0xFF, sizeof(radio_rando));
-  const int max = countof(radio_vanilla);
+  int max = countof(radio_vanilla);
+  if (ap_save.options[AP_OPTION_RADIO_RANDO] != AP_OPTION_RADIO_RANDO_ON_INCLUDING_TRAINING) {
+    max -= 33;
+    for (int i = max; i < countof(radio_vanilla); i++) radio_rando[i] = i;
+  }
   int iter = max;
   while (iter) {
     int pos = crand()%iter--;
