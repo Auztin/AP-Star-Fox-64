@@ -7,6 +7,7 @@ regions = {
       },
       "Solar - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

@@ -3,6 +3,7 @@ regions = {
     "locations": {
       "Venom - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

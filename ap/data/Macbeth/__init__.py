@@ -11,6 +11,7 @@ regions = {
       },
       "Macbeth - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

@@ -11,6 +11,7 @@ regions = {
       },
       "Meteo - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

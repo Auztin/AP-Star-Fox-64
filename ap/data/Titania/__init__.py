@@ -7,6 +7,7 @@ regions = {
       },
       "Titania - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

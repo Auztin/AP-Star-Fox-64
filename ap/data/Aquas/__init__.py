@@ -7,6 +7,7 @@ regions = {
       },
       "Aquas - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

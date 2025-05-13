@@ -7,6 +7,7 @@ regions = {
       },
       "Bolse - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

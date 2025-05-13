@@ -133,6 +133,11 @@ class StarFox64World(World):
               if item.code:
                 ap_location.address = self.location_name_to_id[location_name]
                 self.multiworld.itempool.append(item)
+                data_item = data.items[location["item"]]
+                if "type" in data_item:
+                  self.item_name_groups[location["item"]] = data_item["type"]
+                if "group" in location:
+                  self.location_name_groups[location_name] = location["group"]
               else:
                 ap_location.place_locked_item(item)
               ap_location.access_rule = parser.parse(location["logic"], f"{self.game}, Location: {region_name} -> {location_name}")

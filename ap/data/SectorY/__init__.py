@@ -11,6 +11,7 @@ regions = {
       },
       "Sector Y - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

@@ -11,6 +11,7 @@ regions = {
       },
       "Corneria - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

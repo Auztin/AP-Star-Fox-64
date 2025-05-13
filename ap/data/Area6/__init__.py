@@ -7,6 +7,7 @@ regions = {
       },
       "Area 6 - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },

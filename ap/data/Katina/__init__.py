@@ -11,6 +11,7 @@ regions = {
       },
       "Katina - Medal": {
         "item": "Medal",
+        "group": "Medals",
         "logic": "true",
       },
     },
