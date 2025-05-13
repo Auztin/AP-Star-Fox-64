@@ -298,8 +298,11 @@ class StarFox64Context(CommonContext):
       self.tags.add("RingLink")
     else:
       self.tags -= {"RingLink"}
-    if old_tags != self.tags and self.server and not self.server.socket.closed:
-      await self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}])
+    if old_tags != self.tags:
+      self.slot_data["ringlink"] = 1 if "RingLink" in self.tags else 0
+      self.n64_send_slot_data()
+      if self.server and not self.server.socket.closed:
+        await self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}])
 
   async def send_ring(self, amount: int = 1):
     """Helper function to send a ringlink"""
