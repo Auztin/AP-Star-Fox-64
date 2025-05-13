@@ -29,6 +29,29 @@ void hud_pause_draw_selection(char* text, s32 x, s32 y, s32 entry) {
   sf_fn_gfx_draw_text(x, y, 1, 1, text);
 }
 
+int hud_get_medal_count() {
+  switch (sf_map_level_id) {
+    case LEVEL_CORNERIA: return ap_save.options[AP_OPTION_MEDAL_CORNERIA];
+    case LEVEL_METEO: return ap_save.options[AP_OPTION_MEDAL_METEO];
+    case LEVEL_SECTOR_X: return ap_save.options[AP_OPTION_MEDAL_SECTOR_X];
+    case LEVEL_AREA_6: return ap_save.options[AP_OPTION_MEDAL_AREA_6];
+    case LEVEL_SECTOR_Y: return ap_save.options[AP_OPTION_MEDAL_SECTOR_Y];
+    case LEVEL_VENOM_1: return ap_save.options[AP_OPTION_MEDAL_VENOM];
+    case LEVEL_SOLAR: return ap_save.options[AP_OPTION_MEDAL_SOLAR];
+    case LEVEL_ZONESS: return ap_save.options[AP_OPTION_MEDAL_ZONESS];
+    case LEVEL_VENOM_ANDROSS: return ap_save.options[AP_OPTION_MEDAL_VENOM];
+    case LEVEL_MACBETH: return ap_save.options[AP_OPTION_MEDAL_MACBETH];
+    case LEVEL_TITANIA: return ap_save.options[AP_OPTION_MEDAL_TITANIA];
+    case LEVEL_AQUAS: return ap_save.options[AP_OPTION_MEDAL_AQUAS];
+    case LEVEL_FORTUNA: return ap_save.options[AP_OPTION_MEDAL_FORTUNA];
+    case LEVEL_KATINA: return ap_save.options[AP_OPTION_MEDAL_KATINA];
+    case LEVEL_BOLSE: return ap_save.options[AP_OPTION_MEDAL_BOLSE];
+    case LEVEL_SECTOR_Z: return ap_save.options[AP_OPTION_MEDAL_SECTOR_Z];
+    case LEVEL_VENOM_2: return ap_save.options[AP_OPTION_MEDAL_VENOM];
+    default: return -1;
+  }
+}
+
 void hud_pause_draw_selections() {
   hud_selection = &sf_pause_selection;
   hud_update_selected_color(sf_pause_timer);
@@ -38,6 +61,15 @@ void hud_pause_draw_selections() {
     hud_pause_draw_selection("RETRY COURSE", 110, 106, 1);
     hud_pause_draw_selection("RESPAWN", 130, 116, 2);
     hud_pause_draw_selection("BACK TO MAP", 115, 126, 3);
+  }
+  int medal_count = hud_get_medal_count();
+  if (medal_count != -1) {
+    char text1[] = "FOR";
+    char text2[] = "MEDAL: 000";
+    itoa(medal_count, text2+sizeof(text2)-4, 10);
+    sf_fn_gfx_color(0xFF, 0xFF, 0, 0xFF);
+    sf_fn_gfx_draw_text(20, 90, 1, 1, text1);
+    sf_fn_gfx_draw_text(20, 100, 1, 1, text2);
   }
 }
 
