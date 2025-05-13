@@ -54,7 +54,6 @@ typedef struct {
 } ap_t;
 extern ap_t ap;
 
-
 void ap_init();
 void ap_input();
 void ap_output();

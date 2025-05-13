@@ -93,8 +93,7 @@ void ap_input() {
           for (int i = 0; i < (ap.input.size-2)/sizeof(*ap.input.items); i++) {
             u32 item = ap.input.items[i];
             if (item >= AP_ITEM_MAX) break;
-            ap.received_items[item]++;
-            ap_save.items[item] = ap.received_items[item];
+            ap_save.items[item] = ++ap.received_items[item];
           }
           map.check = true;
           save.dirty = true;

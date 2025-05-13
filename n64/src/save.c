@@ -69,7 +69,7 @@ u32 save_eeprom_write(u32 _unused, u32 offset, u32 *ramAddr) {
 }
 
 void save_sync_medals() {
-  const ap_location_t locations[] = {
+  static const ap_location_t locations[] = {
     AP_LOCATION_METEO_MEDAL,
     AP_LOCATION_AREA_6_MEDAL,
     AP_LOCATION_BOLSE_MEDAL,

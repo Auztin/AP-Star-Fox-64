@@ -13,7 +13,7 @@
 map_t map = {0, };
 
 ap_location_t map_get_clear_location(sf_planet_id_t planet, u8 mission_status) {
-  const ap_location_t locations[][3] = {
+  static const ap_location_t locations[][3] = {
     {AP_LOCATION_METEO_MISSION_COMPLETE, AP_LOCATION_NONE, AP_LOCATION_METEO_WARP},
     {AP_LOCATION_AREA_6_MISSION_COMPLETE, AP_LOCATION_NONE, AP_LOCATION_NONE},
     {AP_LOCATION_BOLSE_MISSION_COMPLETE, AP_LOCATION_NONE, AP_LOCATION_NONE},
@@ -34,7 +34,7 @@ ap_location_t map_get_clear_location(sf_planet_id_t planet, u8 mission_status) {
 }
 
 ap_item_t map_path_item(sf_planet_id_t from, sf_planet_id_t to) {
-  const ap_item_t paths[] = {
+  static const ap_item_t paths[] = {
     AP_ITEM_CORNERIA_BLUE_PATH,
     AP_ITEM_METEO_BLUE_PATH,
     AP_ITEM_FORTUNA_BLUE_PATH,
@@ -248,7 +248,7 @@ void map_check_paths(sf_planet_id_t from, bool* planet_access) {
 }
 
 void map_paths() {
-  const ap_location_t medal_locations[] = {
+  static const ap_location_t medal_locations[] = {
     AP_LOCATION_METEO_MEDAL,
     AP_LOCATION_AREA_6_MEDAL,
     AP_LOCATION_BOLSE_MEDAL,
@@ -265,7 +265,7 @@ void map_paths() {
     AP_LOCATION_VENOM_MEDAL,
     AP_LOCATION_SOLAR_MEDAL,
   };
-  const sf_level_t planet_to_level[] = {
+  static const sf_level_t planet_to_level[] = {
     LEVEL_METEO,
     LEVEL_AREA_6,
     LEVEL_BOLSE,
