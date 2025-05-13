@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import PerGameCommonOptions, Choice, Range, Toggle, DefaultOnToggle
+from Options import PerGameCommonOptions, Choice, Range, Toggle, DefaultOnToggle, StartInventoryPool
 
 class DeathLink(Toggle):
   """
@@ -243,6 +243,7 @@ class StarFox64OptionsList:
   medal_area_6: MedalArea6
   medal_bolse: MedalBolse
   medal_venom: MedalVenom
+  start_inventory_from_pool: StartInventoryPool
 
 @dataclass
 class StarFox64Options(StarFox64OptionsList, PerGameCommonOptions):

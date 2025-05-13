@@ -94,6 +94,13 @@ class StarFox64World(World):
   location_name_to_id = locations.name_to_id
   topology_present = True
   web = StarFox64WebWorld()
+  filler_weights = {
+    "Silver Ring": 50,
+    "Silver Star": 25,
+    "Laser Upgrade": 9.5,
+    "Bomb": 9.5,
+    "Gold Ring": 6,
+  }
 
   def check_options(self):
     if not self.options.shuffle_medals and self.options.required_medals == 15 and self.options.victory_condition == "andross_or_robot_andross":
@@ -152,6 +159,9 @@ class StarFox64World(World):
   def create_items(self):
     self.check_options()
     self.create_everything()
+
+  def get_filler_item_name(self):
+    return self.random.choices(list(self.filler_weights.keys()), self.filler_weights.values())[0]
 
   def fill_slot_data(self):
     return {

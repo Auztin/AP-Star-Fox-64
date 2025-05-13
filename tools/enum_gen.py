@@ -19,6 +19,7 @@ with open("../template.yaml", "w") as file:
   file.write("game: Star Fox 64\n")
   file.write("Star Fox 64:\n")
   for idx, (name, cls) in enumerate(typing.get_type_hints(StarFox64OptionsList).items()):
+    if issubclass(cls, Options.StartInventoryPool): continue
     file.write("\n")
     for line in cls.__doc__.strip().split("\n"):
       file.write(f"  # {line.strip()}\n")

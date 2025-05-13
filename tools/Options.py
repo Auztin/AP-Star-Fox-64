@@ -14,3 +14,6 @@ class Toggle:
 
 class DefaultOnToggle:
   pass
+
+class StartInventoryPool:
+  pass
