@@ -14,13 +14,34 @@ location_items = {}
 location_groups = {}
 location_group_set = set()
 
-for idx, (name, cls) in enumerate(typing.get_type_hints(StarFox64OptionsList).items()):
-  options[name] = idx
-  if issubclass(cls, Options.Choice):
-    option_choices[name] = {}
-    for var, value in vars(cls).items():
-      if var in ["__module__", "__doc__", "display_name", "default"]: continue
-      option_choices[name][re.sub("^option_", "", var)] = value
+with open("../template.yaml", "w") as file:
+  file.write("name: Player{NUMBER}\n")
+  file.write("game: Star Fox 64\n")
+  file.write("Star Fox 64:\n\n")
+  for idx, (name, cls) in enumerate(typing.get_type_hints(StarFox64OptionsList).items()):
+    for line in cls.__doc__.strip().split("\n"):
+      file.write(f"  # {line.strip()}\n")
+    cls_vars = vars(cls)
+    default = 0
+    if "default" in cls_vars: default = cls.default
+    options[name] = idx
+    if issubclass(cls, Options.Toggle):
+      default = "false"
+    if issubclass(cls, Options.DefaultOnToggle):
+      default = "true"
+    if issubclass(cls, Options.Choice):
+      file.write(f"  # You can use the following numbers or names:\n")
+      option_choices[name] = {}
+      option_idx = 0
+      for var, value in vars(cls).items():
+        if var in ["__module__", "__doc__", "display_name", "default"]: continue
+        option_name = re.sub("^option_", "", var)
+        option_choices[name][option_name] = value
+        if default == option_idx: default = option_name
+        file.write(f"  # {option_idx} or {option_name}\n")
+        option_idx += 1
+
+    file.write(f"  {name}: {default}\n\n")
 
 last_id = 0
 for item_name, item in data.items.items():

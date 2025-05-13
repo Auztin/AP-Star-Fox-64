@@ -14,6 +14,9 @@ class RingLink(Toggle):
 class VictoryCondition(Choice):
   """
     Choose your victory condition.
+    Andross or Robot Andross - Defeat either Andross or Robot Andross
+    Andross and Robot Andross - Defeat both Andross and Robot Andross
+    Andross - Defeat Andross in Venom 2
   """
   display_name = "Victory Condition"
   option_andross_or_robot_andross = 0
@@ -50,7 +53,7 @@ class AccomplishedSendsComplete(Toggle):
   """
   display_name = "Shuffle Paths"
 
-class RadioRando(Toggle):
+class RadioRando(DefaultOnToggle):
   """
     Randomize the radio dialog.
   """
