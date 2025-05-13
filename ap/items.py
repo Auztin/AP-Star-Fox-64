@@ -14,6 +14,7 @@ class StarFox64Item(Item):
 def create_item(world, item_name):
   item = data.items[item_name]
   item_id = name_to_id[item_name]
+  item_type = item.get("type", item_name)
   classification = ItemClassification.filler
 
   match item["class"]:
@@ -26,7 +27,7 @@ def create_item(world, item_name):
     case "progression_skip_balancing":
       classification = ItemClassification.progression_skip_balancing
 
-  match item["type"]:
+  match item_type:
     case "Medal":
       if world.options.required_medals > 0:
         classification = ItemClassification.progression_skip_balancing
@@ -35,6 +36,6 @@ def create_item(world, item_name):
     case "Path":
       if not world.options.shuffle_paths:
         item_id = None
-    case "Victory":
+    case "Event":
       item_id = None
   return StarFox64Item(item_name, classification, item_id, world.player)

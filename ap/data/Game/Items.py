@@ -1,6 +1,5 @@
 items = {
   "Medal": {
-    "type": "Medal",
     "class": "filler",
   },
   "Aquas - Red Path": {
@@ -100,11 +99,11 @@ items = {
     "class": "progression",
   },
   "Defeated Robot Andross": {
-    "type": "Victory",
+    "type": "Event",
     "class": "progression",
   },
   "Defeated Andross": {
-    "type": "Victory",
+    "type": "Event",
     "class": "progression",
   },
 }
