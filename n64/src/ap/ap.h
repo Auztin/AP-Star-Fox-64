@@ -35,6 +35,7 @@ typedef struct __attribute__ ((aligned (16))) {
     ap_packet_option_t options[PACKET_SIZE/sizeof(ap_packet_option_t)];
     u32 locations[PACKET_SIZE/4];
     u32 items[PACKET_SIZE/4];
+    char message[PACKET_SIZE];
   };
 } ap_packet_t;
 
@@ -53,6 +54,8 @@ typedef struct {
   struct {
     u8 deathlink;
   } out;
+  s16 message_timer;
+  char message[PACKET_SIZE];
 } ap_t;
 extern ap_t ap;
 

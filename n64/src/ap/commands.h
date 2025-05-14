@@ -14,5 +14,6 @@ typedef enum {
   AP_CMD_ITEMS = 8,
   AP_CMD_DEATHLINK = 9,
   AP_CMD_RINGLINK = 10,
-  AP_CMD_MAX = 11,
+  AP_CMD_MESSAGE = 11,
+  AP_CMD_MAX = 12,
 } ap_cmd_t;

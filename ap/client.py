@@ -271,11 +271,14 @@ class StarFox64Context(CommonContext):
           tags = args.get("tags", [])
           if "RingLink" in tags and self.last_ring_link != args["data"]["time"]:
             self.on_ringlink(args["data"])
-        # case "PrintJSON":
-        #   match args["type"]:
-        #     case "ItemSend" | "ItemCheat":
-        #       print(f"  receiving: {args["receiving"]}")
-        #       print(f"  item: {args["item"]}") # item.item, item.player
+        case "PrintJSON":
+          match args["type"]:
+            case "ItemSend" | "ItemCheat":
+              item = args["item"]
+              if item.player == self.slot:
+                for n64 in self.n64_sockets:
+                  n64.messages.append(f"RECEIVED {self.item_names.lookup_in_game(item.item)}")
+                  if len(n64.messages) == 1: self.n64_send_message("", n64)
     except AssertionError as e:
       logger.error(e)
 
@@ -318,67 +321,75 @@ class StarFox64Context(CommonContext):
       }]
       await self.send_msgs(msg)
 
-  def n64_send_seed(self, writer=None):
+  def n64_send_seed(self, socket=None):
     if self.seed_name == None: return
     send = AP_CMD.SEED.to_bytes(2, "big")
     send += self.team.to_bytes(2, "big")
     send += self.slot.to_bytes(2, "big")
     send += self.seed_name.encode()
-    self.n64_send(send, writer)
+    self.n64_send(send, socket)
 
-  def n64_send_slot_data(self, writer=None):
+  def n64_send_slot_data(self, socket=None):
     if self.seed_name == None: return
     send = bytes()
     for name, value in self.slot_data["options"].items():
       send += option_name_to_id[name].to_bytes(2, "big")
       send += value.to_bytes(2, "big")
-    self.n64_split_and_send(AP_CMD.OPTIONS.to_bytes(2, "big"), send, 4, writer)
+    self.n64_split_and_send(AP_CMD.OPTIONS.to_bytes(2, "big"), send, 4, socket)
 
-  def n64_send_ready(self, writer=None):
+  def n64_send_ready(self, socket=None):
     if self.seed_name == None: return
     send = AP_CMD.READY.to_bytes(2, "big")
-    self.n64_send(send, writer)
+    self.n64_send(send, socket)
 
-  def n64_send_checked_locations(self, writer=None, locations=None):
+  def n64_send_checked_locations(self, socket=None, locations=None):
     if self.seed_name == None: return
     if not locations: locations = self.checked_locations
     send = bytes()
     for location in locations:
       send += location.to_bytes(4, "big")
-    self.n64_split_and_send(AP_CMD.LOCATIONS.to_bytes(2, "big"), send, 4, writer)
+    self.n64_split_and_send(AP_CMD.LOCATIONS.to_bytes(2, "big"), send, 4, socket)
 
-  def n64_send_items(self, writer=None, items=None):
+  def n64_send_items(self, socket=None, items=None):
     if self.seed_name == None: return
     if not items: items = self.items_received
     send = bytes()
     for item in items:
       send += item.item.to_bytes(4, "big")
-    self.n64_split_and_send(AP_CMD.ITEMS.to_bytes(2, "big"), send, 4, writer)
+    self.n64_split_and_send(AP_CMD.ITEMS.to_bytes(2, "big"), send, 4, socket)
 
-  def n64_send_deathlink(self, writer=None):
+  def n64_send_deathlink(self, socket=None):
     if self.seed_name == None: return
     send = AP_CMD.DEATHLINK.to_bytes(2, "big")
-    self.n64_send(send, writer)
+    self.n64_send(send, socket)
 
-  def n64_send_ringlink(self, amount, writer=None):
+  def n64_send_ringlink(self, amount, socket=None):
     """For RingLink messages etc"""
     if self.seed_name == None: return
     send = AP_CMD.RINGLINK.to_bytes(2, "big")
     send += amount.to_bytes(2, "big", signed=True)
-    self.n64_send(send, writer)
+    self.n64_send(send, socket)
 
-  def n64_send(self, send, writer=None):
+  def n64_send_message(self, message, socket=None):
+    send = AP_CMD.MESSAGE.to_bytes(2, "big")
+    message = message.upper()
+    for char in message:
+      send += ord(char).to_bytes(1, "big")
+    send += b"\0"
+    self.n64_send(send, socket)
+
+  def n64_send(self, send, socket=None):
     send = len(send).to_bytes(2, "big") + send
-    writers = self.n64_sockets
-    if writer: writers = {writer}
-    for n64 in writers:
-      n64.write(send)
+    sockets = self.n64_sockets
+    if socket: sockets = {socket}
+    for n64 in sockets:
+      n64.writer.write(send)
 
-  def n64_split_and_send(self, cmd, send, element_size, writer=None):
+  def n64_split_and_send(self, cmd, send, element_size, socket=None):
     max_packet_size = 510 # not including cmd
     size = max_packet_size - max_packet_size % element_size
     for idx in range(0, len(send), size):
-      self.n64_send(cmd + send[idx:idx+size], writer)
+      self.n64_send(cmd + send[idx:idx+size], socket)
 
 class N64Socket:
 
@@ -390,11 +401,12 @@ class N64Socket:
     self.ctx = ctx
     self.ping = True
     self.state = AP_STATE.DISCONNECTED
+    self.messages = []
     logger.info(f"[N64] Connecting")
     asyncio.create_task(self.ping_loop())
     await self.loop()
     self.ping = False
-    ctx.n64_sockets -= {writer}
+    ctx.n64_sockets -= {self}
     writer.close()
     await writer.wait_closed()
     logger.info(f"[N64] Disconnected")
@@ -425,25 +437,25 @@ class N64Socket:
                 send = AP_CMD.HANDSHAKE.to_bytes(2, "big")
                 send += v.to_bytes(4, "big")
                 send += b"'LO!"
-                self.ctx.n64_send(send, self.writer)
+                self.ctx.n64_send(send, self)
                 self.state = AP_STATE.CONNECTING
           case AP_STATE.CONNECTING:
             match cmd:
               case AP_CMD.PING:
-                self.ctx.n64_send(AP_CMD.PONG.to_bytes(2, "big"), self.writer)
+                self.ctx.n64_send(AP_CMD.PONG.to_bytes(2, "big"), self)
                 self.state = AP_STATE.CONNECTED
-                self.ctx.n64_send_seed(self.writer)
-                self.ctx.n64_send_slot_data(self.writer)
-                self.ctx.n64_send_ready(self.writer)
-                self.ctx.n64_send_checked_locations(self.writer)
-                self.ctx.n64_send_items(self.writer)
-                self.ctx.n64_sockets.add(self.writer)
+                self.ctx.n64_send_seed(self)
+                self.ctx.n64_send_slot_data(self)
+                self.ctx.n64_send_ready(self)
+                self.ctx.n64_send_checked_locations(self)
+                self.ctx.n64_send_items(self)
+                self.ctx.n64_sockets.add(self)
                 logger.info(f"[N64] Connected")
           case AP_STATE.CONNECTED:
             self.state &= ~AP_STATE.PINGED
             match cmd:
               case AP_CMD.PING:
-                self.ctx.n64_send(AP_CMD.PONG.to_bytes(2, "big"), self.writer)
+                self.ctx.n64_send(AP_CMD.PONG.to_bytes(2, "big"), self)
               case AP_CMD.LOCATIONS:
                 locations = set()
                 for idx in range(0, len(data), 4):
@@ -460,6 +472,9 @@ class N64Socket:
                 if "RingLink" in self.ctx.tags:
                   ring_amount = int.from_bytes(data[:2], "big", signed=True)
                   await self.ctx.send_ring(ring_amount)
+              case AP_CMD.MESSAGE:
+                if len(self.messages):
+                  self.ctx.n64_send_message(self.messages.pop(0), self)
               case _:
                 logger.error(f"[N64] Unexpected packet: {cmd}")
                 return

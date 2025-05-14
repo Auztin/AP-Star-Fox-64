@@ -108,6 +108,13 @@ void ap_input() {
           if (sf_displayed_hits > sf_hits) sf_displayed_hits = sf_hits; // UI spinner breaks when decreasing
           ringlink.last_player_hits = sf_hits; // Prevent a ringlink reflection
           break;
+        case AP_CMD_MESSAGE:
+          if (ap.input.message[0]) {
+            strcpy(ap.message, ap.input.message);
+            ap.message_timer = 3000;
+          }
+          else if (ap.message_timer == 0) ap.message[0] = 1;
+          break;
         default:
           ap.state = AP_STATE_DISCONNECTED;
       }
@@ -175,6 +182,12 @@ void ap_output() {
     return;
   }
   if (ringlink_transmit()) return;
+  if (!ap.message_timer && ap.message[0]) {
+    ap.message[0] = 0;
+    ap.output.cmd = AP_CMD_MESSAGE;
+    ap.output.size = 2;
+    return;
+  }
   no_output:
   ap.ping_timer = ping_timer;
 }

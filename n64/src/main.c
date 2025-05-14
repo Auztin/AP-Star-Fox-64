@@ -94,6 +94,13 @@ void main_loop() {
       ap_save.received.lives = ap_save.items[AP_ITEM_EXTRA_ARWING];
     }
   }
+  if (ap.message_timer) {
+    ap.message_timer -= main.delta;
+    if (ap.message_timer < 0) ap.message_timer = 0;
+    sf_fn_gfx_setup(&sf_gfx, 0x53);
+    sf_fn_gfx_color(0xFF, 0xFF, 0, 0xFF);
+    sf_fn_gfx_draw_text(20, 210, 1, 1, ap.message);
+  }
 }
 
 void main_goal_completed() {
@@ -127,8 +134,8 @@ void main_menu_update() {
   sf_fn_main_menu_update();
   sf_fn_gfx_setup(&sf_gfx, 0x53);
   sf_fn_gfx_color(0xFF, 0xFF, 0, 0xFF);
-  sf_fn_gfx_draw_text(20, 205, 1, 1, text_client);
-  sf_fn_gfx_draw_text(20, 215, 1, 1, text_ap);
+  sf_fn_gfx_draw_text(20, 20, 1, 1, text_client);
+  sf_fn_gfx_draw_text(20, 30, 1, 1, text_ap);
 }
 
 bool main_check_medal(u16 score) {

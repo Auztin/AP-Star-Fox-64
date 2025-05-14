@@ -230,6 +230,7 @@ class AP_CMD:
   ITEMS = 8
   DEATHLINK = 9
   RINGLINK = 10
+  MESSAGE = 11
 
 class AP_STATE:
   DISCONNECTED = 0
