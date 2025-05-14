@@ -19,13 +19,13 @@ regions = {
         "group": "Freestanding Items",
         "logic": "true",
       },
-      "Meteo - End Of First Tunnel, Top: Gold Ring": {
-        "item": "Gold Ring",
+      "Meteo - End Of First Tunnel, Top: Silver Ring": {
+        "item": "Silver Ring",
         "group": "Freestanding Items",
         "logic": "true",
       },
-      "Meteo - End Of First Tunnel, Middle: Silver Ring": {
-        "item": "Silver Ring",
+      "Meteo - End Of First Tunnel, Middle: Gold Ring": {
+        "item": "Gold Ring",
         "group": "Freestanding Items",
         "logic": "true",
       },
