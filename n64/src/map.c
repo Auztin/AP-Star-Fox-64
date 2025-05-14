@@ -351,7 +351,9 @@ void map_paths() {
     sf_mission_team[i].falco = save_planet->falco ? 0xFF : 0;
     if (i < sf_map_current_mission) {
       sf_total_hits += sf_mission_hits[i];
-      sf_mission_clear[planet_to_level[next]] = sf_mission_medals[i] + 1;
+      if (level_access != AP_OPTION_LEVEL_ACCESS_SHUFFLE_LEVELS || planet_access[next]) {
+        sf_mission_clear[planet_to_level[next]] = sf_mission_medals[i] + 1;
+      }
     }
     if (i && i <= sf_map_current_mission) {
       for (int i = 0; i < 24; i++) {
