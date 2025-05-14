@@ -69,6 +69,7 @@ class StarFox64WebWorld(WebWorld):
     OptionGroup("Shuffle Options", [
       options.ShufflePaths,
       options.ShuffleMedals,
+      options.ShuffleCheckpoints,
     ]),
     OptionGroup("Speedup Options", [
       options.AccomplishedSendsComplete,
@@ -78,6 +79,21 @@ class StarFox64WebWorld(WebWorld):
     ]),
     OptionGroup("Accessibility Options", [
       options.DefaultLives,
+      options.MedalCorneria,
+      options.MedalMeteo,
+      options.MedalSectorY,
+      options.MedalKatina,
+      options.MedalFortuna,
+      options.MedalAquas,
+      options.MedalSolar,
+      options.MedalSectorX,
+      options.MedalZoness,
+      options.MedalTitania,
+      options.MedalSectorZ,
+      options.MedalMacbeth,
+      options.MedalArea6,
+      options.MedalBolse,
+      options.MedalVenom,
     ]),
   ]
 
