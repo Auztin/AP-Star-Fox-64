@@ -39,14 +39,12 @@ with open("../template.yaml", "w") as file:
     if issubclass(cls, Options.Choice):
       file.write(f"  # You can use the following numbers or names:\n")
       option_choices[name] = {}
-      option_idx = 0
       for var, value in cls_vars.items():
         if var in ["__module__", "__doc__", "display_name", "default"]: continue
         option_name = re.sub("^option_", "", var)
         option_choices[name][option_name] = value
-        if default == option_idx: default = option_name
+        if default == cls_vars[var]: default = option_name
         file.write(f"  # {cls_vars[var]} or {option_name}\n")
-        option_idx += 1
 
     file.write(f"  {name}: {default}\n")
 
