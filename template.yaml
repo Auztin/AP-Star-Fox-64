@@ -20,6 +20,8 @@ Star Fox 64:
 
   # Require a certain number of medals before you can enter Venom 2.
   # The same requirment will apply for Venom 1 if your victory condition is 'Andross or Robot Andross'
+  # Minimum value is: 0
+  # Maximum value is: 15
   required_medals: 0
 
   # Shuffle the medals awarded by reaching a certain number of Hits in each level.
@@ -64,49 +66,81 @@ Star Fox 64:
   engine_glow: default
 
   # Set the number of lives (Arwings) you start with and reset to after a game over.
+  # Minimum value is: 0
+  # Maximum value is: 99
   default_lives: 2
 
   # Set the score required to earn the medal on Corneria.
+  # Minimum value is: 0
+  # Maximum value is: 150
   medal_corneria: 150
 
   # Set the score required to earn the medal on Meteo.
+  # Minimum value is: 0
+  # Maximum value is: 200
   medal_meteo: 200
 
   # Set the score required to earn the medal on Sector Y.
+  # Minimum value is: 0
+  # Maximum value is: 150
   medal_sector_y: 150
 
   # Set the score required to earn the medal on Katina.
+  # Minimum value is: 0
+  # Maximum value is: 150
   medal_katina: 150
 
   # Set the score required to earn the medal on Fortuna.
+  # Minimum value is: 0
+  # Maximum value is: 50
   medal_fortuna: 50
 
   # Set the score required to earn the medal on Aquas.
+  # Minimum value is: 0
+  # Maximum value is: 150
   medal_aquas: 150
 
   # Set the score required to earn the medal on Solar.
+  # Minimum value is: 0
+  # Maximum value is: 100
   medal_solar: 100
 
   # Set the score required to earn the medal on Sector X.
+  # Minimum value is: 0
+  # Maximum value is: 150
   medal_sector_x: 150
 
   # Set the score required to earn the medal on Zoness.
+  # Minimum value is: 0
+  # Maximum value is: 250
   medal_zoness: 250
 
   # Set the score required to earn the medal on Titania.
+  # Minimum value is: 0
+  # Maximum value is: 150
   medal_titania: 150
 
   # Set the score required to earn the medal on Sector Z.
+  # Minimum value is: 0
+  # Maximum value is: 100
   medal_sector_z: 100
 
   # Set the score required to earn the medal on Macbeth.
+  # Minimum value is: 0
+  # Maximum value is: 150
   medal_macbeth: 150
 
   # Set the score required to earn the medal on Area 6.
+  # Minimum value is: 0
+  # Maximum value is: 300
   medal_area_6: 300
 
   # Set the score required to earn the medal on Bolse.
+  # Minimum value is: 0
+  # Maximum value is: 150
   medal_bolse: 150
 
   # Set the score required to earn the medal on Venom.
+  # Minimum value is: 0
+  # Maximum value is: 200
   medal_venom: 200

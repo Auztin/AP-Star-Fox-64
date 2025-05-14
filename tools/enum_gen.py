@@ -31,6 +31,9 @@ with open("../template.yaml", "w") as file:
       default = "false"
     if issubclass(cls, Options.DefaultOnToggle):
       default = "true"
+    if issubclass(cls, Options.Range):
+      file.write(f"  # Minimum value is: {cls.range_start}\n")
+      file.write(f"  # Maximum value is: {cls.range_end}\n")
     if issubclass(cls, Options.Choice):
       file.write(f"  # You can use the following numbers or names:\n")
       option_choices[name] = {}
