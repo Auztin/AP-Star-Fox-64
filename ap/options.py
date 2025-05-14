@@ -57,6 +57,9 @@ class ShuffleMedals(Toggle):
   """
     Shuffle the medals awarded by reaching a certain number of Hits in each level.
     Earning a medal will give a random item, and you will visually see the medal on the map to indicate that you've completed the check.
+
+    Note: Medals are very challenging in vanilla.
+    Unless you know what you're doing, it is recommended to lower the score needed for each level using their options.
   """
   display_name = "Shuffle Medals"
 
