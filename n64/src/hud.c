@@ -89,6 +89,9 @@ void hud_pause_check_input() {
     case -1:
       sf_pause_selection = 0;
       break;
+    case 2:
+      if (sf_map_level_id == LEVEL_TRAINING) sf_pause_selection = 1;
+      break;
     case 4:
       sf_pause_selection = 3;
       break;
