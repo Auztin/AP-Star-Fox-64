@@ -129,3 +129,5 @@ typedef int (*sf_fnt_map_set_level_id)();
 
 typedef int (*sf_fnt_map_select_level)();
 #define sf_fn_map_select_level ((sf_fnt_map_select_level)0x801A659C)
+
+extern void sf_fn_map_draw_clear_star(sf_planet_id_t planet);

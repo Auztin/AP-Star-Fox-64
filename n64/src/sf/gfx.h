@@ -67,8 +67,7 @@ typedef int (*sf_fnt_gfx_setup)(sf_display_list_t**, u64 id);
 typedef void (*sf_fnt_gfx_draw_engine_glow)(u64 _unk);
 #define sf_fn_gfx_draw_engine_glow ((sf_fnt_gfx_draw_engine_glow)0x8005465C)
 
-void sf_fn_gfx_set_scale(float scale);
-
+extern void sf_fn_gfx_set_scale(float scale);
 extern void sf_fn_gfx_draw_medal(float x, float y, float z);
 extern void sf_fn_gfx_draw_text(s32 x, s32 y, float xScale, float yScale, char* text);
 extern void sf_fn_gfx_draw_texture(sf_display_list_t**, u32 texture, u32 width, u32 height, float xPos, float yPos, float xScale, float yScale);

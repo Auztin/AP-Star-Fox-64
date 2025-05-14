@@ -115,3 +115,9 @@ sf_fn_item_draw_silver_ring:
 ADDIU SP, SP, -0x18
 J 0x8005C908
 SW A0, 0x0018 (SP)
+
+.align 0x08
+sf_fn_map_draw_clear_star:
+ADDIU SP, SP, -0x28
+J 0x801A7F24
+SW RA, 0x001C (SP)

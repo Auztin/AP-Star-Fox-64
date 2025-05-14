@@ -266,6 +266,24 @@ bool map_has_level_item(sf_level_t level) {
   }
 }
 
+static const sf_level_t map_planet_to_level[] = {
+  LEVEL_METEO,
+  LEVEL_AREA_6,
+  LEVEL_BOLSE,
+  LEVEL_SECTOR_Z,
+  LEVEL_SECTOR_X,
+  LEVEL_SECTOR_Y,
+  LEVEL_KATINA,
+  LEVEL_MACBETH,
+  LEVEL_ZONESS,
+  LEVEL_CORNERIA,
+  LEVEL_TITANIA,
+  LEVEL_AQUAS,
+  LEVEL_FORTUNA,
+  LEVEL_VENOM_ANDROSS,
+  LEVEL_SOLAR,
+};
+
 void map_paths() {
   static const ap_location_t medal_locations[] = {
     AP_LOCATION_METEO_MEDAL,
@@ -284,29 +302,12 @@ void map_paths() {
     AP_LOCATION_VENOM_MEDAL,
     AP_LOCATION_SOLAR_MEDAL,
   };
-  static const sf_level_t planet_to_level[] = {
-    LEVEL_METEO,
-    LEVEL_AREA_6,
-    LEVEL_BOLSE,
-    LEVEL_SECTOR_Z,
-    LEVEL_SECTOR_X,
-    LEVEL_SECTOR_Y,
-    LEVEL_KATINA,
-    LEVEL_MACBETH,
-    LEVEL_ZONESS,
-    LEVEL_CORNERIA,
-    LEVEL_TITANIA,
-    LEVEL_AQUAS,
-    LEVEL_FORTUNA,
-    LEVEL_VENOM_ANDROSS,
-    LEVEL_SOLAR,
-  };
   bool planet_access[PLANET_MAX] = {0, };
   ap_option_level_access_t level_access = ap_save.options[AP_OPTION_LEVEL_ACCESS];
   int minimum_path_alpha = 0;
   if (level_access == AP_OPTION_LEVEL_ACCESS_SHUFFLE_PATHS) map_check_paths(PLANET_CORNERIA, planet_access);
   else {
-    for (int i = 0; i < PLANET_MAX; i++) planet_access[i] = map_has_level_item(planet_to_level[i]);
+    for (int i = 0; i < PLANET_MAX; i++) planet_access[i] = map_has_level_item(map_planet_to_level[i]);
     minimum_path_alpha = 0x40;
   }
   for (int i = 0; i < 24; i++) {
@@ -352,7 +353,7 @@ void map_paths() {
     if (i < sf_map_current_mission) {
       sf_total_hits += sf_mission_hits[i];
       if (level_access != AP_OPTION_LEVEL_ACCESS_SHUFFLE_LEVELS || planet_access[next]) {
-        sf_mission_clear[planet_to_level[next]] = sf_mission_medals[i] + 1;
+        sf_mission_clear[map_planet_to_level[next]] = sf_mission_medals[i] + 1;
       }
     }
     if (i && i <= sf_map_current_mission) {
@@ -570,6 +571,13 @@ void map_draw_medals() {
   sf_fn_gfx_draw_text(268, 38, 1, 1, medals);
 }
 
+void map_draw_clear_star(sf_planet_id_t planet) {
+  if (
+    ap_save.options[AP_OPTION_LEVEL_ACCESS] == AP_OPTION_LEVEL_ACCESS_SHUFFLE_LEVELS
+    && map_has_level_item(map_planet_to_level[planet])
+  ) sf_fn_map_draw_clear_star(planet);
+}
+
 void map_load_scene_data(sf_scenes_t scene) {
   map.inited = false;
   util_inject(UTIL_INJECT_FUNCTION, 0x8019F278, (u32)map_set_level_flags, 0); // clear
@@ -583,6 +591,7 @@ void map_load_scene_data(sf_scenes_t scene) {
   util_inject(UTIL_INJECT_JUMP    , 0x801A2EB8, (u32)map_camera_animations, 1);
   util_inject(UTIL_INJECT_JUMP    , 0x801AB174, (u32)map_draw_medals, 0);
   util_inject(UTIL_INJECT_JUMP    , 0x801AD170, 0x801AD1D0, 0);
+  util_inject(UTIL_INJECT_JUMP    , 0x801A7F1C, (u32)map_draw_clear_star, 1);
   if (scene == SCENE_GAME_OVER) {
     for (int i = TEAM_ID_FALCO; i <= TEAM_ID_PEPPY; i++) ap_save.shields.team[i-1] = 0xFF;
     ap_save.lasers = LASERS_SINGLE;
