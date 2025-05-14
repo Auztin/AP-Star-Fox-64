@@ -7,7 +7,7 @@ config file.
 
 ## What does randomization do to this game?
 
-To help Star Fox 64 fit into the environment of Archipelago, the map has been changed significantly. When completing a level, you are no longer forced to the next level based on what you did in the previous level. Instead, the map has controls for selecting which level you can go to. The levels available for selection depend on what path items you have received. The map also functions as a sort of in game tracker. You can also no longer use the `Change Course` or `Retry Course` options on the map. This menu has been completely changed to allow you to spend lives (Arwings) to heal your team. This is especially useful when going for Medals.
+To help Star Fox 64 fit into the environment of Archipelago, the map has been changed significantly. When completing a level, you are no longer forced to the next level based on what you did in the previous level. Instead, the map has controls for selecting which level you can go to. The levels available for selection depend on what path or level items you have received. The map also functions as a sort of in game tracker. You can also no longer use the `Change Course` or `Retry Course` options on the map. This menu has been completely changed to allow you to spend lives (Arwings) to heal your team. This is especially useful when going for Medals.
 
 The Pause Menu has also been changed to allow you to Respawn at a checkpoint, or to go back to the map.
 
@@ -19,18 +19,30 @@ The game's state will be saved, allowing you to restart the game and continue yo
 * `D-Pad Left` brings you closer to Corneria.
 * `D-Pad Up` and `D-Pad Down` change the path from the previous level.
 
-For example, let's assume you have Corneria selected, and have all paths. `D-Pad Right` will select Meteo. From here, `D-Pad Up` will select Sector Y. `D-Pad Left` will select Corneria again.
+For example, let's assume you have Corneria selected, and have all paths or `Level Access` is set to `Shuffle Levels`. `D-Pad Right` will select Meteo. From here, `D-Pad Up` will select Sector Y. `D-Pad Left` will select Corneria again.
 
 **Map Legend**
 
-* A colored path means that you have that path as an item. You will be able to take that path when selecting a level.
+* If `Level Access` is set to `Shuffle Levels`:
+  * A colored path means that you have access to the level that path comes from.
+  * An orbiting star also signifies that you have access to that level. You can take any path to get there.
+    * Note that the star is replaced with a Medal if you get the Medal location on that level.
+  * Events that depend on other stages (Bill/Katt) will only trigger if you have the other stage.
+* If `Level Access` is set to `Shuffle Paths`:
+  * A colored path means that you have that path as an item. You will be able to take that path when selecting a level.
 * An animating Arwing means that you have access to the level, but haven't yet completed the level in a way that would normally take that path.
 * A stationary Arwing means that you have completed the level in a way that would normally take that path.
 
 ## What items and locations get shuffled?
 
-* Getting Mission Complete, Mission Accomplished or a level warp is now a location. The path you would normally be able to take afterwards is now an item.
+* Getting Mission Complete, Mission Accomplished or a level warp is now a location.
+  * If `Level Access` is set to `Shuffle Levels`:
+    * The level you would normally go to next is now an item.
+  * If `Level Access` is set to `Shuffle Paths`:
+    * The path you would normally be able to take afterwards is now an item.
 * Getting a Medal is now a location. Medals are now an item.
+* Freestanding Items in levels are now locations, and they have been added to the pool.
+* Checkpoint rings in each level are now a location. The ability to use them is now an item.
 
 ## Which items can be in another player's world?
 
