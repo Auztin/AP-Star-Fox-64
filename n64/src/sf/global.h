@@ -29,6 +29,7 @@ typedef enum {
 #define sf_cur_state (*(sf_game_state_t*)0x80177834)
 #define sf_next_state (*(s16*)0x80161A32)
 #define sf_last_state (*(s16*)0x80161A34)
+#define sf_option_menu_status (*(u32*)0x8017784C)
 #define sf_video_features1 (*(u32*)0x800C7EEC)
 #define sf_video_features2 (*(u32*)0x800C7F1C)
 

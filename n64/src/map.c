@@ -429,6 +429,11 @@ void map_idle() {
     map_paths();
     save_sync_medals();
   }
+  if (sf_controllers_pressed[0].b) {
+    sf_last_state = GSTATE_INIT;
+    sf_next_state = GSTATE_MENU;
+    sf_option_menu_status = 0;
+  }
   if (sf_controllers_pressed[0].dright) {
     sf_planet_t planet = sf_map_planets[sf_map_current_planet];
     for (int i = 0; i < 3; i++) {
