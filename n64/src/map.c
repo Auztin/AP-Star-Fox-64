@@ -5,6 +5,7 @@
 #include "ap/ap.h"
 #include "sf/map.h"
 #include "sf/gfx.h"
+#include "sf/sfx.h"
 #include "sf/game.h"
 #include "sf/controller.h"
 #include <stdlib.h>
@@ -69,13 +70,7 @@ ap_item_t map_path_item(sf_planet_id_t from, sf_planet_id_t to) {
 
 void map_give_clear_location(sf_planet_id_t planet, u8 mission_status) {
   ap_location_t location = map_get_clear_location(planet, mission_status);
-  if (location >= 0) {
-    set_bit(ap_save.locations, location);
-    if (!ap_save.options[AP_OPTION_SHUFFLE_PATHS]) {
-      ap_item_t item = map_path_item(planet, sf_map_planets[planet].dests[mission_status]);
-      if (item != AP_ITEM_NONE) ap_save.items[item] = 1;
-    }
-  }
+  if (location != AP_LOCATION_NONE) set_bit(ap_save.locations, location);
 }
 
 int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
@@ -234,6 +229,7 @@ bool map_has_path(sf_planet_id_t from, sf_planet_id_t to) {
         return false;
     }
   }
+  if (ap_save.options[AP_OPTION_LEVEL_ACCESS] != AP_OPTION_LEVEL_ACCESS_SHUFFLE_PATHS) return true;
   ap_item_t path = map_path_item(from, to);
   return path == AP_ITEM_NONE ? false : ap_save.items[path];
 }
@@ -244,6 +240,29 @@ void map_check_paths(sf_planet_id_t from, bool* planet_access) {
   for (int i = 0; i < 3; i++) {
     sf_planet_id_t to = sf_map_planets[from].dests[i];
     if (map_has_path(from, to)) map_check_paths(to, planet_access);
+  }
+}
+
+bool map_has_level_item(sf_level_t level) {
+  switch (level) {
+    case LEVEL_CORNERIA: return ap_save.items[AP_ITEM_CORNERIA];
+    case LEVEL_METEO: return ap_save.items[AP_ITEM_METEO];
+    case LEVEL_SECTOR_X: return ap_save.items[AP_ITEM_SECTOR_X];
+    case LEVEL_AREA_6: return ap_save.items[AP_ITEM_AREA_6];
+    case LEVEL_SECTOR_Y: return ap_save.items[AP_ITEM_SECTOR_Y];
+    case LEVEL_VENOM_1: return ap_save.items[AP_ITEM_VENOM];
+    case LEVEL_SOLAR: return ap_save.items[AP_ITEM_SOLAR];
+    case LEVEL_ZONESS: return ap_save.items[AP_ITEM_ZONESS];
+    case LEVEL_VENOM_ANDROSS: return ap_save.items[AP_ITEM_VENOM];
+    case LEVEL_MACBETH: return ap_save.items[AP_ITEM_MACBETH];
+    case LEVEL_TITANIA: return ap_save.items[AP_ITEM_TITANIA];
+    case LEVEL_AQUAS: return ap_save.items[AP_ITEM_AQUAS];
+    case LEVEL_FORTUNA: return ap_save.items[AP_ITEM_FORTUNA];
+    case LEVEL_KATINA: return ap_save.items[AP_ITEM_KATINA];
+    case LEVEL_BOLSE: return ap_save.items[AP_ITEM_BOLSE];
+    case LEVEL_SECTOR_Z: return ap_save.items[AP_ITEM_SECTOR_Z];
+    case LEVEL_VENOM_2: return ap_save.items[AP_ITEM_VENOM];
+    default: return true;
   }
 }
 
@@ -283,7 +302,13 @@ void map_paths() {
     LEVEL_SOLAR,
   };
   bool planet_access[PLANET_MAX] = {0, };
-  map_check_paths(PLANET_CORNERIA, planet_access);
+  ap_option_level_access_t level_access = ap_save.options[AP_OPTION_LEVEL_ACCESS];
+  int minimum_path_alpha = 0;
+  if (level_access == AP_OPTION_LEVEL_ACCESS_SHUFFLE_PATHS) map_check_paths(PLANET_CORNERIA, planet_access);
+  else {
+    for (int i = 0; i < PLANET_MAX; i++) planet_access[i] = map_has_level_item(planet_to_level[i]);
+    minimum_path_alpha = 0x40;
+  }
   for (int i = 0; i < 24; i++) {
     sf_path_t* path = &sf_map_paths[i];
     u32* path_type = &sf_map_path_types[i];
@@ -295,10 +320,18 @@ void map_paths() {
       }
       if (location != AP_LOCATION_NONE) has_location = get_bit(ap_save.locations, location);
     }
-    bool has_path = map_has_path(path->start, path->end);
+    bool has_path;
+    switch (level_access) {
+      case AP_OPTION_LEVEL_ACCESS_SHUFFLE_LEVELS:
+        has_path = planet_access[path->start];
+        break;
+      case AP_OPTION_LEVEL_ACCESS_SHUFFLE_PATHS:
+        has_path = map_has_path(path->start, path->end);
+        break;
+    }
     if (has_path) path->alpha = 0x0F;
     else if (planet_access[path->start]) path->alpha = 0xFF;
-    else path->alpha = 0;
+    else path->alpha = minimum_path_alpha;
     if (has_path) *path_type = 3;
     else *path_type = 4;
     if (!planet_access[path->start]) path->ship = 0;
@@ -363,13 +396,22 @@ void map_check_mission() {
   }
 }
 
+void map_check_level_access() {
+  if (
+    ap_save.options[AP_OPTION_LEVEL_ACCESS] != AP_OPTION_LEVEL_ACCESS_SHUFFLE_LEVELS
+    || map_has_level_item(sf_map_level_id)
+  ) sf_fn_map_select_level();
+  else sf_fn_sfx_play(SF_SFX_ERROR, sf_sfx_default_pos, 4);
+}
+
 void map_modify() {
   sf_map_previous_planet = sf_map_mission_list[sf_map_current_mission-1];
   sf_map_current_planet = sf_map_mission_list[sf_map_current_mission];
   sf_map_next_planet = sf_map_mission_list[sf_map_current_mission];
   sf_map_planets[PLANET_BOLSE].dest.complete = PLANET_VENOM;
   sf_map_planets[PLANET_AREA_6].dest.complete = PLANET_VENOM;
-  util_inject(UTIL_INJECT_JUMP, 0x801A6620, (u32)map_check_mission, 0);
+  util_inject(UTIL_INJECT_JUMP    , 0x801A6620, (u32)map_check_mission, 0);
+  util_inject(UTIL_INJECT_FUNCTION, 0x801AD228, (u32)map_check_level_access, 0);
   for (int i = 0; i < 24; i++) {
     sf_map_path_types[i] = 0;
     sf_map_paths[i].ship = 0;

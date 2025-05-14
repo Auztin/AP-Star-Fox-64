@@ -33,8 +33,11 @@ def create_item(world, item_name):
         classification = ItemClassification.progression_skip_balancing
       if not world.options.shuffle_medals:
         item_id = None
+    case "Level":
+      if world.options.level_access != "shuffle_levels":
+        item_id = None
     case "Path":
-      if not world.options.shuffle_paths:
+      if world.options.level_access != "shuffle_paths":
         item_id = None
     case "Checkpoint":
       if not world.options.shuffle_checkpoints:

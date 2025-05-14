@@ -67,7 +67,8 @@ class StarFox64WebWorld(WebWorld):
       options.RequiredMedals,
     ]),
     OptionGroup("Shuffle Options", [
-      options.ShufflePaths,
+      options.LevelAccess,
+      options.ShuffleStartingLevel,
       options.ShuffleMedals,
       options.ShuffleCheckpoints,
     ]),
@@ -146,6 +147,13 @@ class StarFox64World(World):
   def create_everything(self):
     parser = StarFox64Rules(self)
     self.create_victory_condition()
+    swap_items = {}
+    if self.options.shuffle_starting_level:
+      valid_levels = group_items["Level"].copy()
+      valid_levels.remove("Venom")
+      item_name = self.random.choice(valid_levels)
+      swap_items["Corneria"] = item_name
+      swap_items[item_name] = "Corneria"
     for region_name, region in data.regions.items():
       ap_region = regions.create_region(self, region_name)
       for key, value in region.items():
@@ -153,7 +161,17 @@ class StarFox64World(World):
           case "locations":
             for location_name, location in value.items():
               ap_location = StarFox64Location(self.player, location_name, None, ap_region)
-              item = self.create_item(location["item"])
+              item_name = location["item"]
+              match location.get("group"):
+                case "Mission Finished":
+                  item_name = item_name[self.options.level_access]
+              if item_name in swap_items:
+                item_name = swap_items[item_name]
+              if item_name == "Nothing":
+                item_name = self.get_filler_item_name()
+              item = self.create_item(item_name)
+              if region_name == "Menu":
+                item.code = None
               if item.code:
                 ap_location.address = self.location_name_to_id[location_name]
                 self.multiworld.itempool.append(item)
@@ -167,6 +185,8 @@ class StarFox64World(World):
               ap_region.connect(ap_exit, None, parser.parse(_exit["logic"], f"{self.game}, Exit: {region_name} -> {exit_name}"))
       self.multiworld.regions.append(ap_region)
     regions.cache.clear()
+    for location in self.get_region("Menu").get_locations():
+      if location.item: self.push_precollected(location.item)
 
   def create_items(self):
     for group_name, items in group_items.items():

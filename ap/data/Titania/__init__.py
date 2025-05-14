@@ -2,7 +2,8 @@ regions = {
   "Titania": {
     "locations": {
       "Titania - Mission Complete": {
-        "item": "Titania - Blue Path",
+        "item": ["Bolse", "Titania - Blue Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Titania - Medal": {
@@ -106,7 +107,7 @@ regions = {
     "exits": {
       "Bolse": {
         "type": "Level",
-        "logic": "TitaniaBluePath",
+        "logic": "LevelAccess == 'shuffle_paths' and TitaniaBluePath",
       },
     },
   },

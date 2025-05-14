@@ -2,11 +2,13 @@ regions = {
   "Meteo": {
     "locations": {
       "Meteo - Mission Complete": {
-        "item": "Meteo - Blue Path",
+        "item": ["Fortuna", "Meteo - Blue Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Meteo - Warp": {
-        "item": "Meteo - Warp Path",
+        "item": ["Katina", "Meteo - Warp Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Meteo - Medal": {
@@ -58,11 +60,11 @@ regions = {
     "exits": {
       "Fortuna": {
         "type": "Level",
-        "logic": "MeteoBluePath",
+        "logic": "LevelAccess == 'shuffle_paths' and MeteoBluePath",
       },
       "Katina": {
         "type": "Level",
-        "logic": "MeteoWarpPath",
+        "logic": "LevelAccess == 'shuffle_paths' and MeteoWarpPath",
       },
     },
   },

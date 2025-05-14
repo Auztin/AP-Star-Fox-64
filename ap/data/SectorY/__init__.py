@@ -2,11 +2,13 @@ regions = {
   "Sector Y": {
     "locations": {
       "Sector Y - Mission Complete": {
-        "item": "Sector Y - Yellow Path",
+        "item": ["Nothing", "Sector Y - Yellow Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Sector Y - Mission Accomplished": {
-        "item": "Sector Y - Red Path",
+        "item": ["Aquas", "Sector Y - Red Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Sector Y - Medal": {
@@ -48,11 +50,11 @@ regions = {
     "exits": {
       "Katina": {
         "type": "Level",
-        "logic": "SectorYYellowPath",
+        "logic": "LevelAccess == 'shuffle_paths' and SectorYYellowPath",
       },
       "Aquas": {
         "type": "Level",
-        "logic": "SectorYRedPath",
+        "logic": "LevelAccess == 'shuffle_paths' and SectorYRedPath",
       },
     },
   },

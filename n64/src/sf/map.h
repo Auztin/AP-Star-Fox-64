@@ -126,3 +126,6 @@ typedef int (*sf_fnt_map_idle)();
 
 typedef int (*sf_fnt_map_set_level_id)();
 #define sf_fn_map_set_level_id ((sf_fnt_map_set_level_id)0x801A6368)
+
+typedef int (*sf_fnt_map_select_level)();
+#define sf_fn_map_select_level ((sf_fnt_map_select_level)0x801A659C)

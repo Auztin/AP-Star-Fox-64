@@ -34,20 +34,31 @@ class RequiredMedals(Range):
   range_start = 0
   range_end = 15
 
+class LevelAccess(Choice):
+  """
+    Completing a level a certain way will give a random item.
+    Choose what type of level access item gets added to the pool.
+
+    Shuffle Levels - You will receive levels as items which will allow you to select that level at any time.
+    Shuffle Paths - You will receive paths as items which will allow you to take that path to other levels.
+  """
+  display_name = "Level Access"
+  option_shuffle_levels = 0
+  option_shuffle_paths = 1
+
+class ShuffleStartingLevel(Toggle):
+  """
+    If Level Access is 'Shuffle Levels', shuffle which level you start with.
+    You normally start with Corneria.
+  """
+  display_name = "Shuffle Starting Level"
+
 class ShuffleMedals(Toggle):
   """
     Shuffle the medals awarded by reaching a certain number of Hits in each level.
     Earning a medal will give a random item, and you will visually see the medal on the map to indicate that you've completed the check.
   """
   display_name = "Shuffle Medals"
-
-class ShufflePaths(DefaultOnToggle):
-  """
-    Shuffle the paths between levels.
-    Completing a level a certain way will give a random item. You cannot take the path that normally unlocks until you receive that path item.
-    For example: Getting 'Mission Complete' on Corneria will give a random item. However, you cannot go to Meteo until you receive 'Corneria - Blue Path'
-  """
-  display_name = "Shuffle Paths"
 
 class ShuffleCheckpoints(Toggle):
   """
@@ -91,7 +102,6 @@ class EngineGlow(Choice):
   option_chartreuse = 11
   option_yellow = 12
   option_dark_orange = 13
-  default = 0
 
 class DefaultLives(Range):
   """
@@ -243,8 +253,9 @@ class StarFox64OptionsList:
   ringlink: RingLink
   victory_condition: VictoryCondition
   required_medals: RequiredMedals
+  level_access: LevelAccess
+  shuffle_starting_level: ShuffleStartingLevel
   shuffle_medals: ShuffleMedals
-  shuffle_paths: ShufflePaths
   shuffle_checkpoints: ShuffleCheckpoints
   accomplished_sends_complete: AccomplishedSendsComplete
   radio_rando: RadioRando

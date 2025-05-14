@@ -2,11 +2,13 @@ regions = {
   "Sector Z": {
     "locations": {
       "Sector Z - Mission Complete": {
-        "item": "Sector Z - Blue Path",
+        "item": ["Nothing", "Sector Z - Blue Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Sector Z - Mission Accomplished": {
-        "item": "Sector Z - Red Path",
+        "item": ["Nothing", "Sector Z - Red Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Sector Z - Medal": {
@@ -18,11 +20,11 @@ regions = {
     "exits": {
       "Bolse": {
         "type": "Level",
-        "logic": "SectorZBluePath",
+        "logic": "LevelAccess == 'shuffle_paths' and SectorZBluePath",
       },
       "Area 6": {
         "type": "Level",
-        "logic": "SectorZRedPath",
+        "logic": "LevelAccess == 'shuffle_paths' and SectorZRedPath",
       },
     },
   },

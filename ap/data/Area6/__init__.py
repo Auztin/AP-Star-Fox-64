@@ -2,7 +2,8 @@ regions = {
   "Area 6": {
     "locations": {
       "Area 6 - Mission Complete": {
-        "item": "Area 6 - Red Path",
+        "item": ["Nothing", "Area 6 - Red Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Area 6 - Medal": {
@@ -39,7 +40,7 @@ regions = {
     "exits": {
       "Venom 2": {
         "type": "Level",
-        "logic": "Area6RedPath and (Medal, RequiredMedals)",
+        "logic": "LevelAccess == 'shuffle_paths' and Area6RedPath and (Medal, RequiredMedals)",
       },
     },
   },

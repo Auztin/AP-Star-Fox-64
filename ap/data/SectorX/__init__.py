@@ -2,15 +2,18 @@ regions = {
   "Sector X": {
     "locations": {
       "Sector X - Mission Complete": {
-        "item": "Sector X - Blue Path",
+        "item": ["Titania", "Sector X - Blue Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Sector X - Mission Accomplished": {
-        "item": "Sector X - Yellow Path",
+        "item": ["Macbeth", "Sector X - Yellow Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Sector X - Warp": {
-        "item": "Sector X - Warp Path",
+        "item": ["Sector Z", "Sector X - Warp Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Sector X - Medal": {
@@ -67,15 +70,15 @@ regions = {
     "exits": {
       "Titania": {
         "type": "Level",
-        "logic": "SectorXBluePath",
+        "logic": "LevelAccess == 'shuffle_paths' and SectorXBluePath",
       },
       "Macbeth": {
         "type": "Level",
-        "logic": "SectorXYellowPath",
+        "logic": "LevelAccess == 'shuffle_paths' and SectorXYellowPath",
       },
       "Sector Z": {
         "type": "Level",
-        "logic": "SectorXWarpPath",
+        "logic": "LevelAccess == 'shuffle_paths' and SectorXWarpPath",
       },
     },
   },

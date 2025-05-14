@@ -2,11 +2,13 @@ regions = {
   "Zoness": {
     "locations": {
       "Zoness - Mission Complete": {
-        "item": "Zoness - Yellow Path",
+        "item": ["Nothing", "Zoness - Yellow Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Zoness - Mission Accomplished": {
-        "item": "Zoness - Red Path",
+        "item": ["Nothing", "Zoness - Red Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Zoness - Medal": {
@@ -53,11 +55,11 @@ regions = {
     "exits": {
       "Macbeth": {
         "type": "Level",
-        "logic": "ZonessYellowPath",
+        "logic": "LevelAccess == 'shuffle_paths' and ZonessYellowPath",
       },
       "Sector Z": {
         "type": "Level",
-        "logic": "ZonessRedPath",
+        "logic": "LevelAccess == 'shuffle_paths' and ZonessRedPath",
       },
     },
   },

@@ -2,7 +2,8 @@ regions = {
   "Bolse": {
     "locations": {
       "Bolse - Mission Complete": {
-        "item": "Bolse - Blue Path",
+        "item": ["Venom", "Bolse - Blue Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Bolse - Medal": {
@@ -15,7 +16,8 @@ regions = {
       "Venom 1": {
         "type": "Level",
         "logic": """
-          BolseBluePath and (VictoryCondition != "andross_or_robot_andross" or (Medal, RequiredMedals))
+          LevelAccess == 'shuffle_paths'
+          and BolseBluePath and (VictoryCondition != "andross_or_robot_andross" or (Medal, RequiredMedals))
         """,
       },
     },

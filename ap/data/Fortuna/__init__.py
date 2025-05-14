@@ -2,11 +2,13 @@ regions = {
   "Fortuna": {
     "locations": {
       "Fortuna - Mission Complete": {
-        "item": "Fortuna - Blue Path",
+        "item": ["Sector X", "Fortuna - Blue Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Fortuna - Mission Accomplished": {
-        "item": "Fortuna - Yellow Path",
+        "item": ["Solar", "Fortuna - Yellow Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Fortuna - Medal": {
@@ -18,11 +20,11 @@ regions = {
     "exits": {
       "Sector X": {
         "type": "Level",
-        "logic": "FortunaBluePath",
+        "logic": "LevelAccess == 'shuffle_paths' and FortunaBluePath",
       },
       "Solar": {
         "type": "Level",
-        "logic": "FortunaYellowPath",
+        "logic": "LevelAccess == 'shuffle_paths' and FortunaYellowPath",
       },
     },
   },

@@ -24,14 +24,23 @@ Star Fox 64:
   # Maximum value is: 15
   required_medals: 0
 
+  # Completing a level a certain way will give a random item.
+  # Choose what type of level access item gets added to the pool.
+  # 
+  # Shuffle Levels - You will receive levels as items which will allow you to select that level at any time.
+  # Shuffle Paths - You will receive paths as items which will allow you to take that path to other levels.
+  # You can use the following numbers or names:
+  # 0 or shuffle_levels
+  # 1 or shuffle_paths
+  level_access: shuffle_levels
+
+  # If Level Access is 'Shuffle Levels', shuffle which level you start with.
+  # You normally start with Corneria.
+  shuffle_starting_level: false
+
   # Shuffle the medals awarded by reaching a certain number of Hits in each level.
   # Earning a medal will give a random item, and you will visually see the medal on the map to indicate that you've completed the check.
   shuffle_medals: false
-
-  # Shuffle the paths between levels.
-  # Completing a level a certain way will give a random item. You cannot take the path that normally unlocks until you receive that path item.
-  # For example: Getting 'Mission Complete' on Corneria will give a random item. However, you cannot go to Meteo until you receive 'Corneria - Blue Path'
-  shuffle_paths: true
 
   # Shuffle checkpoints rings for the levels that have them.
   # You will not be able to use the checkpoint ring in a level until you receive the item for it.

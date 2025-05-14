@@ -2,11 +2,13 @@ regions = {
   "Macbeth": {
     "locations": {
       "Macbeth - Mission Complete": {
-        "item": "Macbeth - Blue Path",
+        "item": ["Nothing", "Macbeth - Blue Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Macbeth - Mission Accomplished": {
-        "item": "Macbeth - Red Path",
+        "item": ["Area 6", "Macbeth - Red Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Macbeth - Medal": {
@@ -93,11 +95,11 @@ regions = {
     "exits": {
       "Bolse": {
         "type": "Level",
-        "logic": "MacbethBluePath",
+        "logic": "LevelAccess == 'shuffle_paths' and MacbethBluePath",
       },
       "Area 6": {
         "type": "Level",
-        "logic": "MacbethRedPath",
+        "logic": "LevelAccess == 'shuffle_paths' and MacbethRedPath",
       },
     },
   },

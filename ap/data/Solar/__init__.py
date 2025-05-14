@@ -2,7 +2,8 @@ regions = {
   "Solar": {
     "locations": {
       "Solar - Mission Complete": {
-        "item": "Solar - Yellow Path",
+        "item": ["Nothing", "Solar - Yellow Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Solar - Medal": {
@@ -19,7 +20,7 @@ regions = {
     "exits": {
       "Macbeth": {
         "type": "Level",
-        "logic": "SolarYellowPath",
+        "logic": "LevelAccess == 'shuffle_paths' and SolarYellowPath",
       },
     },
   },

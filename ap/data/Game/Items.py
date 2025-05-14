@@ -67,6 +67,66 @@ items = {
     "type": "Checkpoint",
     "class": "useful",
   },
+  "Corneria": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Meteo": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Sector X": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Area 6": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Sector Y": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Venom": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Solar": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Zoness": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Macbeth": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Titania": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Aquas": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Fortuna": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Katina": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Bolse": {
+    "type": "Level",
+    "class": "progression",
+  },
+  "Sector Z": {
+    "type": "Level",
+    "class": "progression",
+  },
   "Aquas - Red Path": {
     "type": "Path",
     "class": "progression",

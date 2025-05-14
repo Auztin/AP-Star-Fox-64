@@ -2,7 +2,8 @@ regions = {
   "Aquas": {
     "locations": {
       "Aquas - Mission Complete": {
-        "item": "Aquas - Red Path",
+        "item": ["Zoness", "Aquas - Red Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Aquas - Medal": {
@@ -19,7 +20,7 @@ regions = {
     "exits": {
       "Zoness": {
         "type": "Level",
-        "logic": "AquasRedPath",
+        "logic": "LevelAccess == 'shuffle_paths' and AquasRedPath",
       },
     },
   },

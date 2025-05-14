@@ -2,11 +2,13 @@ regions = {
   "Corneria": {
     "locations": {
       "Corneria - Mission Complete": {
-        "item": "Corneria - Blue Path",
+        "item": ["Meteo", "Corneria - Blue Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Corneria - Mission Accomplished": {
-        "item": "Corneria - Red Path",
+        "item": ["Sector Y", "Corneria - Red Path"],
+        "group": "Mission Finished",
         "logic": "true",
       },
       "Corneria - Medal": {
@@ -88,11 +90,11 @@ regions = {
     "exits": {
       "Meteo": {
         "type": "Level",
-        "logic": "CorneriaBluePath",
+        "logic": "LevelAccess == 'shuffle_paths' and CorneriaBluePath",
       },
       "Sector Y": {
         "type": "Level",
-        "logic": "CorneriaRedPath",
+        "logic": "LevelAccess == 'shuffle_paths' and CorneriaRedPath",
       },
     },
   },
