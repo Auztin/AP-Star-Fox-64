@@ -8,12 +8,15 @@
 #include "n64/sys.h"
 #include "n64/dma.h"
 #include "ap/ap.h"
+#include "ap/version.h"
 #include "ap/states.h"
 #include "sf/global.h"
 #include "sf/controller.h"
 #include "sf/map.h"
 #include "sf/sfx.h"
 #include "sf/gfx.h"
+#include <string.h>
+#include <stdlib.h>
 
 main_t main = {0, };
 
@@ -129,6 +132,16 @@ bool main_menu_selected() {
 void main_menu_update() {
   char* text_client = "CLIENT DISCONNECTED";
   char* text_ap = "AP DISCONNECTED";
+  char version[10];
+  char minor[3];
+  char build[3];
+  itoa(AP_VERSION.major, version, 10);
+  itoa(AP_VERSION.minor, minor, 10);
+  itoa(AP_VERSION.build, build, 10);
+  strcat(version, ".");
+  strcat(version, minor);
+  strcat(version, ".");
+  strcat(version, build);
   if ((ap.state & ~AP_STATE_PINGED) == AP_STATE_CONNECTED) text_client = "CLIENT CONNECTED";
   if (ap.ready) text_ap = "AP CONNECTED";
   sf_fn_main_menu_update();
@@ -136,6 +149,7 @@ void main_menu_update() {
   sf_fn_gfx_color(0xFF, 0xFF, 0, 0xFF);
   sf_fn_gfx_draw_text(20, 20, 1, 1, text_client);
   sf_fn_gfx_draw_text(20, 30, 1, 1, text_ap);
+  sf_fn_gfx_draw_text(SF_GFX_WIDTH-50, 210, 1, 1, version);
 }
 
 bool main_check_medal(u16 score) {
