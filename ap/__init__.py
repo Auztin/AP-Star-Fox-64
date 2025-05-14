@@ -11,7 +11,7 @@ from .locations import StarFox64Location
 from .items import StarFox64Item
 from .rules import StarFox64Rules
 from .version import version
-from .ids import option_name_to_id
+from .ids import option_name_to_id, group_items, group_locations
 
 def launch_client():
   from . import client
@@ -157,11 +157,6 @@ class StarFox64World(World):
               if item.code:
                 ap_location.address = self.location_name_to_id[location_name]
                 self.multiworld.itempool.append(item)
-                data_item = data.items[location["item"]]
-                if "type" in data_item:
-                  self.item_name_groups[location["item"]] = data_item["type"]
-                if "group" in location:
-                  self.location_name_groups[location_name] = location["group"]
               else:
                 ap_location.place_locked_item(item)
               ap_location.access_rule = parser.parse(location["logic"], f"{self.game}, Location: {region_name} -> {location_name}")
@@ -174,6 +169,10 @@ class StarFox64World(World):
     regions.cache.clear()
 
   def create_items(self):
+    for group_name, items in group_items.items():
+      self.item_name_groups[group_name] = set(items)
+    for group_name, locations in group_locations.items():
+      self.location_name_groups[group_name] = set(locations)
     self.check_options()
     self.create_everything()
 

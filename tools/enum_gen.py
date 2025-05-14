@@ -13,6 +13,8 @@ location_name_to_id = {"None":-1, "Goal Completed":0}
 location_items = {}
 location_groups = {}
 location_group_set = set()
+group_items = {}
+group_locations = {}
 
 with open("../template.yaml", "w") as file:
   file.write("name: Player{NUMBER}\n")
@@ -64,10 +66,23 @@ for region_name, region in data.regions.items():
         for location_name, location in value.items():
           last_id += 1
           location_name_to_id[location_name] = last_id
-          location_items[location_name] = location["item"]
-          if "group" in location:
-            location_groups[location_name] = location["group"]
-            location_group_set.add(location["group"])
+          item = location["item"]
+          group = location.get("group")
+          if group:
+            location_groups[location_name] = group
+            location_group_set.add(group)
+            if group == "Mission Finished": item = item[1]
+          location_items[location_name] = item
+
+for item_name, group_name in item_types.items():
+  if group_name not in group_items:
+    group_items[group_name] = []
+  group_items[group_name].append(item_name)
+
+for location_name, group_name in location_groups.items():
+  if group_name not in group_locations:
+    group_locations[group_name] = []
+  group_locations[group_name].append(location_name)
 
 command_list = [
   "NONE",
@@ -97,6 +112,8 @@ with open("../ap/ids.py", "w") as f:
   f.write(f"option_name_to_id = {json.dumps(options, indent=2)}\n\n")
   f.write(f"item_name_to_id = {json.dumps(item_name_to_id, indent=2)}\n\n")
   f.write(f"location_name_to_id = {json.dumps(location_name_to_id, indent=2)}\n\n")
+  f.write(f"group_items = {json.dumps(group_items, indent=2)}\n\n")
+  f.write(f"group_locations = {json.dumps(group_locations, indent=2)}\n\n")
   f.write(f"class AP_CMD:\n")
   for cmd, value in commands.items():
     f.write(f"  {cmd} = {value}\n")
