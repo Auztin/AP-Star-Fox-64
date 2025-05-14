@@ -183,3 +183,73 @@ void main_pre_venom() {
   sf_map_current_mission--;
   main_pre_venom_displaced();
 }
+
+rgba_u8_t hue_rgb(float hue) {
+  rgba_u8_t color = {0, };
+  hue *= 6;
+  int h = hue;
+  switch (h) {
+    case 0:
+      color.r = 0xFF;
+      color.b = (hue-h)*0xFF;
+      break;
+    case 1:
+      color.b = 0xFF;
+      color.r = (1-(hue-h))*0xFF;
+      break;
+    case 2:
+      color.b = 0xFF;
+      color.g = (hue-h)*0xFF;
+      break;
+    case 3:
+      color.g = 0xFF;
+      color.b = (1-(hue-h))*0xFF;
+      break;
+    case 4:
+      color.g = 0xFF;
+      color.r = (hue-h)*0xFF;
+      break;
+    case 5:
+      color.r = 0xFF;
+      color.g = (1-(hue-h))*0xFF;
+      break;
+  }
+  return color;
+}
+
+float main_get_engine_glow_hue() {
+  static float hue = 0;
+  ap_option_engine_glow_t color = ap_save.options[AP_OPTION_ENGINE_GLOW];
+  switch (color) {
+    case AP_OPTION_ENGINE_GLOW_RAINBOW:
+      hue += 0.005;
+      if (hue > 1) hue = 0;
+      return hue;
+    case AP_OPTION_ENGINE_GLOW_RED:
+    case AP_OPTION_ENGINE_GLOW_DEEP_PINK:
+    case AP_OPTION_ENGINE_GLOW_MAGENTA:
+    case AP_OPTION_ENGINE_GLOW_ELECTRIC_INDIGO:
+    case AP_OPTION_ENGINE_GLOW_BLUE:
+    case AP_OPTION_ENGINE_GLOW_DODGER_BLUE:
+    case AP_OPTION_ENGINE_GLOW_AQUA:
+    case AP_OPTION_ENGINE_GLOW_SPRING_GREEN:
+    case AP_OPTION_ENGINE_GLOW_LIME:
+    case AP_OPTION_ENGINE_GLOW_CHARTREUSE:
+    case AP_OPTION_ENGINE_GLOW_YELLOW:
+    case AP_OPTION_ENGINE_GLOW_DARK_ORANGE:
+      return (color-AP_OPTION_ENGINE_GLOW_RED)/(float)(AP_OPTION_ENGINE_GLOW_MAX-AP_OPTION_ENGINE_GLOW_RED);
+    default: return -1;
+  }
+}
+
+void main_draw_player_glow(u64 _unk) {
+  float hue = main_get_engine_glow_hue();
+  if (hue == -1) return sf_fn_gfx_draw_engine_glow(_unk);
+  rgba_u8_t color = hue_rgb(hue);
+  sf_fn_gfx_setup(&sf_gfx, 0x43);
+  sf_fn_gfx_color(0xFF, 0xFF, 0xFF, 0xFF);
+  sf_fn_gfx_env_color(color.r, color.g, color.b, 0xFF);
+  sf_gfx->w1 = 0x06000000;
+  sf_gfx->w2 = SF_GFXDL_ENGINE_GLOW;
+  sf_gfx++;
+}

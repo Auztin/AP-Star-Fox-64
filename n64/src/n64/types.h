@@ -23,4 +23,8 @@ typedef volatile int16_t vs16;
 typedef volatile int32_t vs32;
 typedef volatile int64_t vs64;
 
+typedef struct {
+  u8 r, g, b, a;
+} rgba_u8_t;
+
 #define countof(a) (sizeof(a)/sizeof(*a))

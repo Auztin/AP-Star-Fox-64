@@ -197,7 +197,7 @@ void hud_map_menu_draw() {
   int target_h = 50;
   int x = 10+SF_GFX_WIDTH/2 - target_w/2;
   int y = 10+SF_GFX_HEIGHT/2 - target_h/2;
-  sf_fn_gfx_draw_texture(&sf_gfx, SF_GFXT_MENU_BG, w, h, x, y, target_w/w+0.9, target_h/h+0.9);
+  sf_fn_gfx_draw_texture(&sf_gfx, SF_GFXDL_MENU_BG, w, h, x, y, target_w/w+0.9, target_h/h+0.9);
   x = 10+SF_GFX_WIDTH/2 - 130/2;
   y = 10+SF_GFX_HEIGHT/2 - 40/2;
   sf_fn_gfx_color(0xFF, 0xFF, 0, 0xFF);

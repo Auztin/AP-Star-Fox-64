@@ -37,4 +37,6 @@ u32 inject_hooks() {
   util_inject(UTIL_INJECT_JUMP    , 0x800680B0, 0x800680F8, 1);
   util_inject(UTIL_INJECT_FUNCTION, 0x800680F8, (u32)object_collect_silver_ring, 0);
   util_inject(UTIL_INJECT_RAW     , 0x800680FC, 0x02002025, 0);
+
+  util_inject(UTIL_INJECT_FUNCTION, 0x800548F0, (u32)main_draw_player_glow, 0);
 }

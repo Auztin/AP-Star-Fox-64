@@ -72,6 +72,27 @@ class RadioRando(Choice):
   option_on_including_training = 2
   default = 1
 
+class EngineGlow(Choice):
+  """
+    Set the color of your engine's glow.
+  """
+  display_name = "Engine Glow"
+  option_default = 0
+  option_rainbow = 1
+  option_red = 2
+  option_deep_pink = 3
+  option_magenta = 4
+  option_electric_indigo = 5
+  option_blue = 6
+  option_dodger_blue = 7
+  option_aqua = 8
+  option_spring_green = 9
+  option_lime = 10
+  option_chartreuse = 11
+  option_yellow = 12
+  option_dark_orange = 13
+  default = 0
+
 class DefaultLives(Range):
   """
     Set the number of lives (Arwings) you start with and reset to after a game over.
@@ -227,6 +248,7 @@ class StarFox64OptionsList:
   shuffle_checkpoints: ShuffleCheckpoints
   accomplished_sends_complete: AccomplishedSendsComplete
   radio_rando: RadioRando
+  engine_glow: EngineGlow
   default_lives: DefaultLives
   medal_corneria: MedalCorneria
   medal_meteo: MedalMeteo

@@ -45,6 +45,24 @@ Star Fox 64:
   # 2 or on_including_training
   radio_rando: on
 
+  # Set the color of your engine's glow.
+  # You can use the following numbers or names:
+  # 0 or default
+  # 1 or rainbow
+  # 2 or red
+  # 3 or deep_pink
+  # 4 or magenta
+  # 5 or electric_indigo
+  # 6 or blue
+  # 7 or dodger_blue
+  # 8 or aqua
+  # 9 or spring_green
+  # 10 or lime
+  # 11 or chartreuse
+  # 12 or yellow
+  # 13 or dark_orange
+  engine_glow: default
+
   # Set the number of lives (Arwings) you start with and reset to after a game over.
   default_lives: 2
 
