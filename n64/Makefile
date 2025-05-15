@@ -19,7 +19,6 @@ ED64ROMCONFIG:= ed64romconfig
 
 CFLAGS:= -O1 -G0 -fno-reorder-blocks -march=vr4300 -mtune=vr4300 -mno-gpopt -mdivide-breaks -mexplicit-relocs -msoft-float
 CFLAGS+= -I $(SHARED)/include -I $(SRCDIR) -D NDEBUG
-CPPFLAGS:= -DF3DEX_GBI_2
 LDFLAGS:= -L .
 LDFLAGS+= -L $(TOOLSDIR)/mips64/mips64-elf/lib/soft-float
 LDFLAGS+= -L $(TOOLSDIR)/mips64/lib/gcc/mips64-elf/14.2.0/soft-float/
@@ -51,7 +50,7 @@ $(SRCDIR)/bundle.o: $(patsubst %.c,%.o,$(SOURCE))
 include $(BOOTDEPS) $(DEPS)
 
 %.o: %.c Makefile
-	$(CC) -o $@ -c $< $(CFLAGS) $(CPPFLAGS) -MMD
+	$(CC) -o $@ -c $< $(CFLAGS) $(CPPFLAGS) -MMD -Werror -Wall -Wextra -Wno-main
 
 $(ASSETSDIR)/assets.dl: $(ASSETS) $(TOOLSDIR)/assets.py
 	python $(TOOLSDIR)/assets.py $@ $(ASMDIR)/assets.asm $(shell find $(ASSETSDIR)/ -type f -name '*.obj')

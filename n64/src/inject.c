@@ -6,7 +6,7 @@
 #include "radio.h"
 #include "object.h"
 
-u32 inject_hooks() {
+void inject_hooks() {
   main_init();
 
   util_inject(UTIL_INJECT_FUNCTION, 0x8000435C, (u32)main_loop, 1);

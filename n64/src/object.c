@@ -232,6 +232,7 @@ ap_location_t object_get_ap_location(sf_level_t level, s16 index) {
         case 0x048C: return AP_LOCATION_VENOM_1_CHECKPOINT;
       }
       break;
+    default: break;
   }
   return AP_LOCATION_NONE;
 }

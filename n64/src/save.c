@@ -53,14 +53,14 @@ void save_sram_write() {
   save.dirty = false;
 }
 
-u32 save_eeprom_read(u32 _unused, u32 offset, u32 *ramAddr) {
+u32 save_eeprom_read(UNUSED u32 _unused, u32 offset, u32 *ramAddr) {
   offset *= 2;
   ramAddr[0] = save.data.eeprom[offset];
   ramAddr[1] = save.data.eeprom[offset+1];
   return 0;
 }
 
-u32 save_eeprom_write(u32 _unused, u32 offset, u32 *ramAddr) {
+u32 save_eeprom_write(UNUSED u32 _unused, u32 offset, u32 *ramAddr) {
   offset *= 2;
   save.data.eeprom[offset] = ramAddr[0];
   save.data.eeprom[offset+1] = ramAddr[1];
@@ -112,7 +112,7 @@ void save_load_slot(u16 ap_team, u16 ap_slot, char* ap_seed) {
     memcpy(data->seed, ap_seed, sizeof(data->seed));
     data->team = ap_team;
     data->slot = ap_slot;
-    for (int i = 0; i < countof(data->shields.team); i++) data->shields.team[i] = 0xFF;
+    for (u32 i = 0; i < countof(data->shields.team); i++) data->shields.team[i] = 0xFF;
     data->star_wolf_alive.wolf = 1;
     data->star_wolf_alive.leon = 1;
     data->star_wolf_alive.pigma = 1;

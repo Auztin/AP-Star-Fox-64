@@ -82,10 +82,12 @@ int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
           case PLANET_TITANIA:
           case PLANET_SECTOR_X:
             if (sf_team_shields[i] != -2) break;
+            // fallthrough
           case PLANET_CORNERIA:
           case PLANET_AQUAS:
             sf_team_shields[i] = ap_save.shields.team[i-1];
             break;
+          default: break;
         }
       }
       if (sf_team_shields[i] == 0) {
@@ -200,6 +202,7 @@ int map_set_level_flags(sf_level_t level, sf_level_flag_t flag) {
       if (location >= 0) set_bit(ap_save.locations, location);
       if (!ap_save.options[AP_OPTION_SHUFFLE_MEDALS]) ap_save.items[AP_ITEM_MEDAL]++;
       break;
+    default: break;
   }
   return sf_fn_set_level_flag(level, flag);
 }
@@ -321,7 +324,7 @@ void map_paths() {
       }
       if (location != AP_LOCATION_NONE) has_location = get_bit(ap_save.locations, location);
     }
-    bool has_path;
+    bool has_path = false;
     switch (level_access) {
       case AP_OPTION_LEVEL_ACCESS_SHUFFLE_LEVELS:
         has_path = planet_access[path->start];
@@ -329,6 +332,7 @@ void map_paths() {
       case AP_OPTION_LEVEL_ACCESS_SHUFFLE_PATHS:
         has_path = map_has_path(path->start, path->end);
         break;
+      default: break;
     }
     if (has_path) path->alpha = 0x0F;
     else if (planet_access[path->start]) path->alpha = 0xFF;
@@ -342,7 +346,7 @@ void map_paths() {
   sf_planet_id_t last = PLANET_CORNERIA;
   sf_total_hits = 0;
   memset(sf_mission_clear, 0, 30);
-  for (int i = 0; i < 7; i++) {
+  for (u32 i = 0; i < 7; i++) {
     sf_planet_id_t next = sf_map_mission_list[i];
     save_custom_data_planet_t* save_planet = &ap_save.planets[next];
     sf_mission_hits[i] = save_planet->score;
@@ -396,6 +400,7 @@ void map_check_mission() {
       }
       for (int i = TEAM_ID_WOLF; i <= TEAM_ID_ANDREW; i++) sf_saved_star_wolf_alive[i] = sf_star_wolf_alive[i];
       break;
+    default: break;
   }
 }
 
@@ -425,6 +430,7 @@ void map_modify() {
       case PL_WARP_YLW:
         sf_map_paths[i].color = PL_PATH_YLW;
         break;
+      default: break;
     }
   }
   map_paths();

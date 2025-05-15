@@ -71,7 +71,7 @@ void ap_input() {
           memset(&ap.received_items, 0, sizeof(ap.received_items));
           break;
         case AP_CMD_OPTIONS:
-          for (int i = 0; i < (ap.input.size-2)/sizeof(*ap.input.options); i++) {
+          for (u32 i = 0; i < (ap.input.size-2)/sizeof(*ap.input.options); i++) {
             ap_packet_option_t* option = &ap.input.options[i];
             if (option->name >= AP_OPTION_MAX) break;
             ap_save.options[option->name] = option->value;
@@ -82,7 +82,7 @@ void ap_input() {
           ap.ready = true;
           break;
         case AP_CMD_LOCATIONS:
-          for (int i = 0; i < (ap.input.size-2)/sizeof(*ap.input.locations); i++) {
+          for (u32 i = 0; i < (ap.input.size-2)/sizeof(*ap.input.locations); i++) {
             u32 location = ap.input.locations[i];
             if (location >= AP_LOCATION_MAX) break;
             set_bit(ap_save.locations, location);
@@ -91,7 +91,7 @@ void ap_input() {
           save.dirty = true;
           break;
         case AP_CMD_ITEMS:
-          for (int i = 0; i < (ap.input.size-2)/sizeof(*ap.input.items); i++) {
+          for (u32 i = 0; i < (ap.input.size-2)/sizeof(*ap.input.items); i++) {
             u32 item = ap.input.items[i];
             if (item >= AP_ITEM_MAX) break;
             ap_save.items[item] = ++ap.received_items[item];
@@ -156,7 +156,7 @@ void ap_output() {
     return;
   }
   if (!ap.ready) goto no_output;
-  int offset = 0;
+  u32 offset = 0;
   for (int i = 0; i < AP_LOCATION_MAX_BYTES/8; i++) {
     u8 location = ap_save.locations[i];
     u8 sent_location = ap.sent_locations[i];

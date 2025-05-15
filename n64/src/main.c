@@ -175,7 +175,7 @@ bool main_check_medal(u16 score) {
     ap_save.options[AP_OPTION_MEDAL_SECTOR_Z],
     ap_save.options[AP_OPTION_MEDAL_VENOM],
   };
-  if (sf_map_level_id < countof(medals)) score = medals[sf_map_level_id];
+  if ((u32)sf_map_level_id < countof(medals)) score = medals[sf_map_level_id];
   return sf_fn_check_medal(score);
 }
 
@@ -193,6 +193,7 @@ bool main_load_scene_data(sf_scenes_t scene, u8 _unk) {
         map_load_scene_data(scene);
         hud_load_scene_data(scene);
         break;
+      default: break;
     }
   }
   return ret;

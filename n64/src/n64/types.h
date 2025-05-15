@@ -28,3 +28,4 @@ typedef struct {
 } rgba_u8_t;
 
 #define countof(a) (sizeof(a)/sizeof(*a))
+#define UNUSED __attribute__((unused))

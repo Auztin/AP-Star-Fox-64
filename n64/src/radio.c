@@ -738,7 +738,7 @@ void radio_randomize() {
   int max = countof(radio_vanilla);
   if (ap_save.options[AP_OPTION_RADIO_RANDO] != AP_OPTION_RADIO_RANDO_ON_INCLUDING_TRAINING) {
     max -= 33;
-    for (int i = max; i < countof(radio_vanilla); i++) radio_rando[i] = i;
+    for (u32 i = max; i < countof(radio_vanilla); i++) radio_rando[i] = i;
   }
   int iter = max;
   while (iter) {
@@ -753,7 +753,7 @@ void radio_randomize() {
 }
 
 void radio_play(u32 msg, sf_radio_character_t character) {
-  int iter = 0;
+  u32 iter = 0;
   if (ap_save.options[AP_OPTION_RADIO_RANDO]) {
     for (; iter < countof(radio_vanilla); iter++) {
       if (radio_vanilla[iter].ptr == msg) goto found_msg;
