@@ -11,7 +11,7 @@ from .locations import StarFox64Location
 from .items import StarFox64Item
 from .rules import StarFox64Rules
 from .version import version
-from .ids import option_name_to_id, item_name_to_id, group_items, group_locations
+from .ids import option_name_to_id, group_items, group_locations
 
 def launch_client():
   from . import client
@@ -172,8 +172,9 @@ class StarFox64World(World):
               item = self.create_item(item_name)
               ap_location.access_rule = parser.parse(location["logic"], f"{self.game}, Location: {region_name} -> {location_name}")
               if region_name == "Menu":
-                item.code = None
-                if not ap_location.access_rule(None): continue
+                if ap_location.access_rule(None):
+                  self.push_precollected(item)
+                continue
               if item.code:
                 ap_location.address = self.location_name_to_id[location_name]
                 self.multiworld.itempool.append(item)
@@ -186,8 +187,6 @@ class StarFox64World(World):
               ap_region.connect(ap_exit, None, parser.parse(_exit["logic"], f"{self.game}, Exit: {region_name} -> {exit_name}"))
       self.multiworld.regions.append(ap_region)
     regions.cache.clear()
-    for location in self.get_region("Menu").get_locations():
-      if location.item: self.push_precollected(location.item)
 
   def create_items(self):
     for group_name, items in group_items.items():
@@ -204,5 +203,4 @@ class StarFox64World(World):
     return {
       "options": self.options.as_dict(*option_name_to_id.keys()),
       "version": version.as_u32(),
-      "precollected": [item_name_to_id[item.name] for item in self.multiworld.precollected_items[self.player]],
     }

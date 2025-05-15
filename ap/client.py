@@ -1,7 +1,7 @@
 import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile, settings, atexit, time
 import worlds.LauncherComponents as LauncherComponents
 from CommonClient import CommonContext, ClientCommandProcessor, get_base_parser, server_loop, gui_enabled, logger
-from NetUtils import ClientStatus, NetworkItem
+from NetUtils import ClientStatus
 
 from .version import version
 from .ids import option_name_to_id, location_name_to_id, item_name_to_id, AP_CMD, AP_STATE
@@ -246,12 +246,6 @@ class StarFox64Context(CommonContext):
   def on_package(self, cmd, args):
     asyncio.create_task(self.on_cmd(cmd, args))
 
-  def get_precollected(self):
-    items = []
-    for item in self.slot_data.get("precollected", []):
-      items.append(NetworkItem(item, -1, self.slot))
-    return items
-
   async def on_cmd(self, cmd, args):
     try:
       match cmd:
@@ -271,7 +265,6 @@ class StarFox64Context(CommonContext):
           self.n64_send_slot_data()
           self.n64_send_ready()
           self.n64_send_checked_locations()
-          self.n64_send_items(items=self.get_precollected())
         case "ReceivedItems":
           self.n64_send_items(items=args["items"])
         case "Bounced":
@@ -359,7 +352,7 @@ class StarFox64Context(CommonContext):
 
   def n64_send_items(self, socket=None, items=None):
     if self.seed_name == None: return
-    if not items: items = self.items_received + self.get_precollected()
+    if not items: items = self.items_received
     send = bytes()
     for item in items:
       send += item.item.to_bytes(4, "big")
