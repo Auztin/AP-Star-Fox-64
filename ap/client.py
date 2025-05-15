@@ -282,7 +282,7 @@ class StarFox64Context(CommonContext):
           match args["type"]:
             case "ItemSend" | "ItemCheat":
               item = args["item"]
-              if item.player == self.slot:
+              if args["receiving"] == self.slot:
                 for n64 in self.n64_sockets:
                   n64.messages.append(f"RECEIVED {self.item_names.lookup_in_game(item.item)}")
                   if len(n64.messages) == 1: self.n64_send_message("", n64)
