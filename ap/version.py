@@ -11,4 +11,4 @@ class StarFox64Version(typing.NamedTuple):
   def as_u32(self) -> int:
     return (self.major << 16) | (self.minor << 8) | self.build
 
-version = StarFox64Version(0, 3, 0)
+version = StarFox64Version(0, 4, 0)
