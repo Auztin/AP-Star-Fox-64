@@ -1,5 +1,5 @@
 import worlds.LauncherComponents as LauncherComponents
-import Options, settings, Utils, logging
+import Options, settings, Utils, logging, typing
 from worlds.AutoWorld import World, WebWorld
 from Options import OptionGroup
 from BaseClasses import Tutorial
@@ -38,10 +38,17 @@ class StarFox64Settings(settings.Group):
       Leave blank to disable.
     """
 
+  class EnableTracker(settings.Bool):
+    """
+      Whether to enable the built in logic Tracker.
+      If enabled, the 'Tracker' tab will show all unchecked locations in logic.
+    """
+
   rom_path: RomPath = ""
   patch_path: PatchPath = ""
   program_path: ProgramPath = ""
   program_args: ProgramArgs = f"--lua={Utils.local_path('data', 'lua', 'connector_sf64_bizhawk.lua')}"
+  enable_tracker: typing.Union[EnableTracker, bool] = True
 
 class StarFox64WebWorld(WebWorld):
   rich_text_options_doc = True
@@ -163,10 +170,7 @@ class StarFox64World(World):
           case "locations":
             for location_name, location in value.items():
               ap_location = StarFox64Location(self.player, location_name, None, ap_region)
-              item_name = location["item"]
-              match location.get("group"):
-                case "Mission Finished":
-                  item_name = item_name[self.options.level_access]
+              item_name = items.pick_name(self, location["item"], location.get("group"))
               if item_name in swap_items:
                 item_name = swap_items[item_name]
               if item_name == "Nothing":

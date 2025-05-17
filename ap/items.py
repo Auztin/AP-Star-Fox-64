@@ -15,6 +15,26 @@ for group_name, items in group_items.items():
 class StarFox64Item(Item):
   pass
 
+def pick_name(world, item_name, group):
+  match group:
+    case "Mission Finished":
+      item_name = item_name[world.options.level_access]
+  return item_name
+
+def is_event(world, item_type):
+  match item_type:
+    case "Medal":
+      return not world.options.shuffle_medals
+    case "Level":
+      return world.options.level_access != "shuffle_levels"
+    case "Path":
+      return world.options.level_access != "shuffle_paths"
+    case "Checkpoint":
+      return not world.options.shuffle_checkpoints
+    case "Event":
+      return True
+  return False
+
 def create_item(world, item_name):
   item = data.items[item_name]
   item_id = name_to_id[item_name]
@@ -35,17 +55,6 @@ def create_item(world, item_name):
     case "Medal":
       if world.options.required_medals > 0:
         classification = ItemClassification.progression_skip_balancing
-      if not world.options.shuffle_medals:
-        item_id = None
-    case "Level":
-      if world.options.level_access != "shuffle_levels":
-        item_id = None
-    case "Path":
-      if world.options.level_access != "shuffle_paths":
-        item_id = None
-    case "Checkpoint":
-      if not world.options.shuffle_checkpoints:
-        item_id = None
-    case "Event":
-      item_id = None
+
+  if is_event(world, item_type): item_id = None
   return StarFox64Item(item_name, classification, item_id, world.player)

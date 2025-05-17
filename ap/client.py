@@ -1,10 +1,12 @@
-import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile, settings, atexit, time
-import worlds.LauncherComponents as LauncherComponents
-from CommonClient import CommonContext, ClientCommandProcessor, get_base_parser, server_loop, gui_enabled, logger
+import colorama, asyncio, bsdiff4, pathlib, os, Utils, hashlib, sys, zipfile, settings, atexit, time, typing
+from CommonClient import CommonContext, ClientCommandProcessor, get_base_parser, gui_enabled, logger
 from NetUtils import ClientStatus
 
+from . import locations, items, data
 from .version import version
 from .ids import option_name_to_id, location_name_to_id, item_name_to_id, AP_CMD, AP_STATE
+from .rules import StarFox64Rules
+from .options import StarFox64OptionsList
 
 game_name = "Star Fox 64"
 vanilla_version = "v1.1"
@@ -188,6 +190,109 @@ class StarFox64CommandProcessor(ClientCommandProcessor):
     asyncio.create_task(self.ctx.update_ring_link(not "RingLink" in self.ctx.tags))
     return True
 
+  def _cmd_tracker(self):
+    """Toggles the built in logic Tracker."""
+    sf64_options.enable_tracker = not sf64_options.enable_tracker
+    sf64_options._changed = True
+    self.ctx.tracker.update_locations()
+    return True
+
+class StarFox64Tracker:
+  player = 1
+
+  def __init__(self, ctx):
+    self.ctx = ctx
+    self.regions = {}
+    self.locations = set()
+    self.items = {item_name: 0 for item_name in items.name_to_id}
+    self.options = StarFox64OptionsList(**{
+      option_key: option_class(ctx.slot_data["options"][option_key])
+      for option_key, option_class in typing.get_type_hints(StarFox64OptionsList).items()
+    })
+    parser = StarFox64Rules(self)
+    for region_name, region in data.regions.items():
+      self.regions[region_name] = {}
+      for key, value in region.items():
+        self.regions[region_name][key] = {}
+        for name, entry in value.items():
+          self.regions[region_name][key][name] = parser.parse(entry["logic"], f"Tracker, {key}: {region_name} -> {name}")
+    self.refresh_items()
+
+  def check_region(self, region_name, checked_regions):
+    checked_regions.add(region_name)
+    region = data.regions[region_name]
+    for key, value in region.items():
+      logic = self.regions[region_name][key]
+      match key:
+        case "locations":
+          if region_name == "Menu": continue
+          for location_name, location in value.items():
+            item_name = items.pick_name(self, location["item"], location.get("group"))
+            if logic[location_name](self):
+              if items.is_event(self, data.items[item_name].get("type", item_name)):
+                self.items[item_name] += 1
+              else: self.locations.add(locations.name_to_id[location_name])
+        case "exits":
+          for exit_name, _exit in value.items():
+            if exit_name in checked_regions: continue
+            if logic[exit_name](self):
+              self.check_region(exit_name, checked_regions)
+
+  def update_locations(self):
+    if sf64_options.enable_tracker:
+      self.ctx.tab_locations.content.data = sorted([
+        {"text": self.ctx.location_names.lookup_in_game(location)}
+        for location in (self.locations - self.ctx.checked_locations)
+      ], key=lambda e: e["text"])
+    else: self.ctx.tab_locations.content.data = [{"text":"Tracker disabled. Use /tracker to enable it."}]
+
+  def refresh_locations(self):
+    self.locations.clear()
+    self.check_region("Menu", set())
+    self.update_locations()
+
+  def refresh_items(self):
+    for item in self.items:
+      self.items[item] = 0
+    for item in self.ctx.items_received:
+      self.items[self.ctx.item_names.lookup_in_game(item.item)] += 1
+    self.ctx.tab_items.content.data = []
+    for item_name, amount in sorted(self.items.items()):
+      if amount == 0: continue
+      if amount > 1: self.ctx.tab_items.content.data.append({"text":f"{item_name}: {amount}"})
+      else: self.ctx.tab_items.content.data.append({"text":f"{item_name}"})
+    self.refresh_locations()
+
+  def has(self, item, player, count = 1):
+    return self.items[item] >= count
+
+  def has_all(self, items, player):
+    for item in items:
+      if not self.items[item]:
+        return False
+    return True
+
+  def has_any(self, items, player):
+    for item in items:
+      if self.items[item]:
+        return True
+    return False
+
+  def has_all_counts(self, item_counts, player):
+    for item, count in item_counts.items():
+      if self.items[item] < count:
+        return False
+    return True
+
+  def has_any_count(self, item_counts, player):
+    for item, count in item_counts.items():
+      if self.items[item] >= count:
+        return True
+      return False
+
+  def count(self, item, player):
+    return self.items[item]
+
 class StarFox64Context(CommonContext):
   tags = CommonContext.tags
   game = "Star Fox 64"
@@ -195,21 +300,24 @@ class StarFox64Context(CommonContext):
   want_slot_data = True
   command_processor = StarFox64CommandProcessor
   last_ring_link: float = time.time()  # last received ring link on AP layer
-
   seed_name = 0
-
   slot_data = {}
   n64_sockets = set()
 
   def make_gui(self):
-    from kvui import GameManager, Window
+    from kvui import GameManager, Window, UILog
 
     Window.bind(on_request_close=self.on_request_close)
+    asyncio.create_task(patch_and_run(True))
 
     class StarFox64Manager(GameManager):
       base_title = f"Star Fox 64 Client {version.as_string()} | AP"
 
-    asyncio.create_task(patch_and_run(True))
+      def build(self):
+        ret = super().build()
+        self.ctx.tab_items = self.add_client_tab("Items", UILog())
+        self.ctx.tab_locations = self.add_client_tab("Tracker", UILog())
+        return ret
 
     return StarFox64Manager
 
@@ -252,7 +360,9 @@ class StarFox64Context(CommonContext):
         case "RoomInfo":
           self.seed_name = args["seed_name"]
         case "RoomUpdate":
-          if "checked_locations" in args: self.n64_send_checked_locations(locations=set(args["checked_locations"]))
+          if "checked_locations" in args:
+            self.tracker.update_locations()
+            self.n64_send_checked_locations(locations=set(args["checked_locations"]))
         case "Connected":
           await self.check_assert("slot_data" in args, "Missing Slot Data", "Necessary data is missing from this slot...")
           self.slot_data = args["slot_data"]
@@ -261,11 +371,13 @@ class StarFox64Context(CommonContext):
           if self.slot_data["options"]["deathlink"]: self.tags.add("DeathLink")
           if self.slot_data["options"]["ringlink"]: self.tags.add("RingLink")
           if old_tags != self.tags: await self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}])
+          self.tracker = StarFox64Tracker(self)
           self.n64_send_seed()
           self.n64_send_slot_data()
           self.n64_send_ready()
           self.n64_send_checked_locations()
         case "ReceivedItems":
+          self.tracker.refresh_items()
           self.n64_send_items(items=args["items"])
         case "Bounced":
           tags = args.get("tags", [])

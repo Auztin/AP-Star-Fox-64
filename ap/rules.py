@@ -1,4 +1,4 @@
-import ast, re
+import ast, re, typing
 
 from Options import Choice
 
@@ -10,7 +10,7 @@ class StarFox64Rules(ast.NodeTransformer):
     self.world = world
     self.player = ast.Constant(value=world.player)
     self.options = {}
-    for option_name, option_class in type(world.options).type_hints.items():
+    for option_name, option_class in typing.get_type_hints(type(world.options)).items():
       option = getattr(world.options, option_name)
       value = option.value
       if isinstance(option, Choice):
