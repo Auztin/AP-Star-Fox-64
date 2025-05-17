@@ -25,13 +25,13 @@ def is_event(world, item_type):
   match item_type:
     case "Medal":
       return not world.options.shuffle_medals
-    case "Level":
+    case "Levels":
       return world.options.level_access != "shuffle_levels"
-    case "Path":
+    case "Paths":
       return world.options.level_access != "shuffle_paths"
-    case "Checkpoint":
+    case "Checkpoints":
       return not world.options.shuffle_checkpoints
-    case "Event":
+    case "Events":
       return True
   return False
 

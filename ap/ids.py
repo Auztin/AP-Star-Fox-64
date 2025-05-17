@@ -236,7 +236,7 @@ location_name_to_id = {
 }
 
 group_items = {
-  "Checkpoint": [
+  "Checkpoints": [
     "Corneria - Checkpoint",
     "Meteo - Checkpoint",
     "Sector X - Checkpoint",
@@ -249,7 +249,7 @@ group_items = {
     "Macbeth - Checkpoint",
     "Venom 1 - Checkpoint"
   ],
-  "Level": [
+  "Levels": [
     "Corneria",
     "Meteo",
     "Sector X",
@@ -266,7 +266,7 @@ group_items = {
     "Bolse",
     "Sector Z"
   ],
-  "Path": [
+  "Paths": [
     "Aquas - Red Path",
     "Area 6 - Red Path",
     "Bolse - Blue Path",
@@ -292,7 +292,7 @@ group_items = {
     "Zoness - Yellow Path",
     "Zoness - Red Path"
   ],
-  "Event": [
+  "Events": [
     "Defeated Robot Andross",
     "Defeated Andross"
   ]

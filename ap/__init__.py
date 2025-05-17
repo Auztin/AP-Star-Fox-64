@@ -158,7 +158,7 @@ class StarFox64World(World):
     self.create_victory_condition()
     swap_items = {}
     if self.options.shuffle_starting_level:
-      valid_levels = group_items["Level"].copy()
+      valid_levels = group_items["Levels"].copy()
       valid_levels.remove("Venom")
       item_name = self.random.choice(valid_levels)
       swap_items["Corneria"] = item_name

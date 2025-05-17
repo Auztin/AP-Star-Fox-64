@@ -24,211 +24,211 @@ items = {
     "class": "filler",
   },
   "Corneria - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Meteo - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Sector X - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Titania - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Sector Y - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Aquas - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Zoness - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Area 6 - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Solar - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Macbeth - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Venom 1 - Checkpoint": {
-    "type": "Checkpoint",
+    "type": "Checkpoints",
     "class": "useful",
   },
   "Corneria": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Meteo": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Sector X": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Area 6": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Sector Y": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Venom": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Solar": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Zoness": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Macbeth": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Titania": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Aquas": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Fortuna": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Katina": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Bolse": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Sector Z": {
-    "type": "Level",
+    "type": "Levels",
     "class": "progression",
   },
   "Aquas - Red Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Area 6 - Red Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Bolse - Blue Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Corneria - Blue Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Corneria - Red Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Fortuna - Blue Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Fortuna - Yellow Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Katina - Blue Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Katina - Yellow Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Macbeth - Blue Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Macbeth - Red Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Meteo - Blue Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Meteo - Warp Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Sector X - Blue Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Sector X - Yellow Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Sector X - Warp Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Sector Y - Yellow Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Sector Y - Red Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Sector Z - Blue Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Sector Z - Red Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Solar - Yellow Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Titania - Blue Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Zoness - Yellow Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Zoness - Red Path": {
-    "type": "Path",
+    "type": "Paths",
     "class": "progression",
   },
   "Defeated Robot Andross": {
-    "type": "Event",
+    "type": "Events",
     "class": "progression",
   },
   "Defeated Andross": {
-    "type": "Event",
+    "type": "Events",
     "class": "progression",
   },
 }
