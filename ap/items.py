@@ -1,12 +1,16 @@
 from BaseClasses import Item, ItemClassification
 from . import data
-from .ids import item_name_to_id
+from .ids import item_name_to_id, group_items
 
 name_to_id = {}
+groups = {}
 
 for name, value in item_name_to_id.items():
   if value > 0:
     name_to_id[name] = value
+
+for group_name, items in group_items.items():
+  groups[group_name] = set(items)
 
 class StarFox64Item(Item):
   pass

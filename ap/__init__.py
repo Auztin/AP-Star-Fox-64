@@ -11,7 +11,7 @@ from .locations import StarFox64Location
 from .items import StarFox64Item
 from .rules import StarFox64Rules
 from .version import version
-from .ids import option_name_to_id, group_items, group_locations
+from .ids import option_name_to_id, group_items
 
 def launch_client():
   from . import client
@@ -110,6 +110,8 @@ class StarFox64World(World):
   settings_key = "sf64_options"
   item_name_to_id = items.name_to_id
   location_name_to_id = locations.name_to_id
+  item_name_groups = items.groups
+  location_name_groups = locations.groups
   topology_present = True
   web = StarFox64WebWorld()
   filler_weights = {
@@ -189,10 +191,6 @@ class StarFox64World(World):
     regions.cache.clear()
 
   def create_items(self):
-    for group_name, items in group_items.items():
-      self.item_name_groups[group_name] = set(items)
-    for group_name, locations in group_locations.items():
-      self.location_name_groups[group_name] = set(locations)
     self.check_options()
     self.create_everything()
 
