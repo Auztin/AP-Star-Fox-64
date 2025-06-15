@@ -24,6 +24,7 @@ class StarFox64Rules(ast.NodeTransformer):
     self.file = file
     node = self.visit(ast.parse(f"lambda state: ({logic})", mode="eval"))
     node = ast.fix_missing_locations(node)
+    # print("  ", ast.unparse(node)) # kept for debugging
     return eval(compile(node, file, "eval"))
 
   def make_attr(self, value, attr):
